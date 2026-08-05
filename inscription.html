@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Inscription | Market Bouaké</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f6f8;
+            color: #222;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+
+        header {
+            background: white;
+            padding: 18px 5%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #222;
+        }
+
+        .logo span {
+            color: #f57c00;
+        }
+
+        /* CONTENEUR */
+
+        .container {
+            width: 95%;
+            max-width: 700px;
+            margin: 40px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        /* CHOIX DU TYPE */
+
+        .role-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .roles {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .role {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .role:hover {
+            border-color: #f57c00;
+        }
+
+        .role.active {
+            border-color: #f57c00;
+            background: #fff3e0;
+        }
+
+        .role-icon {
+            font-size: 35px;
+            margin-bottom: 8px;
+        }
+
+        .role h3 {
+            margin-bottom: 5px;
+        }
+
+        .role p {
+            color: #777;
+            font-size: 13px;
+        }
+
+        /* FORMULAIRE */
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        .form-title {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+            font-size: 14px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            outline: none;
+            font-size: 15px;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #f57c00;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .help {
+            color: #777;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #f57c00;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .button:hover {
+            background: #e56f00;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+        }
+
+        .login-link a {
+            color: #f57c00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .security {
+            background: #f7f7f7;
+            border-radius: 8px;
+            padding: 13px;
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 600px) {
+
+            .card {
+                padding: 22px;
+            }
+
+            .roles {
+                grid-template-columns: 1fr;
+            }
+
+            .row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header>
+
+        <a href="index.html" class="logo">
+            Market <span>Bouaké</span>
+        </a>
+
+    </header>
+
+
+    <!-- CONTENU -->
+
+    <main class="container">
+
+        <div class="card">
+
+            <h1 class="title">
+                Créer un compte
+            </h1>
+
+            <p class="subtitle">
+                Rejoignez Market Bouaké gratuitement.
+            </p>
+
+
+            <!-- CHOIX DU ROLE -->
+
+            <p class="role-title">
+                Vous êtes :
+            </p>
+
+            <div class="roles">
+
+                <div class="role" id="buyerRole" onclick="selectRole('buyer')">
+
+                    <div class="role-icon">
+                        🛍️
+                    </div>
+
+                    <h3>Acheteur</h3>
+
+                    <p>
+                        Je veux acheter des produits.
+                    </p>
+
+                </div>
+
+
+                <div class="role" id="sellerRole" onclick="selectRole('seller')">
+
+                    <div class="role-icon">
+                        🏪
+                    </div>
+
+                    <h3>Vendeur</h3>
+
+                    <p>
+                        Je veux vendre mes produits.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- FORMULAIRE ACHETEUR -->
+
+            <div class="form-section" id="buyerForm">
+
+                <h2 class="form-title">
+                    🛍️ Inscription acheteur
+                </h2>
+
+                <form onsubmit="registerBuyer(event)">
+
+                    <div class="row">
+
+                        <div class="form-group">
+
+                            <label>
+                                Prénom
+                            </label>
+
+                            <input
+                                type="text"
+                                id="buyerFirstName"
+                                placeholder="Votre prénom"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Nom
+                            </label>
+
+                            <input
+                                type="text"
+                                id="buyerLastName"
+                                placeholder="Votre nom"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="buyerEmail"
+                            placeholder="exemple@email.com"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Numéro WhatsApp
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="buyerPhone"
+                            placeholder="Ex : 0700000000"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Mot de passe
+                        </label>
+
+                        <input
+                            type="password"
+                            id="buyerPassword"
+                            placeholder="Créer un mot de passe"
+                            minlength="6"
+                            required
+                        >
+
+                        <p class="help">
+                            Minimum 6 caractères.
+                        </p>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Confirmer le mot de passe
+                        </label>
+
+                        <input
+                            type="password"
+                            id="buyerPasswordConfirm"
+                            placeholder="Confirmer le mot de passe"
+                            minlength="6"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button class="button" type="submit">
+                        Créer mon compte
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- FORMULAIRE VENDEUR -->
+
+            <div class="form-section" id="sellerForm">
+
+                <h2 class="form-title">
+                    🏪 Inscription vendeur
+                </h2>
+
+
+                <div class="security">
+
+                    🔐 Les vendeurs devront être validés par
+                    l'administration avant de pouvoir vendre
+                    sur Market Bouaké.
+
+                </div>
+
+
+                <form onsubmit="registerSeller(event)">
+
+                    <div class="row">
+
+                        <div class="form-group">
+
+                            <label>
+                                Prénom
+                            </label>
+
+                            <input
+                                type="text"
+                                id="sellerFirstName"
+                                placeholder="Votre prénom"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Nom
+                            </label>
+
+                            <input
+                                type="text"
+                                id="sellerLastName"
+                                placeholder="Votre nom"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Nom de la boutique
+                        </label>
+
+                        <input
+                            type="text"
+                            id="shopName"
+                            placeholder="Ex : Boutique Grâce"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="sellerEmail"
+                            placeholder="exemple@email.com"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Numéro WhatsApp professionnel
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="sellerPhone"
+                            placeholder="Ex : 0700000000"
+                            required
+                        >
+
+                        <p class="help">
+                            Ce numéro pourra être utilisé par les acheteurs
+                            pour commander vos produits.
+                        </p>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="form-group">
+
+                            <label>
+                                Ville
+                            </label>
+
+                            <input
+                                type="text"
+                                id="sellerCity"
+                                value="Bouaké"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Quartier
+                            </label>
+
+                            <input
+                                type="text"
+                                id="sellerDistrict"
+                                placeholder="Ex : Air France"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Photo de profil
+                        </label>
+
+                        <input
+                            type="file"
+                            id="sellerPhoto"
+                            accept="image/*"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Description de la boutique
+                        </label>
+
+                        <textarea
+                            id="shopDescription"
+                            placeholder="Présentez votre boutique et les produits que vous vendez..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Mot de passe
+                        </label>
+
+                        <input
+                            type="password"
+                            id="sellerPassword"
+                            placeholder="Créer un mot de passe"
+                            minlength="6"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Confirmer le mot de passe
+                        </label>
+
+                        <input
+                            type="password"
+                            id="sellerPasswordConfirm"
+                            placeholder="Confirmer le mot de passe"
+                            minlength="6"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button class="button" type="submit">
+                        Envoyer ma demande de vendeur
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <div class="login-link">
+
+                Vous avez déjà un compte ?
+
+                <a href="connexion.html">
+                    Se connecter
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        function selectRole(role) {
+
+            const buyerRole =
+                document.getElementById("buyerRole");
+
+            const sellerRole =
+                document.getElementById("sellerRole");
+
+            const buyerForm =
+                document.getElementById("buyerForm");
+
+            const sellerForm =
+                document.getElementById("sellerForm");
+
+
+            if (role === "buyer") {
+
+                buyerRole.classList.add("active");
+
+                sellerRole.classList.remove("active");
+
+                buyerForm.classList.add("active");
+
+                sellerForm.classList.remove("active");
+
+            }
+
+
+            if (role === "seller") {
+
+                sellerRole.classList.add("active");
+
+                buyerRole.classList.remove("active");
+
+                sellerForm.classList.add("active");
+
+                buyerForm.classList.remove("active");
+
+            }
+
+        }
+
+
+        function registerBuyer(event) {
+
+            event.preventDefault();
+
+            const password =
+                document.getElementById("buyerPassword").value;
+
+            const confirmPassword =
+                document.getElementById("buyerPasswordConfirm").value;
+
+
+            if (password !== confirmPassword) {
+
+                alert("Les mots de passe ne correspondent pas.");
+
+                return;
+
+            }
+
+
+            alert(
+                "Inscription acheteur enregistrée pour le test. La vraie création de compte sera activée avec notre base de données."
+            );
+
+        }
+
+
+        function registerSeller(event) {
+
+            event.preventDefault();
+
+            const password =
+                document.getElementById("sellerPassword").value;
+
+            const confirmPassword =
+                document.getElementById("sellerPasswordConfirm").value;
+
+
+            if (password !== confirmPassword) {
+
+                alert("Les mots de passe ne correspondent pas.");
+
+                return;
+
+            }
+
+
+            alert(
+                "Votre demande de vendeur a été enregistrée pour le test. Elle devra ensuite être validée par l'administration."
+            );
+
+        }
+
+    </script>
+
+</body>
+</html>
