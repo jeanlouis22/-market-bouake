@@ -658,235 +658,154 @@
     </main>
 
 
-    <script>
 
-    // ==============================
-    // INSCRIPTION ACHETEUR
-    // ==============================
-
-    async function registerBuyer(event) {
-
-        event.preventDefault();
-
-        const firstName =
-            document.getElementById("buyerFirstName").value.trim();
-
-        const lastName =
-            document.getElementById("buyerLastName").value.trim();
-
-        const email =
-            document.getElementById("buyerEmail").value.trim();
-
-        const phone =
-            document.getElementById("buyerPhone").value.trim();
-
-        const password =
-            document.getElementById("buyerPassword").value;
-
-        const confirmPassword =
-            document.getElementById("buyerPasswordConfirm").value;
-
-
-        // Vérification des mots de passe
-
-        if (password !== confirmPassword) {
-
-            alert("Les mots de passe ne correspondent pas.");
-
-            return;
-        }
-
-
-        try {
-
-            const { data, error } =
-                await supabaseClient.auth.signUp({
-
-                    email: email,
-
-                    password: password,
-
-                    options: {
-
-                        data: {
-
-                            first_name: firstName,
-
-                            last_name: lastName,
-
-                            phone: phone,
-
-                            role: "buyer"
-
-                        }
-
-                    }
-
-                });
-
-
-            if (error) {
-
-                console.error(error);
-
-                alert(
-                    "Erreur lors de l'inscription : " +
-                    error.message
-                );
-
-                return;
-            }
-
-
-            alert(
-                "🎉 Votre compte acheteur a été créé !\n\n" +
-                "Vérifiez votre adresse email si Supabase vous demande de la confirmer."
-            );
-
-
-            window.location.href = "connexion.html";
-
-
-        } catch (error) {
-
-            console.error(error);
-
-            alert(
-                "Une erreur inattendue est survenue."
-            );
-
-        }
-
-    }
-
-
-
-    // ==============================
-    // INSCRIPTION VENDEUR
-    // ==============================
-
-    async function registerSeller(event) {
-
-        event.preventDefault();
-
-
-        const firstName =
-            document.getElementById("sellerFirstName").value.trim();
-
-        const lastName =
-            document.getElementById("sellerLastName").value.trim();
-
-        const shopName =
-            document.getElementById("shopName").value.trim();
-
-        const email =
-            document.getElementById("sellerEmail").value.trim();
-
-        const phone =
-            document.getElementById("sellerPhone").value.trim();
-
-        const city =
-            document.getElementById("sellerCity").value.trim();
-
-        const district =
-            document.getElementById("sellerDistrict").value.trim();
-
-        const description =
-            document.getElementById("shopDescription").value.trim();
-
-        const password =
-            document.getElementById("sellerPassword").value;
-
-        const confirmPassword =
-            document.getElementById("sellerPasswordConfirm").value;
-
-
-        // Vérification des mots de passe
-
-        if (password !== confirmPassword) {
-
-            alert("Les mots de passe ne correspondent pas.");
-
-            return;
-        }
-
-
-        try {
-
-            const { data, error } =
-                await supabaseClient.auth.signUp({
-
-                    email: email,
-
-                    password: password,
-
-                    options: {
-
-                        data: {
-
-                            first_name: firstName,
-
-                            last_name: lastName,
-
-                            phone: phone,
-
-                            role: "seller",
-
-                            shop_name: shopName,
-
-                            city: city,
-
-                            district: district,
-
-                            shop_description: description
-
-                        }
-
-                    }
-
-                });
-
-
-            if (error) {
-
-                console.error(error);
-
-                alert(
-                    "Erreur lors de l'inscription : " +
-                    error.message
-                );
-
-                return;
-            }
-
-
-            alert(
-                "🏪 Votre demande de vendeur a été créée !\n\n" +
-                "Votre compte est maintenant en attente de validation par l'administration."
-            );
-
-
-            window.location.href = "connexion.html";
-
-
-        } catch (error) {
-
-            console.error(error);
-
-            alert(
-                "Une erreur inattendue est survenue."
-            );
-
-        }
-
-    }
-
-</script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
+
 <script>
 
-    // ton code selectRole + registerBuyer + registerSeller
+function selectRole(role) {
+
+    const buyerRole = document.getElementById("buyerRole");
+    const sellerRole = document.getElementById("sellerRole");
+
+    const buyerForm = document.getElementById("buyerForm");
+    const sellerForm = document.getElementById("sellerForm");
+
+    if (role === "buyer") {
+
+        buyerRole.classList.add("active");
+        sellerRole.classList.remove("active");
+
+        buyerForm.classList.add("active");
+        sellerForm.classList.remove("active");
+
+    }
+
+    if (role === "seller") {
+
+        sellerRole.classList.add("active");
+        buyerRole.classList.remove("active");
+
+        sellerForm.classList.add("active");
+        buyerForm.classList.remove("active");
+
+    }
+
+}
+
+
+async function registerBuyer(event) {
+
+    event.preventDefault();
+
+    const firstName = document.getElementById("buyerFirstName").value.trim();
+    const lastName = document.getElementById("buyerLastName").value.trim();
+    const email = document.getElementById("buyerEmail").value.trim();
+    const phone = document.getElementById("buyerPhone").value.trim();
+    const password = document.getElementById("buyerPassword").value;
+    const confirmPassword = document.getElementById("buyerPasswordConfirm").value;
+
+    if (password !== confirmPassword) {
+        alert("Les mots de passe ne correspondent pas.");
+        return;
+    }
+
+    const { error } = await supabaseClient.auth.signUp({
+
+        email: email,
+        password: password,
+
+        options: {
+
+            data: {
+
+                first_name: firstName,
+                last_name: lastName,
+                phone: phone,
+                role: "buyer"
+
+            }
+
+        }
+
+    });
+
+    if (error) {
+
+        alert("Erreur : " + error.message);
+        return;
+
+    }
+
+    alert("🎉 Votre compte acheteur a été créé !");
+
+    window.location.href = "connexion.html";
+
+}
+
+
+async function registerSeller(event) {
+
+    event.preventDefault();
+
+    const firstName = document.getElementById("sellerFirstName").value.trim();
+    const lastName = document.getElementById("sellerLastName").value.trim();
+    const shopName = document.getElementById("shopName").value.trim();
+    const email = document.getElementById("sellerEmail").value.trim();
+    const phone = document.getElementById("sellerPhone").value.trim();
+    const city = document.getElementById("sellerCity").value.trim();
+    const district = document.getElementById("sellerDistrict").value.trim();
+    const description = document.getElementById("shopDescription").value.trim();
+    const password = document.getElementById("sellerPassword").value;
+    const confirmPassword = document.getElementById("sellerPasswordConfirm").value;
+
+    if (password !== confirmPassword) {
+
+        alert("Les mots de passe ne correspondent pas.");
+        return;
+
+    }
+
+    const { error } = await supabaseClient.auth.signUp({
+
+        email: email,
+        password: password,
+
+        options: {
+
+            data: {
+
+                first_name: firstName,
+                last_name: lastName,
+                phone: phone,
+                role: "seller",
+                shop_name: shopName,
+                city: city,
+                district: district,
+                shop_description: description
+
+            }
+
+        }
+
+    });
+
+    if (error) {
+
+        alert("Erreur : " + error.message);
+        return;
+
+    }
+
+    alert(
+        "🏪 Votre demande de vendeur a été créée !\n\n" +
+        "Elle est en attente de validation par l'administration."
+    );
+
+    window.location.href = "connexion.html";
+
+}
 
 </script>
 
