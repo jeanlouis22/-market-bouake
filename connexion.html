@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Connexion | Market Bouaké</title>
+
 
     <style>
 
@@ -14,12 +18,14 @@
             box-sizing: border-box;
         }
 
+
         body {
             font-family: Arial, sans-serif;
             background: #f5f6f8;
             color: #222;
             min-height: 100vh;
         }
+
 
         /* HEADER /
 
@@ -29,6 +35,7 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
+
         .logo {
             font-size: 25px;
             font-weight: bold;
@@ -36,9 +43,11 @@
             color: #222;
         }
 
+
         .logo span {
             color: #f57c00;
         }
+
 
         / CONTENU /
 
@@ -48,6 +57,7 @@
             margin: 60px auto;
         }
 
+
         .card {
             background: white;
             padding: 35px;
@@ -55,16 +65,19 @@
             box-shadow: 0 3px 15px rgba(0,0,0,0.08);
         }
 
+
         .icon {
             text-align: center;
             font-size: 45px;
             margin-bottom: 10px;
         }
 
+
         h1 {
             text-align: center;
             margin-bottom: 10px;
         }
+
 
         .subtitle {
             text-align: center;
@@ -72,9 +85,11 @@
             margin-bottom: 30px;
         }
 
+
         .form-group {
             margin-bottom: 20px;
         }
+
 
         label {
             display: block;
@@ -82,6 +97,7 @@
             margin-bottom: 7px;
             font-size: 14px;
         }
+
 
         input {
             width: 100%;
@@ -92,9 +108,11 @@
             font-size: 15px;
         }
 
+
         input:focus {
             border-color: #f57c00;
         }
+
 
         .button {
             width: 100%;
@@ -108,14 +126,23 @@
             cursor: pointer;
         }
 
+
         .button:hover {
             background: #e56f00;
         }
+
+
+        .button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
 
         .forgot {
             text-align: right;
             margin-top: 10px;
         }
+
 
         .forgot a {
             color: #f57c00;
@@ -123,17 +150,20 @@
             font-size: 13px;
         }
 
+
         .register {
             text-align: center;
             margin-top: 25px;
             color: #777;
         }
 
+
         .register a {
             color: #f57c00;
             text-decoration: none;
             font-weight: bold;
         }
+
 
         .back {
             display: block;
@@ -144,7 +174,8 @@
             font-size: 14px;
         }
 
-        / MOBILE */
+
+        / MOBILE /
 
         @media (max-width: 500px) {
 
@@ -159,19 +190,25 @@
         }
 
     </style>
+
 </head>
 
+
 <body>
+
 
     <!-- HEADER -->
 
     <header>
 
         <a href="index.html" class="logo">
+
             Market <span>Bouaké</span>
+
         </a>
 
     </header>
+
 
 
     <!-- CONNEXION -->
@@ -180,20 +217,25 @@
 
         <div class="card">
 
+
             <div class="icon">
                 🔐
             </div>
 
+
             <h1>
                 Connexion
             </h1>
+
 
             <p class="subtitle">
                 Connectez-vous à votre compte Market Bouaké.
             </p>
 
 
+
             <form onsubmit="login(event)">
+
 
                 <div class="form-group">
 
@@ -211,6 +253,7 @@
                 </div>
 
 
+
                 <div class="form-group">
 
                     <label for="password">
@@ -224,9 +267,10 @@
                         required
                     >
 
+
                     <div class="forgot">
 
-                        <a href="#">
+                        <a href="#" onclick="forgotPassword(event)">
                             Mot de passe oublié ?
                         </a>
 
@@ -235,14 +279,20 @@
                 </div>
 
 
+
                 <button
                     type="submit"
                     class="button"
+                    id="loginButton"
                 >
+
                     Se connecter
+
                 </button>
 
+
             </form>
+
 
 
             <div class="register">
@@ -256,28 +306,206 @@
             </div>
 
 
+
             <a href="index.html" class="back">
+
                 ← Retour à Market Bouaké
+
             </a>
+
 
         </div>
 
     </main>
 
 
+
+    <!-- SUPABASE -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="supabase-config.js"></script>
+
+
+
+    <!-- CONNEXION -->
+
     <script>
 
-        function login(event) {
+        async function login(event) {
 
             event.preventDefault();
 
+
+            const email =
+                document.getElementById("email").value.trim();
+
+
+            const password =
+                document.getElementById("password").value;
+
+
+            const button =
+                document.getElementById("loginButton");
+
+
+            button.disabled = true;
+
+            button.textContent = "Connexion...";
+
+
+            try {
+
+
+                const { data, error } =
+                    await supabaseClient.auth.signInWithPassword({
+
+                        email: email,
+
+                        password: password
+
+                    });
+
+
+
+                if (error) {
+
+                    console.error(error);
+
+                    alert(
+                        "❌ Impossible de se connecter.\n\n" +
+                        error.message
+                    );
+
+                    return;
+
+                }
+
+
+
+                const user =
+                    data.user;
+
+
+                const role =
+                    user.user_metadata?.role;
+
+
+
+                alert(
+                    "✅ Connexion réussie !\n\n" +
+                    "Bienvenue sur Market Bouaké."
+                );
+
+
+
+                /
+                    Pour le moment nous renvoyons
+                    tout le monde vers l'accueil.
+
+                    Plus tard :
+
+                    Acheteur → espace acheteur
+                    Vendeur → espace vendeur
+                    Administrateur → administration
+                */
+
+
+                if (role === "seller") {
+
+                    window.location.href = "index.html";
+
+                }
+
+                else if (role === "buyer") {
+
+                    window.location.href = "index.html";
+
+                }
+
+                else {
+
+                    window.location.href = "index.html";
+
+                }
+
+
+            }
+
+            catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "Une erreur inattendue est survenue."
+                );
+
+            }
+
+            finally {
+
+                button.disabled = false;
+
+                button.textContent = "Se connecter";
+
+            }
+
+        }
+
+
+
+        async function forgotPassword(event) {
+
+            event.preventDefault();
+
+
+            const email =
+                document.getElementById("email").value.trim();
+
+
+            if (!email) {
+
+                alert(
+                    "Entrez d'abord votre adresse email."
+                );
+
+                return;
+
+            }
+
+
+            const { error } =
+                await supabaseClient.auth.resetPasswordForEmail(
+                    email,
+                    {
+                        redirectTo:
+                            window.location.origin +
+                            "/connexion.html"
+                    }
+                );
+
+
+            if (error) {
+
+                alert(
+                    "Erreur : " +
+                    error.message
+                );
+
+                return;
+
+            }
+
+
             alert(
-                "La connexion réelle sera activée lorsque nous connecterons Market Bouaké à notre base de données."
+                "📧 Un lien de réinitialisation a été envoyé à votre adresse email."
             );
 
         }
 
     </script>
 
+
 </body>
+
 </html>
