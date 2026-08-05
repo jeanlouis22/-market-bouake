@@ -9,7 +9,6 @@
 
     <title>Connexion | Market Bouaké</title>
 
-
     <style>
 
         * {
@@ -49,14 +48,16 @@
         }
 
 
-        / CONTENU /
+        / CONTENEUR /
 
         .container {
             width: 95%;
-            max-width: 480px;
-            margin: 60px auto;
+            max-width: 700px;
+            margin: 40px auto;
         }
 
+
+        / CARTE /
 
         .card {
             background: white;
@@ -68,12 +69,12 @@
 
         .icon {
             text-align: center;
-            font-size: 45px;
+            font-size: 40px;
             margin-bottom: 10px;
         }
 
 
-        h1 {
+        .title {
             text-align: center;
             margin-bottom: 10px;
         }
@@ -86,8 +87,10 @@
         }
 
 
+        / FORMULAIRE /
+
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
 
@@ -101,7 +104,7 @@
 
         input {
             width: 100%;
-            padding: 14px;
+            padding: 13px;
             border: 1px solid #ddd;
             border-radius: 7px;
             outline: none;
@@ -111,6 +114,20 @@
 
         input:focus {
             border-color: #f57c00;
+        }
+
+
+        .forgot {
+            text-align: right;
+            margin-top: 8px;
+        }
+
+
+        .forgot a {
+            color: #f57c00;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
         }
 
 
@@ -124,6 +141,7 @@
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
+            margin-top: 10px;
         }
 
 
@@ -138,18 +156,7 @@
         }
 
 
-        .forgot {
-            text-align: right;
-            margin-top: 10px;
-        }
-
-
-        .forgot a {
-            color: #f57c00;
-            text-decoration: none;
-            font-size: 13px;
-        }
-
+        / CREATION DE COMPTE /
 
         .register {
             text-align: center;
@@ -165,6 +172,8 @@
         }
 
 
+        / RETOUR /
+
         .back {
             display: block;
             text-align: center;
@@ -177,14 +186,10 @@
 
         / MOBILE /
 
-        @media (max-width: 500px) {
-
-            .container {
-                margin: 35px auto;
-            }
+        @media (max-width: 600px) {
 
             .card {
-                padding: 25px 20px;
+                padding: 22px;
             }
 
         }
@@ -211,7 +216,7 @@
 
 
 
-    <!-- CONNEXION -->
+    <!-- CONTENU -->
 
     <main class="container">
 
@@ -223,7 +228,7 @@
             </div>
 
 
-            <h1>
+            <h1 class="title">
                 Connexion
             </h1>
 
@@ -233,6 +238,8 @@
             </p>
 
 
+
+            <!-- FORMULAIRE -->
 
             <form onsubmit="login(event)">
 
@@ -270,7 +277,10 @@
 
                     <div class="forgot">
 
-                        <a href="#" onclick="forgotPassword(event)">
+                        <a
+                            href="#"
+                            onclick="forgotPassword(event)"
+                        >
                             Mot de passe oublié ?
                         </a>
 
@@ -295,6 +305,8 @@
 
 
 
+            <!-- CREER UN COMPTE -->
+
             <div class="register">
 
                 Vous n'avez pas encore de compte ?
@@ -306,6 +318,8 @@
             </div>
 
 
+
+            <!-- RETOUR -->
 
             <a href="index.html" class="back">
 
@@ -328,7 +342,7 @@
 
 
 
-    <!-- CONNEXION -->
+    <!-- CONNEXION SUPABASE -->
 
     <script>
 
@@ -356,7 +370,6 @@
 
             try {
 
-
                 const { data, error } =
                     await supabaseClient.auth.signInWithPassword({
 
@@ -367,10 +380,7 @@
                     });
 
 
-
                 if (error) {
-
-                    console.error(error);
 
                     alert(
                         "❌ Impossible de se connecter.\n\n" +
@@ -382,7 +392,6 @@
                 }
 
 
-
                 const user =
                     data.user;
 
@@ -391,33 +400,27 @@
                     user.user_metadata?.role;
 
 
-
                 alert(
                     "✅ Connexion réussie !\n\n" +
                     "Bienvenue sur Market Bouaké."
                 );
 
 
-
                 /
-                    Pour le moment nous renvoyons
-                    tout le monde vers l'accueil.
+                    Pour le moment :
 
-                    Plus tard :
+                    Acheteur → accueil
+                    Vendeur → accueil
+
+                    Plus tard nous créerons :
 
                     Acheteur → espace acheteur
                     Vendeur → espace vendeur
                     Administrateur → administration
-                */
+                /
 
 
                 if (role === "seller") {
-
-                    window.location.href = "index.html";
-
-                }
-
-                else if (role === "buyer") {
 
                     window.location.href = "index.html";
 
@@ -454,6 +457,8 @@
 
 
 
+        / MOT DE PASSE OUBLIE */
+
         async function forgotPassword(event) {
 
             event.preventDefault();
@@ -476,12 +481,15 @@
 
             const { error } =
                 await supabaseClient.auth.resetPasswordForEmail(
+
                     email,
+
                     {
                         redirectTo:
                             window.location.origin +
                             "/connexion.html"
                     }
+
                 );
 
 
