@@ -17,14 +17,12 @@
             box-sizing: border-box;
         }
 
-
         body {
             font-family: Arial, sans-serif;
             background: #f5f6f8;
             color: #222;
             min-height: 100vh;
         }
-
 
         /* HEADER /
 
@@ -34,7 +32,6 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
-
         .logo {
             font-size: 25px;
             font-weight: bold;
@@ -42,11 +39,9 @@
             color: #222;
         }
 
-
         .logo span {
             color: #f57c00;
         }
-
 
         / CONTENEUR /
 
@@ -55,7 +50,6 @@
             max-width: 700px;
             margin: 40px auto;
         }
-
 
         / CARTE /
 
@@ -66,19 +60,16 @@
             box-shadow: 0 3px 15px rgba(0,0,0,0.08);
         }
 
-
         .icon {
             text-align: center;
             font-size: 40px;
             margin-bottom: 10px;
         }
 
-
         .title {
             text-align: center;
             margin-bottom: 10px;
         }
-
 
         .subtitle {
             text-align: center;
@@ -86,13 +77,11 @@
             margin-bottom: 30px;
         }
 
-
         / FORMULAIRE /
 
         .form-group {
             margin-bottom: 18px;
         }
-
 
         label {
             display: block;
@@ -100,7 +89,6 @@
             margin-bottom: 7px;
             font-size: 14px;
         }
-
 
         input {
             width: 100%;
@@ -111,17 +99,14 @@
             font-size: 15px;
         }
 
-
         input:focus {
             border-color: #f57c00;
         }
-
 
         .forgot {
             text-align: right;
             margin-top: 8px;
         }
-
 
         .forgot a {
             color: #f57c00;
@@ -129,7 +114,6 @@
             font-size: 13px;
             font-weight: bold;
         }
-
 
         .button {
             width: 100%;
@@ -144,17 +128,14 @@
             margin-top: 10px;
         }
 
-
         .button:hover {
             background: #e56f00;
         }
-
 
         .button:disabled {
             opacity: 0.7;
             cursor: not-allowed;
         }
-
 
         / CREATION DE COMPTE /
 
@@ -164,13 +145,11 @@
             color: #777;
         }
 
-
         .register a {
             color: #f57c00;
             text-decoration: none;
             font-weight: bold;
         }
-
 
         / RETOUR /
 
@@ -182,7 +161,6 @@
             text-decoration: none;
             font-size: 14px;
         }
-
 
         / MOBILE /
 
@@ -198,22 +176,17 @@
 
 </head>
 
-
 <body>
-
 
     <!-- HEADER -->
 
     <header>
 
         <a href="index.html" class="logo">
-
             Market <span>Bouaké</span>
-
         </a>
 
     </header>
-
 
 
     <!-- CONTENU -->
@@ -222,27 +195,22 @@
 
         <div class="card">
 
-
             <div class="icon">
                 🔐
             </div>
 
-
             <h1 class="title">
                 Connexion
             </h1>
-
 
             <p class="subtitle">
                 Connectez-vous à votre compte Market Bouaké.
             </p>
 
 
-
-            <!-- FORMULAIRE -->
+            <!-- FORMULAIRE DE CONNEXION -->
 
             <form onsubmit="login(event)">
-
 
                 <div class="form-group">
 
@@ -260,7 +228,6 @@
                 </div>
 
 
-
                 <div class="form-group">
 
                     <label for="password">
@@ -273,7 +240,6 @@
                         placeholder="Votre mot de passe"
                         required
                     >
-
 
                     <div class="forgot">
 
@@ -289,23 +255,18 @@
                 </div>
 
 
-
                 <button
                     type="submit"
                     class="button"
                     id="loginButton"
                 >
-
                     Se connecter
-
                 </button>
-
 
             </form>
 
 
-
-            <!-- CREER UN COMPTE -->
+            <!-- CREATION DE COMPTE -->
 
             <div class="register">
 
@@ -318,20 +279,15 @@
             </div>
 
 
-
             <!-- RETOUR -->
 
             <a href="index.html" class="back">
-
                 ← Retour à Market Bouaké
-
             </a>
-
 
         </div>
 
     </main>
-
 
 
     <!-- SUPABASE -->
@@ -341,8 +297,7 @@
     <script src="supabase-config.js"></script>
 
 
-
-    <!-- CONNEXION SUPABASE -->
+    <!-- CONNEXION REELLE -->
 
     <script>
 
@@ -350,21 +305,16 @@
 
             event.preventDefault();
 
-
             const email =
                 document.getElementById("email").value.trim();
-
 
             const password =
                 document.getElementById("password").value;
 
-
             const button =
                 document.getElementById("loginButton");
 
-
             button.disabled = true;
-
             button.textContent = "Connexion...";
 
 
@@ -392,60 +342,24 @@
                 }
 
 
-                const user =
-                    data.user;
-
-
-                const role =
-                    user.user_metadata?.role;
-
-
                 alert(
                     "✅ Connexion réussie !\n\n" +
                     "Bienvenue sur Market Bouaké."
                 );
 
 
-                /
-                    Pour le moment :
-
-                    Acheteur → accueil
-                    Vendeur → accueil
-
-                    Plus tard nous créerons :
-
-                    Acheteur → espace acheteur
-                    Vendeur → espace vendeur
-                    Administrateur → administration
-                /
+                window.location.href = "index.html";
 
 
-                if (role === "seller") {
-
-                    window.location.href = "index.html";
-
-                }
-
-                else {
-
-                    window.location.href = "index.html";
-
-                }
-
-
-            }
-
-            catch (error) {
+            } catch (error) {
 
                 console.error(error);
 
                 alert(
-                    "Une erreur inattendue est survenue."
+                    "❌ Une erreur inattendue est survenue."
                 );
 
-            }
-
-            finally {
+            } finally {
 
                 button.disabled = false;
 
@@ -456,13 +370,11 @@
         }
 
 
-
         / MOT DE PASSE OUBLIE */
 
         async function forgotPassword(event) {
 
             event.preventDefault();
-
 
             const email =
                 document.getElementById("email").value.trim();
@@ -479,40 +391,52 @@
             }
 
 
-            const { error } =
-                await supabaseClient.auth.resetPasswordForEmail(
+            try {
 
-                    email,
+                const { error } =
+                    await supabaseClient.auth.resetPasswordForEmail(
 
-                    {
-                        redirectTo:
-                            window.location.origin +
-                            "/connexion.html"
-                    }
+                        email,
 
-                );
+                        {
+                            redirectTo:
+                                window.location.origin +
+                                "/connexion.html"
+                        }
+
+                    );
 
 
-            if (error) {
+                if (error) {
+
+                    alert(
+                        "❌ Erreur : " +
+                        error.message
+                    );
+
+                    return;
+
+                }
+
 
                 alert(
-                    "Erreur : " +
-                    error.message
+                    "📧 Un lien de réinitialisation a été envoyé à votre adresse email."
                 );
 
-                return;
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "❌ Une erreur inattendue est survenue."
+                );
 
             }
-
-
-            alert(
-                "📧 Un lien de réinitialisation a été envoyé à votre adresse email."
-            );
 
         }
 
     </script>
-
 
 </body>
 
