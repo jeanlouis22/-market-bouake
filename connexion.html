@@ -487,16 +487,16 @@
 
                     if (error) {
 
-                        console.error(error);
+    console.error("Erreur réelle Supabase :", error);
 
-                        showMessage(
-                            "❌ Email ou mot de passe incorrect. Vérifiez vos informations puis réessayez.",
-                            "error"
-                        );
+    showMessage(
+        "❌ " + error.message,
+        "error"
+    );
 
-                        return;
+    return;
 
-                    }
+}
 
 
                     if (!data || !data.user) {
