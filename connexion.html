@@ -515,16 +515,126 @@
                         "success"
                     );
 
+setTimeout(
 
-                    setTimeout(
-                        function () {
+    async function () {
 
-                            window.location.href =
-                                "index.html";
+        try {
 
-                        },
-                        1000
-                    );
+            const {
+
+                data: profile,
+
+                error: profileError
+
+            } = await supabaseClient
+
+                .from("profiles")
+
+                .select("role")
+
+                .eq("id", data.user.id)
+
+                .maybeSingle();
+
+            if (profileError) {
+
+                console.error(
+
+                    "Erreur récupération du rôle :",
+
+                    profileError
+
+                );
+
+                window.location.href = "index.html";
+
+                return;
+
+            }
+
+            /* ===== ADMIN ===== */
+
+            if (
+
+                profile &&
+
+                profile.role === "admin"
+
+            ) {
+
+                window.location.href =
+
+                    "admin.html";
+
+                return;
+
+            }
+
+            /* ===== VENDEUR ===== */
+
+            if (
+
+                profile &&
+
+                profile.role === "seller"
+
+            ) {
+
+                window.location.href =
+
+                    "vendeur.html";
+
+                return;
+
+            }
+
+            /* ===== ACHETEUR ===== */
+
+            if (
+
+                profile &&
+
+                profile.role === "buyer"
+
+            ) {
+
+                window.location.href =
+
+                    "compte.html";
+
+                return;
+
+            }
+
+            /* ===== SI AUCUN RÔLE ===== */
+
+            window.location.href =
+
+                "index.html";
+
+        } catch (error) {
+
+            console.error(
+
+                "Erreur redirection :",
+
+                error
+
+            );
+
+            window.location.href =
+
+                "index.html";
+
+        }
+
+    },
+
+    1000
+
+);
+                    
 
 
                 } catch (error) {
