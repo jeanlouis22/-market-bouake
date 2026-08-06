@@ -4,7 +4,6 @@
 <head>
 
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Market Bouaké | Achetez et vendez à Bouaké</title>
@@ -23,7 +22,9 @@
             color: #222;
         }
 
-        /* ===== HEADER ===== /
+        /* =========================
+           HEADER
+        ========================= */
 
         header {
             background: white;
@@ -31,7 +32,7 @@
             display: flex;
             align-items: center;
             gap: 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -46,6 +47,10 @@
         .logo span {
             color: #f57c00;
         }
+
+        /* =========================
+           RECHERCHE
+        ========================= */
 
         .search {
             flex: 1;
@@ -63,6 +68,10 @@
             font-size: 15px;
         }
 
+        .search input:focus {
+            border-color: #f57c00;
+        }
+
         .search button {
             border: none;
             background: #f57c00;
@@ -72,6 +81,10 @@
             cursor: pointer;
             font-size: 16px;
         }
+
+        /* =========================
+           MENU
+        ========================= */
 
         .menu {
             display: flex;
@@ -95,7 +108,7 @@
 
         #userMenu {
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .inscription {
@@ -128,12 +141,18 @@
             font-weight: bold;
         }
 
+        .logout:hover {
+            background: #ddd;
+        }
+
         .cart {
             font-size: 23px;
             text-decoration: none;
         }
 
-        / ===== HERO ===== /
+        /* =========================
+           HERO
+        ========================= */
 
         .hero {
             background: linear-gradient(135deg, #fff3e0, #ffffff);
@@ -181,7 +200,9 @@
             border: 1px solid #f57c00;
         }
 
-        / ===== SECTIONS ===== /
+        /* =========================
+           SECTIONS
+        ========================= */
 
         .section {
             padding: 40px 5%;
@@ -204,7 +225,9 @@
             font-weight: bold;
         }
 
-        / ===== CATEGORIES ===== /
+        /* =========================
+           CATEGORIES
+        ========================= */
 
         .categories {
             display: grid;
@@ -217,7 +240,7 @@
             padding: 25px 10px;
             text-align: center;
             border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
             cursor: pointer;
             transition: 0.2s;
         }
@@ -235,7 +258,9 @@
             font-weight: bold;
         }
 
-        / ===== PRODUCTS ===== /
+        /* =========================
+           PRODUITS
+        ========================= */
 
         .products {
             display: grid;
@@ -247,7 +272,7 @@
             background: white;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
         }
 
         .product-image {
@@ -292,7 +317,9 @@
             font-weight: bold;
         }
 
-        / ===== FOOTER ===== /
+        /* =========================
+           FOOTER
+        ========================= */
 
         footer {
             background: #202124;
@@ -309,9 +336,12 @@
         footer p {
             color: #ccc;
             font-size: 14px;
+            margin-top: 5px;
         }
 
-        / ===== MOBILE ===== /
+        /* =========================
+           MOBILE
+        ========================= */
 
         @media (max-width: 800px) {
 
@@ -339,6 +369,7 @@
 
             #guestMenu {
                 justify-content: center;
+                flex-wrap: wrap;
             }
 
             #userMenu {
@@ -361,7 +392,6 @@
             .products {
                 grid-template-columns: repeat(2, 1fr);
             }
-
         }
 
         @media (max-width: 450px) {
@@ -397,9 +427,13 @@
 
 </head>
 
+
 <body>
 
-    <!-- HEADER -->
+
+    <!-- =========================
+         HEADER
+    ========================= -->
 
     <header>
 
@@ -407,22 +441,29 @@
             Market <span>Bouaké</span>
         </div>
 
+
         <div class="search">
 
             <input
                 type="text"
+                id="searchInput"
                 placeholder="Rechercher un produit..."
             >
 
-            <button>
+            <button
+                type="button"
+                id="searchButton"
+            >
                 🔍
             </button>
 
         </div>
 
+
         <nav class="menu">
 
-            <!-- NON CONNECTÉ -->
+
+            <!-- VISITEUR -->
 
             <div id="guestMenu">
 
@@ -440,11 +481,11 @@
             </div>
 
 
-            <!-- CONNECTÉ -->
+            <!-- UTILISATEUR CONNECTÉ -->
 
             <div
                 id="userMenu"
-                style="display:none;"
+                style="display: none;"
             >
 
                 <a
@@ -454,16 +495,19 @@
                     👤 Mon compte
                 </a>
 
+
                 <a
                     href="vendeur.html"
                     class="seller-space"
                     id="sellerSpace"
-                    style="display:none;"
+                    style="display: none;"
                 >
                     🏪 Espace vendeur
                 </a>
 
+
                 <button
+                    type="button"
                     id="logoutButton"
                     class="logout"
                 >
@@ -473,9 +517,12 @@
             </div>
 
 
+            <!-- PANIER -->
+
             <a
                 href="panier.html"
                 class="cart"
+                aria-label="Panier"
             >
                 🛒
             </a>
@@ -485,7 +532,9 @@
     </header>
 
 
-    <!-- HERO -->
+    <!-- =========================
+         HERO
+    ========================= -->
 
     <section class="hero">
 
@@ -498,6 +547,7 @@
             Achetez et vendez facilement vos produits à Bouaké.
         </p>
 
+
         <div class="hero-buttons">
 
             <a
@@ -506,6 +556,7 @@
             >
                 🛍️ Voir les produits
             </a>
+
 
             <a
                 href="inscription.html"
@@ -519,13 +570,20 @@
     </section>
 
 
-    <!-- CATEGORIES -->
+    <!-- =========================
+         CATEGORIES
+    ========================= -->
 
     <section class="section">
 
         <div class="section-title">
-            <h2>Catégories</h2>
+
+            <h2>
+                Catégories
+            </h2>
+
         </div>
+
 
         <div class="categories">
 
@@ -574,7 +632,9 @@
     </section>
 
 
-    <!-- PRODUITS -->
+    <!-- =========================
+         PRODUITS
+    ========================= -->
 
     <section
         class="section"
@@ -596,6 +656,7 @@
 
         <div class="products">
 
+
             <div class="product">
 
                 <div class="product-image">
@@ -604,7 +665,9 @@
 
                 <div class="product-info">
 
-                    <h3>Smartphone</h3>
+                    <h3>
+                        Smartphone
+                    </h3>
 
                     <p class="price">
                         75 000 FCFA
@@ -634,7 +697,9 @@
 
                 <div class="product-info">
 
-                    <h3>Chaussures homme</h3>
+                    <h3>
+                        Chaussures homme
+                    </h3>
 
                     <p class="price">
                         15 000 FCFA
@@ -664,7 +729,9 @@
 
                 <div class="product-info">
 
-                    <h3>T-shirt moderne</h3>
+                    <h3>
+                        T-shirt moderne
+                    </h3>
 
                     <p class="price">
                         7 000 FCFA
@@ -694,7 +761,9 @@
 
                 <div class="product-info">
 
-                    <h3>Sac à dos</h3>
+                    <h3>
+                        Sac à dos
+                    </h3>
 
                     <p class="price">
                         12 000 FCFA
@@ -715,16 +784,21 @@
 
             </div>
 
+
         </div>
 
     </section>
 
 
-    <!-- FOOTER -->
+    <!-- =========================
+         FOOTER
+    ========================= -->
 
     <footer>
 
-        <h3>Market Bouaké</h3>
+        <h3>
+            Market Bouaké
+        </h3>
 
         <p>
             Achetez local, vendez local.
@@ -737,7 +811,9 @@
     </footer>
 
 
-    <!-- SUPABASE -->
+    <!-- =========================
+         SUPABASE
+    ========================= -->
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -745,6 +821,10 @@
 
 
     <script>
+
+        /* =========================
+           ELEMENTS
+        ========================= */
 
         const guestMenu =
             document.getElementById("guestMenu");
@@ -758,6 +838,10 @@
         const logoutButton =
             document.getElementById("logoutButton");
 
+
+        /* =========================
+           VERIFIER UTILISATEUR
+        ========================= */
 
         async function checkUser() {
 
@@ -776,16 +860,31 @@
                 }
 
 
-                / ===== VÉRIFIER LA SESSION ===== /
-
                 const {
-                    data: {
-                        user
-                    }
-                } = await supabaseClient.auth.getUser();
+                    data,
+                    error
+                } =
+                    await supabaseClient.auth.getUser();
 
 
-                / ===== PERSONNE NON CONNECTÉE ===== /
+                if (error) {
+
+                    console.error(
+                        "Erreur Supabase :",
+                        error
+                    );
+
+                }
+
+
+                const user = data
+                    ? data.user
+                    : null;
+
+
+                /* =========================
+                   PERSONNE NON CONNECTÉE
+                ========================= */
 
                 if (!user) {
 
@@ -798,7 +897,9 @@
                 }
 
 
-                / ===== UTILISATEUR CONNECTÉ ===== /
+                /* =========================
+                   UTILISATEUR CONNECTÉ
+                ========================= */
 
                 guestMenu.style.display = "none";
 
@@ -811,55 +912,47 @@
                 );
 
 
-                / ===== RÉCUPÉRER LE RÔLE ===== /
+                /* =========================
+                   RECUPERER LE ROLE
+                ========================= */
 
                 const {
                     data: profile,
-                    error
-                } = await supabaseClient
-                    .from("users")
-                    .select("role")
-                    .eq("id", user.id)
-                    .maybeSingle();
+                    error: profileError
+                } =
+                    await supabaseClient
+                        .from("users")
+                        .select("role")
+                        .eq("id", user.id)
+                        .maybeSingle();
+
+
+                if (profileError) {
+
+                    console.error(
+                        "Erreur récupération du profil :",
+                        profileError
+                    );
+
+                    return;
+
+                }
 
 
                 console.log(
-                    "Profil :",
+                    "Profil utilisateur :",
                     profile
                 );
 
-                console.log(
-                    "Erreur profil :",
-                    error
-                );
 
+                /* =========================
+                   ADMIN
+                ========================= */
 
-                if (error) {
-
-                    console.error(
-                        "Erreur récupération profil :",
-                        error
-                    );
-
-                    return;
-
-                }
-
-
-                if (!profile) {
-
-                    console.warn(
-                        "Aucun profil trouvé pour cet utilisateur."
-                    );
-
-                    return;
-
-                }
-
-
-                / ===== ADMIN ===== /
-
-                if (profile.role === "admin") {
+                if (
+                    profile &&
+                    profile.role === "admin"
+                ) {
 
                     window.location.href =
                         "admin.html";
@@ -869,9 +962,14 @@
                 }
 
 
-                / ===== VENDEUR ===== /
+                /* =========================
+                   VENDEUR
+                ========================= */
 
-                if (profile.role === "seller") {
+                if (
+                    profile &&
+                    profile.role === "seller"
+                ) {
 
                     sellerSpace.style.display =
                         "inline-block";
@@ -879,20 +977,24 @@
                 }
 
 
-                / ===== ACHETEUR ===== /
+                /* =========================
+                   ACHETEUR
+                ========================= */
 
-                if (profile.role === "buyer") {
+                if (
+                    profile &&
+                    profile.role === "buyer"
+                ) {
 
-                    console.log(
-                        "Utilisateur acheteur connecté."
-                    );
+                    sellerSpace.style.display =
+                        "none";
 
                 }
 
             } catch (error) {
 
                 console.error(
-                    "Erreur vérification utilisateur :",
+                    "Erreur lors de la vérification :",
                     error
                 );
 
@@ -901,7 +1003,9 @@
         }
 
 
-        / ===== DÉCONNEXION ===== /
+        /* =========================
+           DECONNEXION
+        ========================= */
 
         logoutButton.addEventListener(
             "click",
@@ -909,10 +1013,27 @@
 
                 try {
 
-                    await supabaseClient.auth.signOut();
+                    const {
+                        error
+                    } =
+                        await supabaseClient.auth.signOut();
+
+
+                    if (error) {
+
+                        console.error(
+                            "Erreur déconnexion :",
+                            error
+                        );
+
+                        return;
+
+                    }
+
 
                     window.location.href =
                         "index.html";
+
 
                 } catch (error) {
 
@@ -927,11 +1048,14 @@
         );
 
 
-        / ===== LANCER LA VÉRIFICATION ===== */
+        /* =========================
+           LANCER LA VERIFICATION
+        ========================= */
 
         checkUser();
 
     </script>
+
 
 </body>
 
