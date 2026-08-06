@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ajouter un produit | Market Bouaké</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f6f8;
+            color: #222;
+            min-height: 100vh;
+        }
+
+        header {
+            background: white;
+            padding: 18px 5%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #222;
+        }
+
+        .logo span {
+            color: #f57c00;
+        }
+
+        .logout {
+            border: none;
+            background: #222;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 94%;
+            max-width: 800px;
+            margin: 35px auto;
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            font-family: Arial, sans-serif;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .photos {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .photo-box {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .photo-box input {
+            border: none;
+            padding: 5px;
+        }
+
+        .photo-label {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .message {
+            display: none;
+            padding: 13px;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+
+        .message.error {
+            display: block;
+            background: #fff1f1;
+            color: #b00020;
+        }
+
+        .message.success {
+            display: block;
+            background: #effaf1;
+            color: #187333;
+        }
+
+        .publish {
+            width: 100%;
+            border: none;
+            background: #f57c00;
+            color: white;
+            padding: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .publish:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: #f57c00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .preview {
+            display: none;
+            width: 100%;
+            max-height: 180px;
+            object-fit: cover;
+            border-radius: 7px;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 650px) {
+            .row {
+                grid-template-columns: 1fr;
+            }
+
+            .photos {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <a href="index.html" class="logo">
+        Market <span>Bouaké</span>
+    </a>
+
+    <button class="logout" id="logoutButton">
+        Se déconnecter
+    </button>
+
+</header>
+
+<main class="container">
+
+    <h1 class="title">🛍️ Ajouter un produit</h1>
+
+    <p class="subtitle">
+        Publiez votre produit sur Market Bouaké
+    </p>
+
+    <div id="message" class="message"></div>
+
+    <div class="card">
+
+        <form id="productForm">
+
+            <div class="field">
+
+                <label for="name">
+                    Nom du produit *
+                </label>
+
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Ex : T-shirt homme"
+                    required
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label for="description">
+                    Description
+                </label>
+
+                <textarea
+                    id="description"
+                    placeholder="Décrivez votre produit..."
+                ></textarea>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="field">
+
+                    <label for="category">
+                        Catégorie *
+                    </label>
+
+                    <select id="category" required>
+
+                        <option value="">
+                            Choisir une catégorie
+                        </option>
+
+                        <option value="Mode">
+                            Mode
+                        </option>
+
+                        <option value="Chaussures">
+                            Chaussures
+                        </option>
+
+                        <option value="Téléphones">
+                            Téléphones
+                        </option>
+
+                        <option value="Électronique">
+                            Électronique
+                        </option>
+
+                        <option value="Maison">
+                            Maison
+                        </option>
+
+                        <option value="Beauté">
+                            Beauté
+                        </option>
+
+                        <option value="Alimentation">
+                            Alimentation
+                        </option>
+
+                        <option value="Autres">
+                            Autres
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="price">
+                        Prix (FCFA) *
+                    </label>
+
+                    <input
+                        type="number"
+                        id="price"
+                        min="0"
+                        step="1"
+                        placeholder="Ex : 15000"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="field">
+
+                <label for="sizes">
+                    Taille / modèle
+                </label>
+
+                <input
+                    type="text"
+                    id="sizes"
+                    placeholder="Ex : S, M, L, XL"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    📸 Photos du produit
+                </label>
+
+                <div class="photos">
+
+                    <div class="photo-box">
+
+                        <div class="photo-label">
+                            Photo 1 *
+                        </div>
+
+                        <input
+                            type="file"
+                            id="image1"
+                            accept="image/*"
+                            required
+                        >
+
+                        <img
+                            id="preview1"
+                            class="preview"
+                            alt="Aperçu"
+                        >
+
+                    </div>
+
+
+                    <div class="photo-box">
+
+                        <div class="photo-label">
+                            Photo 2
+                        </div>
+
+                        <input
+                            type="file"
+                            id="image2"
+                            accept="image/*"
+                        >
+
+                        <img
+                            id="preview2"
+                            class="preview"
+                            alt="Aperçu"
+                        >
+
+                    </div>
+
+
+                    <div class="photo-box">
+
+                        <div class="photo-label">
+                            Photo 3
+                        </div>
+
+                        <input
+                            type="file"
+                            id="image3"
+                            accept="image/*"
+                        >
+
+                        <img
+                            id="preview3"
+                            class="preview"
+                            alt="Aperçu"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="publish"
+                id="publishButton"
+            >
+                🚀 Publier le produit
+            </button>
+
+        </form>
+
+        <a href="index.html" class="back">
+            ← Retour à Market Bouaké
+        </a>
+
+    </div>
+
+</main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-config.js"></script>
+
+
+<script>
+
+const productForm =
+    document.getElementById("productForm");
+
+const message =
+    document.getElementById("message");
+
+const publishButton =
+    document.getElementById("publishButton");
+
+const logoutButton =
+    document.getElementById("logoutButton");
+
+
+function showMessage(text, type) {
+
+    message.textContent = text;
+
+    message.className =
+        "message " + type;
+
+}
+
+
+function clearMessage() {
+
+    message.textContent = "";
+
+    message.className = "message";
+
+}
+
+
+async function getCurrentUser() {
+
+    const {
+        data,
+        error
+    } = await supabaseClient.auth.getUser();
+
+
+    if (error) {
+
+        console.error(error);
+
+        return null;
+
+    }
+
+
+    return data.user;
+
+}
+
+
+async function checkSeller() {
+
+    const user =
+        await getCurrentUser();
+
+
+    if (!user) {
+
+        window.location.href =
+            "connexion.html";
+
+        return null;
+
+    }
+
+
+    const role =
+        user.user_metadata?.role;
+
+
+    console.log(
+        "Utilisateur :",
+        user.email
+    );
+
+    console.log(
+        "Rôle :",
+        role
+    );
+
+
+    if (role !== "seller") {
+
+        showMessage(
+            "Cette page est réservée aux vendeurs.",
+            "error"
+        );
+
+        productForm.style.display =
+            "none";
+
+        return null;
+
+    }
+
+
+    return user;
+
+}
+
+
+function previewImage(input, previewId) {
+
+    const file =
+        input.files[0];
+
+    const preview =
+        document.getElementById(previewId);
+
+
+    if (!file) {
+
+        preview.style.display =
+            "none";
+
+        return;
+
+    }
+
+
+    if (!file.type.startsWith("image/")) {
+
+        showMessage(
+            "Veuillez sélectionner une image.",
+            "error"
+        );
+
+        input.value = "";
+
+        preview.style.display =
+            "none";
+
+        return;
+
+    }
+
+
+    if (file.size > 5 * 1024 * 1024) {
+
+        showMessage(
+            "Chaque image doit faire moins de 5 MB.",
+            "error"
+        );
+
+        input.value = "";
+
+        preview.style.display =
+            "none";
+
+        return;
+
+    }
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload =
+        function(event) {
+
+            preview.src =
+                event.target.result;
+
+            preview.style.display =
+                "block";
+
+        };
+
+
+    reader.readAsDataURL(file);
+
+}
+
+
+document
+    .getElementById("image1")
+    .addEventListener(
+        "change",
+        function() {
+
+            previewImage(
+                this,
+                "preview1"
+            );
+
+        }
+    );
+
+
+document
+    .getElementById("image2")
+    .addEventListener(
+        "change",
+        function() {
+
+            previewImage(
+                this,
+                "preview2"
+            );
+
+        }
+    );
+
+
+document
+    .getElementById("image3")
+    .addEventListener(
+        "change",
+        function() {
+
+            previewImage(
+                this,
+                "preview3"
+            );
+
+        }
+    );
+
+
+async function uploadImage(
+    file,
+    userId,
+    index
+) {
+
+    if (!file) {
+        return null;
+    }
+
+
+    const extension =
+        file.name
+            .split(".")
+            .pop()
+            .toLowerCase();
+
+
+    const fileName =
+        Date.now() +
+        "-" +
+        index +
+        "-" +
+        Math.random()
+            .toString(36)
+            .substring(2) +
+        "." +
+        extension;
+
+
+    const filePath =
+        userId +
+        "/" +
+        fileName;
+
+
+    const {
+        error
+    } =
+        await supabaseClient
+            .storage
+            .from("product-images")
+            .upload(
+                filePath,
+                file,
+                {
+                    cacheControl: "3600",
+                    upsert: false
+                }
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Erreur upload :",
+            error
+        );
+
+        throw new Error(
+            "Impossible d'envoyer une photo : " +
+            error.message
+        );
+
+    }
+
+
+    const {
+        data
+    } =
+        supabaseClient
+            .storage
+            .from("product-images")
+            .getPublicUrl(filePath);
+
+
+    return data.publicUrl;
+
+}
+
+
+productForm.addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+        clearMessage();
+
+
+        publishButton.disabled =
+            true;
+
+        publishButton.textContent =
+            "⏳ Publication en cours...";
+
+
+        try {
+
+            const user =
+                await checkSeller();
+
+
+            if (!user) {
+
+                return;
+
+            }
+
+
+            const name =
+                document
+                    .getElementById("name")
+                    .value
+                    .trim();
+
+
+            const description =
+                document
+                    .getElementById("description")
+                    .value
+                    .trim();
+
+
+            const category =
+                document
+                    .getElementById("category")
+                    .value;
+
+
+            const price =
+                Number(
+                    document
+                        .getElementById("price")
+                        .value
+                );
+
+
+            const sizes =
+                document
+                    .getElementById("sizes")
+                    .value
+                    .trim();
+
+
+            const image1 =
+                document
+                    .getElementById("image1")
+                    .files[0];
+
+
+            const image2 =
+                document
+                    .getElementById("image2")
+                    .files[0];
+
+
+            const image3 =
+                document
+                    .getElementById("image3")
+                    .files[0];
+
+
+            if (!name) {
+
+                throw new Error(
+                    "Le nom du produit est obligatoire."
+                );
+
+            }
+
+
+            if (!category) {
+
+                throw new Error(
+                    "Veuillez choisir une catégorie."
+                );
+
+            }
+
+
+            if (!price || price <= 0) {
+
+                throw new Error(
+                    "Veuillez entrer un prix valide."
+                );
+
+            }
+
+
+            if (!image1) {
+
+                throw new Error(
+                    "La première photo est obligatoire."
+                );
+
+            }
+
+
+            publishButton.textContent =
+                "📸 Envoi des photos...";
+
+
+            const imageUrl1 =
+                await uploadImage(
+                    image1,
+                    user.id,
+                    1
+                );
+
+
+            const imageUrl2 =
+                await uploadImage(
+                    image2,
+                    user.id,
+                    2
+                );
+
+
+            const imageUrl3 =
+                await uploadImage(
+                    image3,
+                    user.id,
+                    3
+                );
+
+
+            publishButton.textContent =
+                "🛍️ Publication du produit...";
+
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("products")
+                    .insert({
+
+                        seller_id:
+                            user.id,
+
+                        name:
+                            name,
+
+                        description:
+                            description || null,
+
+                        category:
+                            category,
+
+                        price:
+                            price,
+
+                        sizes:
+                            sizes || null,
+
+                        image_1:
+                            imageUrl1,
+
+                        image_2:
+                            imageUrl2,
+
+                        image_3:
+                            imageUrl3,
+
+                        status:
+                            "published"
+
+                    });
+
+
+            if (error) {
+
+                console.error(
+                    "Erreur produit :",
+                    error
+                );
+
+                throw new Error(
+                    "Impossible de publier le produit : " +
+                    error.message
+                );
+
+            }
+
+
+            showMessage(
+                "✅ Produit publié avec succès !",
+                "success"
+            );
+
+
+            productForm.reset();
+
+
+            document
+                .querySelectorAll(".preview")
+                .forEach(
+                    function(preview) {
+
+                        preview.style.display =
+                            "none";
+
+                    }
+                );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            showMessage(
+                "❌ " + error.message,
+                "error"
+            );
+
+        } finally {
+
+            publishButton.disabled =
+                false;
+
+            publishButton.textContent =
+                "🚀 Publier le produit";
+
+        }
+
+    }
+);
+
+
+logoutButton.addEventListener(
+    "click",
+    async function() {
+
+        await supabaseClient
+            .auth
+            .signOut();
+
+        window.location.href =
+            "connexion.html";
+
+    }
+);
+
+
+checkSeller();
+
+</script>
+
+</body>
+
+</html>
