@@ -540,17 +540,49 @@
         }
 
 
-        /*
-         * Le rôle admin que nous avons configuré
-         * se trouve dans user_metadata.
-         */
+      const {
 
-        const role = user.user_metadata?.role;
+    data: profile,
 
+    error: profileError
 
-        console.log("Utilisateur connecté :", user.email);
-        console.log("Rôle détecté :", role);
+} = await supabaseClient
 
+    .from("profiles")
+
+    .select("role")
+
+    .eq("id", user.id)
+
+    .maybeSingle();
+
+if (profileError) {
+
+    console.error(
+
+        "Erreur récupération du profil :",
+
+        profileError
+
+    );
+
+    showMessage(
+
+        "Impossible de vérifier votre rôle.",
+
+        "error"
+
+    );
+
+    return false;
+
+}
+
+const role = profile ? profile.role : null;
+
+console.log("Utilisateur connecté :", user.email);
+
+console.log("Rôle détecté :", role);
 
         if (role !== "admin") {
 
