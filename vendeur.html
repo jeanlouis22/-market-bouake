@@ -1,1 +1,597 @@
+<!DOCTYPE html>
 
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Espace vendeur | Market Bouaké</title>
+
+    <style>
+
+        * {
+
+            margin: 0;
+
+            padding: 0;
+
+            box-sizing: border-box;
+
+        }
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            background: #f5f6f8;
+
+            color: #222;
+
+            min-height: 100vh;
+
+        }
+
+        header {
+
+            background: white;
+
+            padding: 18px 5%;
+
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+        }
+
+        .logo {
+
+            font-size: 25px;
+
+            font-weight: bold;
+
+            text-decoration: none;
+
+            color: #222;
+
+        }
+
+        .logo span {
+
+            color: #f57c00;
+
+        }
+
+        .logout {
+
+            border: none;
+
+            background: #222;
+
+            color: white;
+
+            padding: 10px 16px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+        }
+
+        .logout:hover {
+
+            background: #444;
+
+        }
+
+        .container {
+
+            width: 95%;
+
+            max-width: 1100px;
+
+            margin: 35px auto;
+
+        }
+
+        .welcome {
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 12px;
+
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+
+            margin-bottom: 25px;
+
+        }
+
+        .welcome h1 {
+
+            margin-bottom: 10px;
+
+        }
+
+        .welcome p {
+
+            color: #777;
+
+            line-height: 1.5;
+
+        }
+
+        .cards {
+
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 18px;
+
+        }
+
+        .card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+
+        }
+
+        .card-icon {
+
+            font-size: 35px;
+
+            margin-bottom: 15px;
+
+        }
+
+        .card h2 {
+
+            font-size: 19px;
+
+            margin-bottom: 10px;
+
+        }
+
+        .card p {
+
+            color: #777;
+
+            line-height: 1.5;
+
+            margin-bottom: 18px;
+
+            font-size: 14px;
+
+        }
+
+        .button {
+
+            display: inline-block;
+
+            text-decoration: none;
+
+            border: none;
+
+            background: #f57c00;
+
+            color: white;
+
+            padding: 11px 16px;
+
+            border-radius: 7px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+        .button:hover {
+
+            background: #e56f00;
+
+        }
+
+        .message {
+
+            display: none;
+
+            margin-bottom: 20px;
+
+            padding: 13px;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+        }
+
+        .message.error {
+
+            display: block;
+
+            background: #fff1f1;
+
+            color: #b00020;
+
+            border: 1px solid #f0b5b5;
+
+        }
+
+        @media (max-width: 750px) {
+
+            header {
+
+                padding: 15px 4%;
+
+            }
+
+            .logo {
+
+                font-size: 21px;
+
+            }
+
+            .container {
+
+                width: 94%;
+
+                margin: 25px auto;
+
+            }
+
+            .cards {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .welcome {
+
+                padding: 22px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <a href="index.html" class="logo">
+
+            Market <span>Bouaké</span>
+
+        </a>
+
+        <button
+
+            class="logout"
+
+            id="logoutButton"
+
+        >
+
+            Se déconnecter
+
+        </button>
+
+    </header>
+
+    <main class="container">
+
+        <div
+
+            id="message"
+
+            class="message"
+
+        ></div>
+
+        <section class="welcome">
+
+            <h1>
+
+                🏪 Espace vendeur
+
+            </h1>
+
+            <p id="welcomeText">
+
+                Bienvenue dans votre espace vendeur Market Bouaké.
+
+            </p>
+
+        </section>
+
+        <section class="cards">
+
+            <div class="card">
+
+                <div class="card-icon">
+
+                    ➕
+
+                </div>
+
+                <h2>
+
+                    Ajouter un produit
+
+                </h2>
+
+                <p>
+
+                    Publiez un nouvel article dans votre boutique.
+
+                </p>
+
+                <a
+
+                    href="ajouter-produit.html"
+
+                    class="button"
+
+                >
+
+                    Ajouter un produit
+
+                </a>
+
+            </div>
+
+            <div class="card">
+
+                <div class="card-icon">
+
+                    📦
+
+                </div>
+
+                <h2>
+
+                    Mes produits
+
+                </h2>
+
+                <p>
+
+                    Consultez et gérez les produits de votre boutique.
+
+                </p>
+
+                <button
+
+                    class="button"
+
+                    type="button"
+
+                    onclick="alert('La gestion de vos produits sera ajoutée à l’étape suivante.')"
+
+                >
+
+                    Mes produits
+
+                </button>
+
+            </div>
+
+            <div class="card">
+
+                <div class="card-icon">
+
+                    👤
+
+                </div>
+
+                <h2>
+
+                    Ma boutique
+
+                </h2>
+
+                <p>
+
+                    Gérez les informations de votre boutique vendeur.
+
+                </p>
+
+                <button
+
+                    class="button"
+
+                    type="button"
+
+                    onclick="alert('La gestion de votre boutique sera ajoutée plus tard.')"
+
+                >
+
+                    Ma boutique
+
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="supabase-config.js"></script>
+
+    <script>
+
+        const message =
+
+            document.getElementById("message");
+
+        const welcomeText =
+
+            document.getElementById("welcomeText");
+
+        const logoutButton =
+
+            document.getElementById("logoutButton");
+
+        function showMessage(text) {
+
+            message.textContent = text;
+
+            message.className =
+
+                "message error";
+
+        }
+
+        async function checkSeller() {
+
+            try {
+
+                const {
+
+                    data: {
+
+                        user
+
+                    },
+
+                    error
+
+                } = await supabaseClient.auth.getUser();
+
+                if (error) {
+
+                    console.error(error);
+
+                    showMessage(
+
+                        "Impossible de vérifier votre connexion."
+
+                    );
+
+                    return;
+
+                }
+
+                if (!user) {
+
+                    window.location.href =
+
+                        "connexion.html";
+
+                    return;
+
+                }
+
+                const {
+
+                    data: profile,
+
+                    error: profileError
+
+                } = await supabaseClient
+
+                    .from("profiles")
+
+                    .select("first_name, last_name, email, role")
+
+                    .eq("id", user.id)
+
+                    .maybeSingle();
+
+                if (profileError) {
+
+                    console.error(profileError);
+
+                    showMessage(
+
+                        "Impossible de récupérer votre profil."
+
+                    );
+
+                    return;
+
+                }
+
+                if (!profile || profile.role !== "seller") {
+
+                    window.location.href =
+
+                        "index.html";
+
+                    return;
+
+                }
+
+                const firstName =
+
+                    profile.first_name || "";
+
+                welcomeText.textContent =
+
+                    "Bienvenue " +
+
+                    firstName +
+
+                    " dans votre espace vendeur Market Bouaké.";
+
+            } catch (error) {
+
+                console.error(error);
+
+                showMessage(
+
+                    "Une erreur est survenue."
+
+                );
+
+            }
+
+        }
+
+        logoutButton.addEventListener(
+
+            "click",
+
+            async function () {
+
+                await supabaseClient.auth.signOut();
+
+                window.location.href =
+
+                    "connexion.html";
+
+            }
+
+        );
+
+        checkSeller();
+
+    </script>
+
+</body>
+
+</html>
