@@ -462,523 +462,554 @@
     <script src="supabase-config.js"></script>
 
 
-    <script>
+ <script>
 
-        const requestsList =
-            document.getElementById("requestsList");
+    const requestsList = document.getElementById("requestsList");
+    const message = document.getElementById("message");
 
-        const message =
-            document.getElementById("message");
+    const pendingCount = document.getElementById("pendingCount");
+    const approvedCount = document.getElementById("approvedCount");
+    const rejectedCount = document.getElementById("rejectedCount");
 
-        const pendingCount =
-            document.getElementById("pendingCount");
-
-        const approvedCount =
-            document.getElementById("approvedCount");
-
-        const rejectedCount =
-            document.getElementById("rejectedCount");
-
-        const refreshButton =
-            document.getElementById("refreshButton");
-
-        const logoutButton =
-            document.getElementById("logoutButton");
+    const refreshButton = document.getElementById("refreshButton");
+    const logoutButton = document.getElementById("logoutButton");
 
 
-        function showMessage(text, type) {
+    function showMessage(text, type) {
 
-            message.textContent = text;
+        message.textContent = text;
+        message.className = "message " + type;
 
-            message.className =
-                "message " + type;
+    }
+
+
+    function clearMessage() {
+
+        message.textContent = "";
+        message.className = "message";
+
+    }
+
+
+    function escapeHtml(value) {
+
+        if (value === null || value === undefined) {
+            return "";
+        }
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    async function checkAdmin() {
+
+        const {
+            data: {
+                user
+            },
+            error
+        } = await supabaseClient.auth.getUser();
+
+
+        if (error) {
+
+            console.error(error);
+
+            showMessage(
+                "Impossible de vérifier la connexion.",
+                "error"
+            );
+
+            return false;
 
         }
 
 
-        function clearMessage() {
+        if (!user) {
 
-            message.textContent = "";
+            window.location.href = "connexion.html";
 
-            message.className = "message";
+            return false;
 
         }
 
 
-        async function checkAdmin() {
+        /*
+         * Le rôle admin que nous avons configuré
+         * se trouve dans user_metadata.
+         */
+
+        const role = user.user_metadata?.role;
+
+
+        console.log("Utilisateur connecté :", user.email);
+        console.log("Rôle détecté :", role);
+
+
+        if (role !== "admin") {
+
+            document.body.innerHTML = `
+                <div style="
+                    min-height:100vh;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    background:#f5f6f8;
+                    padding:20px;
+                    font-family:Arial,sans-serif;
+                    text-align:center;
+                ">
+
+                    <div style="
+                        background:white;
+                        padding:35px;
+                        border-radius:12px;
+                        box-shadow:0 3px 15px rgba(0,0,0,0.08);
+                        max-width:500px;
+                    ">
+
+                        <div style="font-size:45px;">
+                            🔒
+                        </div>
+
+                        <h1 style="margin:15px 0;">
+                            Accès refusé
+                        </h1>
+
+                        <p style="
+                            color:#777;
+                            line-height:1.5;
+                        ">
+                            Cette page est réservée à l'administration
+                            de Market Bouaké.
+                        </p>
+
+                        <br>
+
+                        <a
+                            href="index.html"
+                            style="
+                                color:#f57c00;
+                                text-decoration:none;
+                                font-weight:bold;
+                            "
+                        >
+                            ← Retour à Market Bouaké
+                        </a>
+
+                    </div>
+
+                </div>
+            `;
+
+            return false;
+
+        }
+
+
+        return true;
+
+    }
+
+
+    async function loadRequests() {
+
+        clearMessage();
+
+
+        requestsList.innerHTML = `
+            <div class="loading">
+                Chargement des demandes...
+            </div>
+        `;
+
+
+        try {
 
             const {
-                data: {
-                    user
-                }
-            } =
-                await supabaseClient.auth.getUser();
+                data,
+                error
+            } = await supabaseClient
+                .from("seller_requests")
+                .select("*")
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
 
 
-            if (!user) {
+            if (error) {
 
-                window.location.href =
-                    "connexion.html";
-
-                return false;
-
-            }
-
-
-            const role =
-                user.app_metadata?.role;
-
-
-            if (role !== "admin") {
-
-                document.body.innerHTML =                     <div style="                         min-height:100vh;                         display:flex;                         align-items:center;                         justify-content:center;                         background:#f5f6f8;                         padding:20px;                         font-family:Arial,sans-serif;                         text-align:center;                     ">                         <div style="                             background:white;                             padding:35px;                             border-radius:12px;                             box-shadow:0 3px 15px rgba(0,0,0,0.08);                             max-width:500px;                         ">                             <div style="font-size:45px;">🔒</div>                             <h1 style="margin:15px 0;">                                 Accès refusé                             </h1>                             <p style="                                 color:#777;                                 line-height:1.5;                             ">                                 Cette page est réservée à l'administration de Market Bouaké.                             </p>                             <br>                             <a                                 href="index.html"                                 style="                                     color:#f57c00;                                     text-decoration:none;                                     font-weight:bold;                                 "                             >                                 ← Retour à Market Bouaké                             </a>                         </div>                     </div>                ;
-
-                return false;
-
-            }
-
-
-            return true;
-
-        }
-
-
-        async function loadRequests() {
-
-            clearMessage();
-
-            requestsList.innerHTML =                 <div class="loading">                     Chargement des demandes...                 </div>            ;
-
-
-            try {
-
-                const {
-                    data,
-                    error
-                } =
-                    await supabaseClient
-                        .from("seller_requests")
-                        .select("*")
-                        .order(
-                            "created_at",
-                            {
-                                ascending: false
-                            }
-                        );
-
-
-                if (error) {
-
-                    console.error(error);
-
-                    showMessage(
-                        "Impossible de charger les demandes : " +
-                        error.message,
-                        "error"
-                    );
-
-                    requestsList.innerHTML =                         <div class="empty">                             Une erreur est survenue.                         </div>                    ;
-
-                    return;
-
-                }
-
-
-                updateStats(data || []);
-
-                displayRequests(data || []);
-
-
-            } catch (error) {
-
-                console.error(error);
+                console.error("Erreur Supabase :", error);
 
                 showMessage(
-                    "Une erreur inattendue est survenue.",
+                    "Impossible de charger les demandes : " +
+                    error.message,
                     "error"
                 );
 
-                requestsList.innerHTML =                     <div class="empty">                         Une erreur est survenue.                     </div>                ;
+
+                requestsList.innerHTML = `
+                    <div class="empty">
+                        Une erreur est survenue.
+                    </div>
+                `;
+
+                return;
 
             }
 
-        }
+
+            console.log("Demandes reçues :", data);
 
 
-        function updateStats(requests) {
+            updateStats(data || []);
 
-            let pending = 0;
-
-            let approved = 0;
-
-            let rejected = 0;
+            displayRequests(data || []);
 
 
-            requests.forEach(
-                function(request) {
+        } catch (error) {
 
-                    if (request.status === "pending") {
-                        pending++;
-                    }
+            console.error(error);
 
-                    if (request.status === "approved") {
-                        approved++;
-                    }
-
-                    if (request.status === "rejected") {
-                        rejected++;
-                    }
-
-                }
+            showMessage(
+                "Une erreur inattendue est survenue.",
+                "error"
             );
 
 
-            pendingCount.textContent =
-                pending;
+            requestsList.innerHTML = `
+                <div class="empty">
+                    Une erreur est survenue.
+                </div>
+            `;
 
-            approvedCount.textContent =
-                approved;
+        }
 
-            rejectedCount.textContent =
-                rejected;
+    }
+
+
+    function updateStats(requests) {
+
+        let pending = 0;
+        let approved = 0;
+        let rejected = 0;
+
+
+        requests.forEach(function(request) {
+
+            if (request.status === "pending") {
+                pending++;
+            }
+
+            if (request.status === "approved") {
+                approved++;
+            }
+
+            if (request.status === "rejected") {
+                rejected++;
+            }
+
+        });
+
+
+        pendingCount.textContent = pending;
+        approvedCount.textContent = approved;
+        rejectedCount.textContent = rejected;
+
+    }
+
+
+    function displayRequests(requests) {
+
+        if (!requests.length) {
+
+            requestsList.innerHTML = `
+                <div class="empty">
+                    🎉 Aucune demande de vendeur pour le moment.
+                </div>
+            `;
+
+            return;
 
         }
 
 
-        function displayRequests(requests) {
+        requestsList.innerHTML = "";
 
-            if (!requests.length) {
 
-                requestsList.innerHTML =                     <div class="empty">                         🎉 Aucune demande de vendeur pour le moment.                     </div>                ;
+        requests.forEach(function(request) {
 
-                return;
+            const article =
+                document.createElement("div");
 
+            article.className = "request";
+
+
+            let statusText = "En attente";
+
+
+            if (request.status === "approved") {
+                statusText = "Approuvé";
             }
 
 
-            requestsList.innerHTML = "";
+            if (request.status === "rejected") {
+                statusText = "Refusé";
+            }
 
 
-            requests.forEach(
-                function(request) {
-
-                    const article =
-                        document.createElement("div");
-
-                    article.className =
-                        "request";
+            const date = request.created_at
+                ? new Date(request.created_at)
+                    .toLocaleDateString("fr-FR")
+                : "";
 
 
-                    let statusText =
-                        "En attente";
+            const description =
+                request.shop_description
+                ? `
+                    <div class="description">
 
-                    if (request.status === "approved") {
-                        statusText = "Approuvé";
-                    }
+                        <strong>
+                            Description de la boutique
+                        </strong>
 
-                    if (request.status === "rejected") {
-                        statusText = "Refusé";
-                    }
+                        <br>
 
+                        ${escapeHtml(request.shop_description)}
 
-                    const date =
-                        new Date(
-                            request.created_at
-                        ).toLocaleDateString(
-                            "fr-FR"
-                        );
+                    </div>
+                `
+                : "";
 
 
-                    article.innerHTML =                          <div class="request-header">                              <div>                                  <div class="seller-name">                                     ${escapeHtml(request.first_name)}                                     ${escapeHtml(request.last_name)}                                 </div>                                  <div class="shop-name">                                     🏪 ${escapeHtml(request.shop_name)}                                 </div>                              </div>                              <span class="status ${request.status}">                                 ${statusText}                             </span>                          </div>                           <div class="details">                              <div class="detail">                                 <strong>📧 Email</strong>                                 ${escapeHtml(request.email)}                             </div>                              <div class="detail">                                 <strong>📱 WhatsApp</strong>                                 ${escapeHtml(request.phone)}                             </div>                              <div class="detail">                                 <strong>📍 Ville</strong>                                 ${escapeHtml(request.city)}                             </div>                              <div class="detail">                                 <strong>📍 Quartier</strong>                                 ${escapeHtml(request.district)}                             </div>                              <div class="detail">                                 <strong>📅 Demande créée</strong>                                 ${date}                             </div>                          </div>                           ${                             request.shop_description                             ?                            
-                            <div class="description">
+            const rejectionReason =
+                request.rejection_reason
+                ? `
+                    <div class="description">
 
-                                <strong>
-                                    Description de la boutique
-                                </strong>
+                        <strong>
+                            Motif du refus
+                        </strong>
 
-                                <br>
+                        <br>
 
-                                ${escapeHtml(request.shop_description)}
+                        ${escapeHtml(request.rejection_reason)}
 
-                            </div>
-                                                        :                             ""                         }                           ${                             request.rejection_reason                             ?                            
-                            <div class="description">
-
-                                <strong>
-                                    Motif du refus
-                                </strong>
-
-                                <br>
-
-                                ${escapeHtml(request.rejection_reason)}
-
-                            </div>
-                                                        :                             ""                         }                           ${                             request.status === "pending"                             ?                            
-                            <div class="actions">
-
-                                <button
-                                    class="approve"
-                                    onclick="approveSeller('${request.id}')"
-                                >
-                                    ✅ Approuver
-                                </button>
-
-                                <button
-                                    class="reject"
-                                    onclick="showRejectBox('${request.id}')"
-                                >
-                                    ❌ Refuser
-                                </button>
-
-                            </div>
-
-                            <div
-                                class="rejection-box"
-                                id="reject-${request.id}"
-                            >
-
-                                <textarea
-                                    id="reason-${request.id}"
-                                    placeholder="Raison du refus (facultatif)"
-                                ></textarea>
-
-                                <button
-                                    class="confirm-reject"
-                                    onclick="rejectSeller('${request.id}')"
-                                >
-                                    Confirmer le refus
-                                </button>
-
-                            </div>
-                                                        :                             ""                         }                     ;
+                    </div>
+                `
+                : "";
 
 
-                    requestsList.appendChild(article);
+            const actions =
+                request.status === "pending"
+                ? `
+                    <div class="actions">
 
-                }
+                        <button
+                            class="approve"
+                            onclick="approveSeller('${request.id}')"
+                        >
+                            ✅ Approuver
+                        </button>
+
+                        <button
+                            class="reject"
+                            onclick="showRejectBox('${request.id}')"
+                        >
+                            ❌ Refuser
+                        </button>
+
+                    </div>
+
+                    <div
+                        class="rejection-box"
+                        id="reject-${request.id}"
+                    >
+
+                        <textarea
+                            id="reason-${request.id}"
+                            placeholder="Raison du refus (facultatif)"
+                        ></textarea>
+
+                        <button
+                            class="confirm-reject"
+                            onclick="rejectSeller('${request.id}')"
+                        >
+                            Confirmer le refus
+                        </button>
+
+                    </div>
+                `
+                : "";
+
+
+            article.innerHTML = `
+
+                <div class="request-header">
+
+                    <div>
+
+                        <div class="seller-name">
+                            ${escapeHtml(request.first_name)}
+                            ${escapeHtml(request.last_name)}
+                        </div>
+
+                        <div class="shop-name">
+                            🏪 ${escapeHtml(request.shop_name)}
+                        </div>
+
+                    </div>
+
+
+                    <span class="status ${escapeHtml(request.status)}">
+                        ${statusText}
+                    </span>
+
+                </div>
+
+
+                <div class="details">
+
+                    <div class="detail">
+
+                        <strong>
+                            📧 Email
+                        </strong>
+
+                        ${escapeHtml(request.email)}
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <strong>
+                            📱 WhatsApp
+                        </strong>
+
+                        ${escapeHtml(request.phone)}
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <strong>
+                            📍 Ville
+                        </strong>
+
+                        ${escapeHtml(request.city)}
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <strong>
+                            📍 Quartier
+                        </strong>
+
+                        ${escapeHtml(request.district)}
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <strong>
+                            📅 Demande créée
+                        </strong>
+
+                        ${date}
+
+                    </div>
+
+                </div>
+
+
+                ${description}
+
+                ${rejectionReason}
+
+                ${actions}
+
+            `;
+
+
+            requestsList.appendChild(article);
+
+        });
+
+    }
+
+
+    function showRejectBox(id) {
+
+        const box =
+            document.getElementById("reject-" + id);
+
+
+        if (!box) {
+            return;
+        }
+
+
+        if (box.style.display === "block") {
+
+            box.style.display = "none";
+
+        } else {
+
+            box.style.display = "block";
+
+        }
+
+    }
+
+
+    async function approveSeller(id) {
+
+        const confirmed =
+            confirm(
+                "Voulez-vous vraiment approuver ce vendeur ?"
             );
 
+
+        if (!confirmed) {
+            return;
         }
 
 
-        function escapeHtml(value) {
+        try {
 
-            if (value === null ||
-                value === undefined) {
-
-                return "";
-
-            }
-
-
-            return String(value)
-                .replace(/&/g, "&")
-                .replace(/</g, "<")
-                .replace(/>/g, ">")
-                .replace(/"/g, """)
-                .replace(/'/g, "'");
-
-        }
+            const {
+                error
+            } = await supabaseClient
+                .from("seller_requests")
+                .update({
+                    status: "approved",
+                    rejection_reason: null,
+                    updated_at: new Date().toISOString()
+                })
+                .eq("id", id);
 
 
-        function showRejectBox(id) {
-
-            const box =
-                document.getElementById(
-                    "reject-" + id
-                );
-
-
-            if (box) {
-
-                box.style.display =
-                    box.style.display === "block"
-                    ? "none"
-                    : "block";
-
-            }
-
-        }
-
-
-        async function approveSeller(id) {
-
-            const confirmed =
-                confirm(
-                    "Voulez-vous vraiment approuver ce vendeur ?"
-                );
-
-
-            if (!confirmed) {
-
-                return;
-
-            }
-
-
-            try {
-
-                const {
-                    error
-                } =
-                    await supabaseClient
-                        .from("seller_requests")
-                        .update({
-                            status: "approved",
-                            rejection_reason: null,
-                            updated_at: new Date().toISOString()
-                        })
-                        .eq("id", id);
-
-
-                if (error) {
-
-                    console.error(error);
-
-                    showMessage(
-                        "❌ Impossible d'approuver le vendeur : " +
-                        error.message,
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-
-                showMessage(
-                    "✅ Le vendeur a été approuvé.",
-                    "success"
-                );
-
-
-                await loadRequests();
-
-            } catch (error) {
+            if (error) {
 
                 console.error(error);
 
                 showMessage(
-                    "Une erreur est survenue.",
-                    "error"
-                );
-
-            }
-
-        }
-
-
-        async function rejectSeller(id) {
-
-            const reasonInput =
-                document.getElementById(
-                    "reason-" + id
-                );
-
-
-            const reason =
-                reasonInput
-                ?
-                reasonInput.value.trim()
-                :
-                "";
-
-
-            const confirmed =
-                confirm(
-                    "Voulez-vous vraiment refuser cette demande ?"
-                );
-
-
-            if (!confirmed) {
-
-                return;
-
-            }
-
-
-            try {
-
-                const {
-                    error
-                } =
-                    await supabaseClient
-                        .from("seller_requests")
-                        .update({
-                            status: "rejected",
-                            rejection_reason:
-                                reason || null,
-                            updated_at:
-                                new Date().toISOString()
-                        })
-                        .eq("id", id);
-
-
-                if (error) {
-
-                    console.error(error);
-
-                    showMessage(
-                        "❌ Impossible de refuser la demande : " +
-                        error.message,
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-
-                showMessage(
-                    "❌ La demande du vendeur a été refusée.",
-                    "success"
-                );
-
-
-                await loadRequests();
-
-            } catch (error) {
-
-                console.error(error);
-
-                showMessage(
-                    "Une erreur est survenue.",
-                    "error"
-                );
-
-            }
-
-        }
-
-
-        logoutButton.addEventListener(
-            "click",
-            async function() {
-
-                await supabaseClient.auth.signOut();
-
-                window.location.href =
-                    "connexion.html";
-
-            }
-        );
-
-
-        refreshButton.addEventListener(
-            "click",
-            loadRequests
-        );
-
-
-        async function startAdminPage() {
-
-            if (
-                typeof supabaseClient ===
-                "undefined"
-            ) {
-
-                showMessage(
-                    "La connexion à Supabase n'est pas configurée.",
+                    "❌ Impossible d'approuver le vendeur : " +
+                    error.message,
                     "error"
                 );
 
@@ -987,26 +1018,159 @@
             }
 
 
-            const isAdmin =
-                await checkAdmin();
-
-
-            if (!isAdmin) {
-
-                return;
-
-            }
+            showMessage(
+                "✅ Le vendeur a été approuvé.",
+                "success"
+            );
 
 
             await loadRequests();
 
+
+        } catch (error) {
+
+            console.error(error);
+
+            showMessage(
+                "Une erreur est survenue.",
+                "error"
+            );
+
+        }
+
+    }
+
+
+    async function rejectSeller(id) {
+
+        const reasonInput =
+            document.getElementById("reason-" + id);
+
+
+        const reason =
+            reasonInput
+            ? reasonInput.value.trim()
+            : "";
+
+
+        const confirmed =
+            confirm(
+                "Voulez-vous vraiment refuser cette demande ?"
+            );
+
+
+        if (!confirmed) {
+            return;
         }
 
 
-        startAdminPage();
+        try {
 
-    </script>
+            const {
+                error
+            } = await supabaseClient
+                .from("seller_requests")
+                .update({
+                    status: "rejected",
+                    rejection_reason:
+                        reason || null,
+                    updated_at:
+                        new Date().toISOString()
+                })
+                .eq("id", id);
 
+
+            if (error) {
+
+                console.error(error);
+
+                showMessage(
+                    "❌ Impossible de refuser la demande : " +
+                    error.message,
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            showMessage(
+                "❌ La demande du vendeur a été refusée.",
+                "success"
+            );
+
+
+            await loadRequests();
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            showMessage(
+                "Une erreur est survenue.",
+                "error"
+            );
+
+        }
+
+    }
+
+
+    logoutButton.addEventListener(
+        "click",
+        async function() {
+
+            await supabaseClient.auth.signOut();
+
+            window.location.href =
+                "connexion.html";
+
+        }
+    );
+
+
+    refreshButton.addEventListener(
+        "click",
+        loadRequests
+    );
+
+
+    async function startAdminPage() {
+
+        if (
+            typeof supabaseClient ===
+            "undefined"
+        ) {
+
+            showMessage(
+                "La connexion à Supabase n'est pas configurée.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        const isAdmin =
+            await checkAdmin();
+
+
+        if (!isAdmin) {
+            return;
+        }
+
+
+        await loadRequests();
+
+    }
+
+
+    startAdminPage();
+
+</script>
 </body>
 
 </html>
