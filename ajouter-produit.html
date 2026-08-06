@@ -504,34 +504,20 @@ async function getCurrentUser() {
 
 async function checkSeller() {
 
-    const user =
-        await getCurrentUser();
-
+    const user = await getCurrentUser();
 
     if (!user) {
 
-        window.location.href =
-            "connexion.html";
+        window.location.href = "connexion.html";
 
         return null;
 
     }
 
+    const role = user.user_metadata?.role;
 
-    const role =
-        user.user_metadata?.role;
-
-
-    console.log(
-        "Utilisateur :",
-        user.email
-    );
-
-    console.log(
-        "Rôle :",
-        role
-    );
-
+    console.log("Utilisateur :", user.email);
+    console.log("Rôle :", role);
 
     if (role !== "seller") {
 
@@ -540,19 +526,89 @@ async function checkSeller() {
             "error"
         );
 
-        productForm.style.display =
-            "none";
+        productForm.style.display = "none";
 
         return null;
 
     }
 
+    // Vérifier que le vendeur a été approuvé par l'administration
+    const {
+        data: sellerRequest,
+        error
+    } = await supabaseClient
+        .from("seller_requests")
+        .select("status")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+    if (error) {
+
+        console.error(
+            "Erreur vérification vendeur :",
+            error
+        );
+
+        showMessage(
+            "Impossible de vérifier votre statut de vendeur.",
+            "error"
+        );
+
+        productForm.style.display = "none";
+
+        return null;
+
+    }
+
+    if (!sellerRequest) {
+
+        showMessage(
+            "Votre demande de vendeur n'a pas été trouvée.",
+            "error"
+        );
+
+        productForm.style.display = "none";
+
+        return null;
+
+    }
+
+    if (sellerRequest.status !== "approved") {
+
+        if (sellerRequest.status === "pending") {
+
+            showMessage(
+                "⏳ Votre demande de vendeur est encore en attente de validation par l'administration. Vous pourrez publier vos produits après approbation.",
+                "error"
+            );
+
+        } else if (sellerRequest.status === "rejected") {
+
+            showMessage(
+                "❌ Votre demande de vendeur a été refusée. Vous ne pouvez pas publier de produits.",
+                "error"
+            );
+
+        } else {
+
+            showMessage(
+                "Votre compte vendeur n'est pas encore autorisé à publier.",
+                "error"
+            );
+
+        }
+
+        productForm.style.display = "none";
+
+        return null;
+
+    }
+
+    console.log("✅ Vendeur approuvé");
 
     return user;
 
 }
-
-
 function previewImage(input, previewId) {
 
     const file =
