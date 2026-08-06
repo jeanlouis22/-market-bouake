@@ -23,6 +23,8 @@
             color: #222;
         }
 
+        /* ===== HEADER ===== /
+
         header {
             background: white;
             padding: 15px 5%;
@@ -85,6 +87,17 @@
             font-weight: bold;
         }
 
+        #guestMenu {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        #userMenu {
+            align-items: center;
+            gap: 10px;
+        }
+
         .inscription {
             background: #f57c00;
             color: white !important;
@@ -120,7 +133,7 @@
             text-decoration: none;
         }
 
-        /* ===== HERO ===== /
+        / ===== HERO ===== /
 
         .hero {
             background: linear-gradient(135deg, #fff3e0, #ffffff);
@@ -324,6 +337,15 @@
                 flex-wrap: wrap;
             }
 
+            #guestMenu {
+                justify-content: center;
+            }
+
+            #userMenu {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
             .hero h1 {
                 font-size: 30px;
             }
@@ -339,6 +361,7 @@
             .products {
                 grid-template-columns: repeat(2, 1fr);
             }
+
         }
 
         @media (max-width: 450px) {
@@ -367,6 +390,7 @@
             .price {
                 font-size: 16px;
             }
+
         }
 
     </style>
@@ -500,11 +524,7 @@
     <section class="section">
 
         <div class="section-title">
-
-            <h2>
-                Catégories
-            </h2>
-
+            <h2>Catégories</h2>
         </div>
 
         <div class="categories">
@@ -576,7 +596,6 @@
 
         <div class="products">
 
-
             <div class="product">
 
                 <div class="product-image">
@@ -585,9 +604,7 @@
 
                 <div class="product-info">
 
-                    <h3>
-                        Smartphone
-                    </h3>
+                    <h3>Smartphone</h3>
 
                     <p class="price">
                         75 000 FCFA
@@ -617,9 +634,7 @@
 
                 <div class="product-info">
 
-                    <h3>
-                        Chaussures homme
-                    </h3>
+                    <h3>Chaussures homme</h3>
 
                     <p class="price">
                         15 000 FCFA
@@ -649,9 +664,7 @@
 
                 <div class="product-info">
 
-                    <h3>
-                        T-shirt moderne
-                    </h3>
+                    <h3>T-shirt moderne</h3>
 
                     <p class="price">
                         7 000 FCFA
@@ -681,9 +694,7 @@
 
                 <div class="product-info">
 
-                    <h3>
-                        Sac à dos
-                    </h3>
+                    <h3>Sac à dos</h3>
 
                     <p class="price">
                         12 000 FCFA
@@ -704,7 +715,6 @@
 
             </div>
 
-
         </div>
 
     </section>
@@ -714,9 +724,7 @@
 
     <footer>
 
-        <h3>
-            Market Bouaké
-        </h3>
+        <h3>Market Bouaké</h3>
 
         <p>
             Achetez local, vendez local.
@@ -753,135 +761,178 @@
 
         async function checkUser() {
 
-    try {
+            try {
 
-        if (typeof supabaseClient === "undefined") {
+                if (
+                    typeof supabaseClient === "undefined"
+                ) {
 
-            console.error("Supabase n'est pas configuré.");
+                    console.error(
+                        "Supabase n'est pas configuré."
+                    );
 
-            return;
+                    return;
+
+                }
+
+
+                / ===== VÉRIFIER LA SESSION ===== /
+
+                const {
+                    data: {
+                        user
+                    }
+                } = await supabaseClient.auth.getUser();
+
+
+                / ===== PERSONNE NON CONNECTÉE ===== /
+
+                if (!user) {
+
+                    guestMenu.style.display = "flex";
+
+                    userMenu.style.display = "none";
+
+                    return;
+
+                }
+
+
+                / ===== UTILISATEUR CONNECTÉ ===== /
+
+                guestMenu.style.display = "none";
+
+                userMenu.style.display = "flex";
+
+
+                console.log(
+                    "Utilisateur connecté :",
+                    user.email
+                );
+
+
+                / ===== RÉCUPÉRER LE RÔLE ===== /
+
+                const {
+                    data: profile,
+                    error
+                } = await supabaseClient
+                    .from("users")
+                    .select("role")
+                    .eq("id", user.id)
+                    .maybeSingle();
+
+
+                console.log(
+                    "Profil :",
+                    profile
+                );
+
+                console.log(
+                    "Erreur profil :",
+                    error
+                );
+
+
+                if (error) {
+
+                    console.error(
+                        "Erreur récupération profil :",
+                        error
+                    );
+
+                    return;
+
+                }
+
+
+                if (!profile) {
+
+                    console.warn(
+                        "Aucun profil trouvé pour cet utilisateur."
+                    );
+
+                    return;
+
+                }
+
+
+                / ===== ADMIN ===== /
+
+                if (profile.role === "admin") {
+
+                    window.location.href =
+                        "admin.html";
+
+                    return;
+
+                }
+
+
+                / ===== VENDEUR ===== /
+
+                if (profile.role === "seller") {
+
+                    sellerSpace.style.display =
+                        "inline-block";
+
+                }
+
+
+                / ===== ACHETEUR ===== /
+
+                if (profile.role === "buyer") {
+
+                    console.log(
+                        "Utilisateur acheteur connecté."
+                    );
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Erreur vérification utilisateur :",
+                    error
+                );
+
+            }
 
         }
 
-        /* Vérifier simplement si quelqu'un est connecté /
 
-        const {
-            data: {
-                user
-            }
-        } = await supabaseClient.auth.getUser();
+        / ===== DÉCONNEXION ===== /
 
+        logoutButton.addEventListener(
+            "click",
+            async function () {
 
-        / =========================
-           PERSONNE NON CONNECTÉE
-        ========================= /
+                try {
 
-        if (!user) {
+                    await supabaseClient.auth.signOut();
 
-            guestMenu.style.display = "flex";
-            userMenu.style.display = "none";
+                    window.location.href =
+                        "index.html";
 
-            return;
+                } catch (error) {
 
-        }
+                    console.error(
+                        "Erreur déconnexion :",
+                        error
+                    );
 
-
-        / =========================
-           UTILISATEUR CONNECTÉ
-        ========================= /
-
-        guestMenu.style.display = "none";
-        userMenu.style.display = "flex";
-
-
-        console.log("Utilisateur connecté :", user.email);
-
-
-        / =========================
-           CHERCHER SON RÔLE
-        ========================= /
-
-        const {
-            data: profile,
-            error
-        } = await supabaseClient
-            .from("users")
-            .select("role")
-            .eq("id", user.id)
-            .maybeSingle();
-
-
-        console.log("Profil :", profile);
-        console.log("Erreur profil :", error);
-
-
-        / =========================
-           SI LE PROFIL EXISTE
-        ========================= /
-
-        if (profile) {
-
-            / ADMIN /
-
-            if (profile.role === "admin") {
-
-                window.location.href = "admin.html";
-
-                return;
+                }
 
             }
-
-
-            / VENDEUR /
-
-            if (profile.role === "seller") {
-
-                sellerSpace.style.display = "inline-block";
-
-            }
-
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Erreur vérification utilisateur :",
-            error
         );
 
-    }
 
-}
+        / ===== LANCER LA VÉRIFICATION ===== */
 
-
-/ =========================
-   DÉCONNEXION
-========================= /
-
-logoutButton.addEventListener(
-    "click",
-    async function () {
-
-        await supabaseClient.auth.signOut();
-
-        window.location.href = "index.html";
-
-    }
-);
-
-
-/ =========================
-   LANCER
-========================= */
-
-checkUser();
+        checkUser();
 
     </script>
-<script>
-supabaseClient.auth.getSession().then(function(result) {
-    console.log("SESSION :", result.data.session);
-});
-</script>
+
 </body>
 
 </html>
