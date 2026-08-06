@@ -514,12 +514,53 @@ async function checkSeller() {
 
     }
 
-    const role = user.user_metadata?.role;
+    const {
 
-    console.log("Utilisateur :", user.email);
-    console.log("Rôle :", role);
+    data: profile,
 
-    if (role !== "seller") {
+    error: profileError
+
+} = await supabaseClient
+
+    .from("profiles")
+
+    .select("role")
+
+    .eq("id", user.id)
+
+    .maybeSingle();
+
+if (profileError) {
+
+    console.error(
+
+        "Erreur récupération du rôle :",
+
+        profileError
+
+    );
+
+    showMessage(
+
+        "Impossible de récupérer votre rôle.",
+
+        "error"
+
+    );
+
+    productForm.style.display = "none";
+
+    return null;
+
+}
+
+const role = profile ? profile.role : null;
+
+console.log("Utilisateur :", user.email);
+
+console.log("Rôle :", role);
+
+if (role !== "seller") {
 
         showMessage(
             "Cette page est réservée aux vendeurs.",
