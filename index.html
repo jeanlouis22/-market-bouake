@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Market Bouaké | Achetez et vendez à Bouaké</title>
 
     <style>
+
         * {
             margin: 0;
             padding: 0;
@@ -18,8 +22,6 @@
             background: #f5f6f8;
             color: #222;
         }
-
-        /* ===== HEADER ===== */
 
         header {
             background: white;
@@ -76,7 +78,8 @@
             white-space: nowrap;
         }
 
-        .menu a {
+        .menu a,
+        .menu button {
             text-decoration: none;
             color: #222;
             font-weight: bold;
@@ -89,12 +92,35 @@
             border-radius: 7px;
         }
 
+        .account {
+            background: #f57c00;
+            color: white !important;
+            padding: 10px 15px;
+            border-radius: 7px;
+        }
+
+        .seller-space {
+            background: #198754;
+            color: white !important;
+            padding: 10px 15px;
+            border-radius: 7px;
+        }
+
+        .logout {
+            border: none;
+            background: #eee;
+            padding: 10px 12px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
         .cart {
             font-size: 23px;
             text-decoration: none;
         }
 
-        /* ===== HERO ===== */
+        /* ===== HERO ===== /
 
         .hero {
             background: linear-gradient(135deg, #fff3e0, #ffffff);
@@ -142,7 +168,7 @@
             border: 1px solid #f57c00;
         }
 
-        /* ===== SECTIONS ===== */
+        / ===== SECTIONS ===== /
 
         .section {
             padding: 40px 5%;
@@ -165,7 +191,7 @@
             font-weight: bold;
         }
 
-        /* ===== CATEGORIES ===== */
+        / ===== CATEGORIES ===== /
 
         .categories {
             display: grid;
@@ -196,7 +222,7 @@
             font-weight: bold;
         }
 
-        /* ===== PRODUCTS ===== */
+        / ===== PRODUCTS ===== /
 
         .products {
             display: grid;
@@ -253,7 +279,7 @@
             font-weight: bold;
         }
 
-        /* ===== FOOTER ===== */
+        / ===== FOOTER ===== /
 
         footer {
             background: #202124;
@@ -272,7 +298,7 @@
             font-size: 14px;
         }
 
-        /* ===== TELEPHONE ===== */
+        / ===== MOBILE ===== /
 
         @media (max-width: 800px) {
 
@@ -295,6 +321,7 @@
                 width: 100%;
                 justify-content: center;
                 order: 3;
+                flex-wrap: wrap;
             }
 
             .hero h1 {
@@ -343,6 +370,7 @@
         }
 
     </style>
+
 </head>
 
 <body>
@@ -356,24 +384,75 @@
         </div>
 
         <div class="search">
+
             <input
                 type="text"
                 placeholder="Rechercher un produit..."
             >
-            <button>🔍</button>
+
+            <button>
+                🔍
+            </button>
+
         </div>
 
         <nav class="menu">
 
-            <a href="connexion.html">
-                Connexion
-            </a>
+            <!-- NON CONNECTÉ -->
 
-            <a href="inscription.html" class="inscription">
-                Inscription
-            </a>
+            <div id="guestMenu">
 
-            <a href="panier.html" class="cart">
+                <a href="connexion.html">
+                    Connexion
+                </a>
+
+                <a
+                    href="inscription.html"
+                    class="inscription"
+                >
+                    Inscription
+                </a>
+
+            </div>
+
+
+            <!-- CONNECTÉ -->
+
+            <div
+                id="userMenu"
+                style="display:none;"
+            >
+
+                <a
+                    href="compte.html"
+                    class="account"
+                >
+                    👤 Mon compte
+                </a>
+
+                <a
+                    href="vendeur.html"
+                    class="seller-space"
+                    id="sellerSpace"
+                    style="display:none;"
+                >
+                    🏪 Espace vendeur
+                </a>
+
+                <button
+                    id="logoutButton"
+                    class="logout"
+                >
+                    Déconnexion
+                </button>
+
+            </div>
+
+
+            <a
+                href="panier.html"
+                class="cart"
+            >
                 🛒
             </a>
 
@@ -387,7 +466,8 @@
     <section class="hero">
 
         <h1>
-            Bienvenue sur <span>Market Bouaké</span>
+            Bienvenue sur
+            <span>Market Bouaké</span>
         </h1>
 
         <p>
@@ -396,11 +476,17 @@
 
         <div class="hero-buttons">
 
-            <a href="#produits" class="btn-primary">
+            <a
+                href="#produits"
+                class="btn-primary"
+            >
                 🛍️ Voir les produits
             </a>
 
-            <a href="inscription.html" class="btn-secondary">
+            <a
+                href="inscription.html"
+                class="btn-secondary"
+            >
                 🏪 Devenir vendeur
             </a>
 
@@ -414,7 +500,11 @@
     <section class="section">
 
         <div class="section-title">
-            <h2>Catégories</h2>
+
+            <h2>
+                Catégories
+            </h2>
+
         </div>
 
         <div class="categories">
@@ -466,11 +556,16 @@
 
     <!-- PRODUITS -->
 
-    <section class="section" id="produits">
+    <section
+        class="section"
+        id="produits"
+    >
 
         <div class="section-title">
 
-            <h2>Produits populaires</h2>
+            <h2>
+                Produits populaires
+            </h2>
 
             <a href="#">
                 Voir tout →
@@ -490,7 +585,9 @@
 
                 <div class="product-info">
 
-                    <h3>Smartphone</h3>
+                    <h3>
+                        Smartphone
+                    </h3>
 
                     <p class="price">
                         75 000 FCFA
@@ -500,7 +597,10 @@
                         🏪 Boutique Bouaké
                     </p>
 
-                    <a href="#" class="order-btn">
+                    <a
+                        href="#"
+                        class="order-btn"
+                    >
                         📲 Commander
                     </a>
 
@@ -517,7 +617,9 @@
 
                 <div class="product-info">
 
-                    <h3>Chaussures homme</h3>
+                    <h3>
+                        Chaussures homme
+                    </h3>
 
                     <p class="price">
                         15 000 FCFA
@@ -527,7 +629,10 @@
                         🏪 Fashion Bouaké
                     </p>
 
-                    <a href="#" class="order-btn">
+                    <a
+                        href="#"
+                        class="order-btn"
+                    >
                         📲 Commander
                     </a>
 
@@ -544,7 +649,9 @@
 
                 <div class="product-info">
 
-                    <h3>T-shirt moderne</h3>
+                    <h3>
+                        T-shirt moderne
+                    </h3>
 
                     <p class="price">
                         7 000 FCFA
@@ -554,7 +661,10 @@
                         🏪 Mode CI
                     </p>
 
-                    <a href="#" class="order-btn">
+                    <a
+                        href="#"
+                        class="order-btn"
+                    >
                         📲 Commander
                     </a>
 
@@ -571,7 +681,9 @@
 
                 <div class="product-info">
 
-                    <h3>Sac à dos</h3>
+                    <h3>
+                        Sac à dos
+                    </h3>
 
                     <p class="price">
                         12 000 FCFA
@@ -581,7 +693,10 @@
                         🏪 Shop Bouaké
                     </p>
 
-                    <a href="#" class="order-btn">
+                    <a
+                        href="#"
+                        class="order-btn"
+                    >
                         📲 Commander
                     </a>
 
@@ -599,7 +714,9 @@
 
     <footer>
 
-        <h3>Market Bouaké</h3>
+        <h3>
+            Market Bouaké
+        </h3>
 
         <p>
             Achetez local, vendez local.
@@ -611,5 +728,180 @@
 
     </footer>
 
+
+    <!-- SUPABASE -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="supabase-config.js"></script>
+
+
+    <script>
+
+        const guestMenu =
+            document.getElementById("guestMenu");
+
+        const userMenu =
+            document.getElementById("userMenu");
+
+        const sellerSpace =
+            document.getElementById("sellerSpace");
+
+        const logoutButton =
+            document.getElementById("logoutButton");
+
+
+        async function checkUser() {
+
+            try {
+
+                if (
+                    typeof supabaseClient ===
+                    "undefined"
+                ) {
+
+                    console.error(
+                        "Supabase n'est pas configuré."
+                    );
+
+                    return;
+
+                }
+
+
+                const {
+                    data: {
+                        user
+                    }
+                } =
+                    await supabaseClient.auth.getUser();
+
+
+                / =========================
+                   PERSONNE CONNECTÉE
+                ========================= /
+
+                if (!user) {
+
+                    guestMenu.style.display =
+                        "flex";
+
+                    userMenu.style.display =
+                        "none";
+
+                    return;
+
+                }
+
+
+                / =========================
+                   UTILISATEUR CONNECTÉ
+                ========================= /
+
+                guestMenu.style.display =
+                    "none";
+
+                userMenu.style.display =
+                    "flex";
+
+
+                / =========================
+                   RÉCUPÉRATION DU PROFIL
+                ========================= /
+
+                const {
+                    data: profile,
+                    error
+                } =
+                    await supabaseClient
+                        .from("users")
+                        .select("role")
+                        .eq("id", user.id)
+                        .single();
+
+
+                if (error) {
+
+                    console.error(
+                        "Erreur profil :",
+                        error
+                    );
+
+                    return;
+
+                }
+
+
+                if (!profile) {
+
+                    return;
+
+                }
+
+
+                / =========================
+                   ADMIN
+                ========================= /
+
+                if (profile.role === "admin") {
+
+                    window.location.href =
+                        "admin.html";
+
+                    return;
+
+                }
+
+
+                / =========================
+                   VENDEUR
+                ========================= /
+
+                if (profile.role === "seller") {
+
+                    sellerSpace.style.display =
+                        "inline-block";
+
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    "Erreur vérification utilisateur :",
+                    error
+                );
+
+            }
+
+        }
+
+
+        / =========================
+           DÉCONNEXION
+        ========================= /
+
+        logoutButton.addEventListener(
+            "click",
+            async function () {
+
+                await supabaseClient.auth.signOut();
+
+                window.location.href =
+                    "index.html";
+
+            }
+        );
+
+
+        / =========================
+           LANCER LA VÉRIFICATION
+        ========================= */
+
+        checkUser();
+
+    </script>
+
 </body>
+
 </html>
