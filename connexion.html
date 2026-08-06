@@ -539,20 +539,27 @@ setTimeout(
 
             if (profileError) {
 
-                console.error(
+    console.error(
 
-                    "Erreur récupération du rôle :",
+        "Erreur récupération du rôle :",
 
-                    profileError
+        profileError
 
-                );
+    );
 
-                window.location.href = "index.html";
+    showMessage(
 
-                return;
+        "❌ Impossible de récupérer votre rôle : " +
 
-            }
+        profileError.message,
 
+        "error"
+
+    );
+
+    return;
+
+}
             /* ===== ADMIN ===== */
 
             if (
