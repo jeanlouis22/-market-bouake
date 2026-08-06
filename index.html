@@ -753,152 +753,128 @@
 
         async function checkUser() {
 
-            try {
+    try {
 
-                if (
-                    typeof supabaseClient ===
-                    "undefined"
-                ) {
+        if (typeof supabaseClient === "undefined") {
 
-                    console.error(
-                        "Supabase n'est pas configuré."
-                    );
+            console.error("Supabase n'est pas configuré.");
 
-                    return;
+            return;
 
-                }
+        }
 
+        /* Vérifier simplement si quelqu'un est connecté /
 
-                const {
-                    data: {
-                        user
-                    }
-                } =
-                    await supabaseClient.auth.getUser();
-
-
-                / =========================
-                   PERSONNE CONNECTÉE
-                ========================= /
-
-                if (!user) {
-
-                    guestMenu.style.display =
-                        "flex";
-
-                    userMenu.style.display =
-                        "none";
-
-                    return;
-
-                }
-
-
-                / =========================
-                   UTILISATEUR CONNECTÉ
-                ========================= /
-
-                guestMenu.style.display =
-                    "none";
-
-                userMenu.style.display =
-                    "flex";
-
-
-                / =========================
-                   RÉCUPÉRATION DU PROFIL
-                ========================= /
-
-                const {
-                    data: profile,
-                    error
-                } =
-                    await supabaseClient
-                        .from("users")
-                        .select("role")
-                        .eq("id", user.id)
-                        .single();
-
-
-                if (error) {
-
-                    console.error(
-                        "Erreur profil :",
-                        error
-                    );
-
-                    return;
-
-                }
-
-
-                if (!profile) {
-
-                    return;
-
-                }
-
-
-                / =========================
-                   ADMIN
-                ========================= /
-
-                if (profile.role === "admin") {
-
-                    window.location.href =
-                        "admin.html";
-
-                    return;
-
-                }
-
-
-                / =========================
-                   VENDEUR
-                ========================= /
-
-                if (profile.role === "seller") {
-
-                    sellerSpace.style.display =
-                        "inline-block";
-
-                }
-
-
-            } catch (error) {
-
-                console.error(
-                    "Erreur vérification utilisateur :",
-                    error
-                );
-
+        const {
+            data: {
+                user
             }
+        } = await supabaseClient.auth.getUser();
+
+
+        / =========================
+           PERSONNE NON CONNECTÉE
+        ========================= /
+
+        if (!user) {
+
+            guestMenu.style.display = "flex";
+            userMenu.style.display = "none";
+
+            return;
 
         }
 
 
         / =========================
-           DÉCONNEXION
+           UTILISATEUR CONNECTÉ
         ========================= /
 
-        logoutButton.addEventListener(
-            "click",
-            async function () {
+        guestMenu.style.display = "none";
+        userMenu.style.display = "flex";
 
-                await supabaseClient.auth.signOut();
 
-                window.location.href =
-                    "index.html";
-
-            }
-        );
+        console.log("Utilisateur connecté :", user.email);
 
 
         / =========================
-           LANCER LA VÉRIFICATION
-        ========================= */
+           CHERCHER SON RÔLE
+        ========================= /
 
-        checkUser();
+        const {
+            data: profile,
+            error
+        } = await supabaseClient
+            .from("users")
+            .select("role")
+            .eq("id", user.id)
+            .maybeSingle();
+
+
+        console.log("Profil :", profile);
+        console.log("Erreur profil :", error);
+
+
+        / =========================
+           SI LE PROFIL EXISTE
+        ========================= /
+
+        if (profile) {
+
+            / ADMIN /
+
+            if (profile.role === "admin") {
+
+                window.location.href = "admin.html";
+
+                return;
+
+            }
+
+
+            / VENDEUR /
+
+            if (profile.role === "seller") {
+
+                sellerSpace.style.display = "inline-block";
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Erreur vérification utilisateur :",
+            error
+        );
+
+    }
+
+}
+
+
+/ =========================
+   DÉCONNEXION
+========================= /
+
+logoutButton.addEventListener(
+    "click",
+    async function () {
+
+        await supabaseClient.auth.signOut();
+
+        window.location.href = "index.html";
+
+    }
+);
+
+
+/ =========================
+   LANCER
+========================= */
+
+checkUser();
 
     </script>
 
