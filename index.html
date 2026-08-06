@@ -877,7 +877,11 @@ logoutButton.addEventListener(
 checkUser();
 
     </script>
-
+<script>
+supabaseClient.auth.getSession().then(function(result) {
+    console.log("SESSION :", result.data.session);
+});
+</script>
 </body>
 
 </html>
