@@ -561,7 +561,17 @@ setTimeout(
 
 }
             /* ===== ADMIN ===== */
+alert(
 
+    "Compte connecté : " +
+
+    data.user.email +
+
+    "\nRôle trouvé : " +
+
+    (profile ? profile.role : "AUCUN PROFIL")
+
+);
             if (
 
                 profile &&
