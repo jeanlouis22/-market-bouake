@@ -1766,11 +1766,7 @@ function normalizeWhatsAppNumber(number) {
 
 async function loadMissingProductData() {
 
-    if (
-
-        typeof supabaseClient === "undefined"
-
-    ) {
+    if (typeof supabaseClient === "undefined") {
 
         return;
 
@@ -1798,31 +1794,33 @@ async function loadMissingProductData() {
 
     try {
 
+        /* =====================================================
+
+           RÉCUPÉRER LES PRODUITS ET LEUR VENDEUR
+
+        ===================================================== */
+
         const {
 
-            data,
+            data: products,
 
-            error
+            error: productsError
 
         } = await supabaseClient
 
             .from("products")
 
-            .select(
-
-                "id,seller_id,name,whatsapp_number"
-
-            )
+            .select("id,seller_id,name")
 
             .in("id", productIds);
 
-        if (error) {
+        if (productsError) {
 
             console.error(
 
                 "Erreur récupération produits :",
 
-                error
+                productsError
 
             );
 
@@ -1830,21 +1828,97 @@ async function loadMissingProductData() {
 
         }
 
-        if (!data) {
+        if (!products || !products.length) {
 
             return;
 
         }
 
+        /* =====================================================
+
+           RÉCUPÉRER LES ID DES VENDEURS
+
+        ===================================================== */
+
+        const sellerIds = products
+
+            .filter(function(product) {
+
+                return product.seller_id;
+
+            })
+
+            .map(function(product) {
+
+                return product.seller_id;
+
+            });
+
+        const uniqueSellerIds = [
+
+            ...new Set(sellerIds)
+
+        ];
+
+        if (!uniqueSellerIds.length) {
+
+            return;
+
+        }
+
+        /* =====================================================
+
+           RÉCUPÉRER LES NUMÉROS DANS PROFILES
+
+        ===================================================== */
+
+        const {
+
+            data: profiles,
+
+            error: profilesError
+
+        } = await supabaseClient
+
+            .from("profiles")
+
+            .select("id,phone")
+
+            .in("id", uniqueSellerIds);
+
+        if (profilesError) {
+
+            console.error(
+
+                "Erreur récupération vendeurs :",
+
+                profilesError
+
+            );
+
+            return;
+
+        }
+
+        /* =====================================================
+
+           AJOUTER LE NUMÉRO WHATSAPP AU PANIER
+
+        ===================================================== */
+
         cart.forEach(function(item) {
 
-            const product =
+            const product = products.find(
 
-                data.find(function(product) {
+                function(product) {
 
-                    return product.id === item.id;
+                    return String(product.id) ===
 
-                });
+                        String(item.id);
+
+                }
+
+            );
 
             if (!product) {
 
@@ -1852,13 +1926,7 @@ async function loadMissingProductData() {
 
             }
 
-            if (
-
-                !item.seller_id &&
-
-                product.seller_id
-
-            ) {
+            if (product.seller_id) {
 
                 item.seller_id =
 
@@ -1866,17 +1934,29 @@ async function loadMissingProductData() {
 
             }
 
+            const profile = profiles.find(
+
+                function(profile) {
+
+                    return String(profile.id) ===
+
+                        String(product.seller_id);
+
+                }
+
+            );
+
             if (
 
-                !item.whatsapp_number &&
+                profile &&
 
-                product.whatsapp_number
+                profile.phone
 
             ) {
 
                 item.whatsapp_number =
 
-                    product.whatsapp_number;
+                    profile.phone;
 
             }
 
@@ -1888,7 +1968,7 @@ async function loadMissingProductData() {
 
         console.error(
 
-            "Erreur chargement données produit :",
+            "Erreur chargement données vendeur :",
 
             error
 
@@ -1897,7 +1977,6 @@ async function loadMissingProductData() {
     }
 
 }
-
 /* =========================================================
 
    REGROUPER LE PANIER PAR VENDEUR
