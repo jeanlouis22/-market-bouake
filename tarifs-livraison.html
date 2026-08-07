@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mes tarifs de livraison | Market Bouaké</title>
+
+    <style>
+
+        * {
+
+            margin: 0;
+
+            padding: 0;
+
+            box-sizing: border-box;
+
+        }
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            background: #f5f6f8;
+
+            color: #222;
+
+        }
+
+        header {
+
+            background: white;
+
+            padding: 18px 5%;
+
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+        }
+
+        .logo {
+
+            font-size: 25px;
+
+            font-weight: bold;
+
+            text-decoration: none;
+
+            color: #222;
+
+        }
+
+        .logo span {
+
+            color: #f57c00;
+
+        }
+
+        .back {
+
+            text-decoration: none;
+
+            background: #222;
+
+            color: white;
+
+            padding: 10px 16px;
+
+            border-radius: 7px;
+
+            font-weight: bold;
+
+        }
+
+        .container {
+
+            width: 95%;
+
+            max-width: 900px;
+
+            margin: 35px auto;
+
+        }
+
+        .box {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+
+            margin-bottom: 20px;
+
+        }
+
+        h1 {
+
+            margin-bottom: 10px;
+
+        }
+
+        h2 {
+
+            font-size: 19px;
+
+            margin-bottom: 15px;
+
+        }
+
+        .intro {
+
+            color: #777;
+
+            line-height: 1.5;
+
+            margin-bottom: 25px;
+
+        }
+
+        .form-group {
+
+            margin-bottom: 15px;
+
+        }
+
+        label {
+
+            display: block;
+
+            font-weight: bold;
+
+            font-size: 14px;
+
+            margin-bottom: 7px;
+
+        }
+
+        input {
+
+            width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            outline: none;
+
+        }
+
+        input:focus {
+
+            border-color: #f57c00;
+
+        }
+
+        .button {
+
+            border: none;
+
+            background: #f57c00;
+
+            color: white;
+
+            padding: 12px 18px;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+        }
+
+        .button:hover {
+
+            background: #e56f00;
+
+        }
+
+        .shipping-box {
+
+            background: #fff8ef;
+
+            border: 1px solid #f3d4ad;
+
+            padding: 18px;
+
+            border-radius: 10px;
+
+            margin-top: 25px;
+
+        }
+
+        .shipping-box p {
+
+            color: #666;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+            margin-bottom: 15px;
+
+        }
+
+        .message {
+
+            display: none;
+
+            padding: 13px;
+
+            border-radius: 8px;
+
+            margin-bottom: 20px;
+
+            font-size: 14px;
+
+        }
+
+        .message.success {
+
+            display: block;
+
+            background: #eaf8ee;
+
+            color: #187a35;
+
+            border: 1px solid #b9e4c5;
+
+        }
+
+        .message.error {
+
+            display: block;
+
+            background: #fff1f1;
+
+            color: #b00020;
+
+            border: 1px solid #f0b5b5;
+
+        }
+
+        .rate-list {
+
+            margin-top: 20px;
+
+        }
+
+        .rate-item {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            padding: 15px 0;
+
+            border-bottom: 1px solid #eee;
+
+        }
+
+        .rate-item:last-child {
+
+            border-bottom: none;
+
+        }
+
+        .rate-name {
+
+            font-weight: bold;
+
+        }
+
+        .rate-price {
+
+            color: #f57c00;
+
+            font-weight: bold;
+
+        }
+
+        .rate-actions {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+        }
+
+        .delete-button {
+
+            border: none;
+
+            background: #fff0f0;
+
+            color: #c62828;
+
+            padding: 7px 10px;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+        }
+
+        .empty {
+
+            color: #777;
+
+            padding: 15px 0;
+
+        }
+
+        @media (max-width: 600px) {
+
+            header {
+
+                padding: 15px 4%;
+
+            }
+
+            .logo {
+
+                font-size: 21px;
+
+            }
+
+            .container {
+
+                width: 94%;
+
+                margin: 25px auto;
+
+            }
+
+            .box {
+
+                padding: 20px;
+
+            }
+
+            .rate-item {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+            }
+
+            .rate-actions {
+
+                width: 100%;
+
+                justify-content: space-between;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <a href="index.html" class="logo">
+
+        Market <span>Bouaké</span>
+
+    </a>
+
+    <a href="vendeur.html" class="back">
+
+        ← Espace vendeur
+
+    </a>
+
+</header>
+
+<main class="container">
+
+    <div id="message" class="message"></div>
+
+    <section class="box">
+
+        <h1>🚚 Mes tarifs de livraison</h1>
+
+        <p class="intro">
+
+            Définissez vos tarifs de livraison selon les quartiers
+
+            de Bouaké. Vous pouvez ajouter autant de quartiers que vous voulez.
+
+        </p>
+
+        <h2>📍 Ajouter un tarif par quartier</h2>
+
+        <div class="form-group">
+
+            <label for="district">
+
+                Quartier
+
+            </label>
+
+            <input
+
+                type="text"
+
+                id="district"
+
+                placeholder="Ex : Air France"
+
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label for="price">
+
+                Frais de livraison (FCFA)
+
+            </label>
+
+            <input
+
+                type="number"
+
+                id="price"
+
+                min="0"
+
+                placeholder="Ex : 1000"
+
+            >
+
+        </div>
+
+        <button
+
+            type="button"
+
+            class="button"
+
+            id="addDistrictButton"
+
+        >
+
+            ➕ Ajouter ce tarif
+
+        </button>
+
+        <div class="shipping-box">
+
+            <h2>📦 Expédition hors de Bouaké</h2>
+
+            <p>
+
+                Indiquez le tarif que vous appliquez pour les commandes
+
+                expédiées en dehors de Bouaké.
+
+            </p>
+
+            <div class="form-group">
+
+                <label for="shippingPrice">
+
+                    Tarif d'expédition (FCFA)
+
+                </label>
+
+                <input
+
+                    type="number"
+
+                    id="shippingPrice"
+
+                    min="0"
+
+                    placeholder="Ex : 2500"
+
+                >
+
+            </div>
+
+            <button
+
+                type="button"
+
+                class="button"
+
+                id="saveShippingButton"
+
+            >
+
+                💾 Enregistrer le tarif d'expédition
+
+            </button>
+
+        </div>
+
+    </section>
+
+    <section class="box">
+
+        <h2>📋 Mes tarifs enregistrés</h2>
+
+        <div id="rateList" class="rate-list"></div>
+
+    </section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-config.js"></script>
+
+<script>
+
+    const message =
+
+        document.getElementById("message");
+
+    const rateList =
+
+        document.getElementById("rateList");
+
+    const districtInput =
+
+        document.getElementById("district");
+
+    const priceInput =
+
+        document.getElementById("price");
+
+    const shippingPriceInput =
+
+        document.getElementById("shippingPrice");
+
+    const addDistrictButton =
+
+        document.getElementById("addDistrictButton");
+
+    const saveShippingButton =
+
+        document.getElementById("saveShippingButton");
+
+    let currentUser = null;
+
+    function showMessage(text, type) {
+
+        message.textContent = text;
+
+        message.className =
+
+            "message " + type;
+
+    }
+
+    async function checkSeller() {
+
+        try {
+
+            const result =
+
+                await supabaseClient.auth.getUser();
+
+            const user =
+
+                result.data.user;
+
+            const authError =
+
+                result.error;
+
+            if (authError || !user) {
+
+                window.location.href =
+
+                    "connexion.html";
+
+                return false;
+
+            }
+
+            const profileResult =
+
+                await supabaseClient
+
+                    .from("profiles")
+
+                    .select("id, role")
+
+                    .eq("id", user.id)
+
+                    .maybeSingle();
+
+            const profile =
+
+                profileResult.data;
+
+            const profileError =
+
+                profileResult.error;
+
+            if (
+
+                profileError ||
+
+                !profile ||
+
+                profile.role !== "seller"
+
+            ) {
+
+                window.location.href =
+
+                    "index.html";
+
+                return false;
+
+            }
+
+            currentUser = user;
+
+            return true;
+
+        } catch (error) {
+
+            console.error(
+
+                "Erreur vérification vendeur :",
+
+                error
+
+            );
+
+            showMessage(
+
+                "Impossible de vérifier votre compte.",
+
+                "error"
+
+            );
+
+            return false;
+
+        }
+
+    }
+
+    async function loadRates() {
+
+        if (!currentUser) {
+
+            return;
+
+        }
+
+        rateList.innerHTML =
+
+            "<p class='empty'>Chargement...</p>";
+
+        const result =
+
+            await supabaseClient
+
+                .from("delivery_rates")
+
+                .select(
+
+                    "id, seller_id, delivery_type, district, price"
+
+                )
+
+                .eq(
+
+                    "seller_id",
+
+                    currentUser.id
+
+                )
+
+                .order(
+
+                    "delivery_type",
+
+                    {
+
+                        ascending: true
+
+                    }
+
+                );
+
+        const data =
+
+            result.data;
+
+        const error =
+
+            result.error;
+
+        if (error) {
+
+            console.error(
+
+                "Erreur chargement tarifs :",
+
+                error
+
+            );
+
+            showMessage(
+
+                "Impossible de récupérer vos tarifs.",
+
+                "error"
+
+            );
+
+            rateList.innerHTML =
+
+                "<p class='empty'>Impossible de charger les tarifs.</p>";
+
+            return;
+
+        }
+
+        if (!data || data.length === 0) {
+
+            rateList.innerHTML =
+
+                "<p class='empty'>Vous n'avez encore enregistré aucun tarif.</p>";
+
+            return;
+
+        }
+
+        rateList.innerHTML = "";
+
+        data.forEach(function(rate) {
+
+            const item =
+
+                document.createElement("div");
+
+            item.className =
+
+                "rate-item";
+
+            const name =
+
+                document.createElement("div");
+
+            name.className =
+
+                "rate-name";
+
+            if (
+
+                rate.delivery_type ===
+
+                "shipping"
+
+            ) {
+
+                name.textContent =
+
+                    "📦 Expédition hors de Bouaké";
+
+            } else {
+
+                name.textContent =
+
+                    "📍 " +
+
+                    (rate.district || "Quartier");
+
+            }
+
+            const actions =
+
+                document.createElement("div");
+
+            actions.className =
+
+                "rate-actions";
+
+            const price =
+
+                document.createElement("span");
+
+            price.className =
+
+                "rate-price";
+
+            price.textContent =
+
+                Number(rate.price || 0)
+
+                    .toLocaleString("fr-FR") +
+
+                " FCFA";
+
+            const deleteButton =
+
+                document.createElement("button");
+
+            deleteButton.type =
+
+                "button";
+
+            deleteButton.className =
+
+                "delete-button";
+
+            deleteButton.textContent =
+
+                "🗑️ Supprimer";
+
+            deleteButton.addEventListener(
+
+                "click",
+
+                function() {
+
+                    deleteRate(rate.id);
+
+                }
+
+            );
+
+            actions.appendChild(price);
+
+            actions.appendChild(
+
+                deleteButton
+
+            );
+
+            item.appendChild(name);
+
+            item.appendChild(actions);
+
+            rateList.appendChild(item);
+
+        });
+
+        const shipping =
+
+            data.find(function(rate) {
+
+                return (
+
+                    rate.delivery_type ===
+
+                    "shipping"
+
+                );
+
+            });
+
+        if (shipping) {
+
+            shippingPriceInput.value =
+
+                shipping.price;
+
+        }
+
+    }
+
+    async function addDistrictRate() {
+
+        const district =
+
+            districtInput.value.trim();
+
+        const price =
+
+            Number(priceInput.value);
+
+        if (!district) {
+
+            showMessage(
+
+                "Veuillez indiquer le quartier.",
+
+                "error"
+
+            );
+
+            return;
+
+        }
+
+        if (
+
+            !Number.isFinite(price) ||
+
+            price < 0
+
+        ) {
+
+            showMessage(
+
+                "Veuillez indiquer un tarif valide.",
+
+                "error"
+
+            );
+
+            return;
+
+        }
+
+        if (!currentUser) {
+
+            showMessage(
+
+                "Votre session vendeur n'est pas disponible.",
+
+                "error"
+
+            );
+
+            return;
+
+        }
+
+        try {
+
+            const result =
+
+                await supabaseClient
+
+                    .from("delivery_rates")
+
+                    .select("id, district, price")
+
+                    .eq(
+
+                        "seller_id",
+
+                        currentUser.id
+
+                    )
+
+                    .eq(
+
+                        "delivery_type",
+
+                        "district"
+
+                    );
+
+            const existingRates =
+
+                result.data;
+
+            const existingError =
+
+                result.error;
+
+            if (existingError) {
+
+                console.error(
+
+                    "Erreur vérification quartier :",
+
+                    existingError
+
+                );
+
+                showMessage(
+
+                    "Impossible de vérifier les tarifs.",
+
+                    "error"
+
+                );
+
+                return;
+
+            }
+
+            const normalizedDistrict =
+
+                district
+
+                    .trim()
+
+                    .toLowerCase();
+
+            let existing =
+
+                null;
+
+            if (existingRates) {
+
+                existing =
+
+                    existingRates.find(
+
+                        function(rate) {
+
+                            return (
+
+                                String(
+
+                                    rate.district || ""
+
+                                )
+
+                                .trim()
+
+                                .toLowerCase() ===
+
+                                normalizedDistrict
+
+                            );
+
+                        }
+
+                    );
+
+            }
+
+            if (existing) {
+
+                const updateResult =
+
+                    await supabaseClient
+
+                        .from("delivery_rates")
+
+                        .update({
+
+                            price: price
+
+                        })
+
+                        .eq(
+
+                            "id",
+
+                            existing.id
+
+                        )
+
+                        .eq(
+
+                            "seller_id",
+
+                            currentUser.id
+
+                        );
+
+                if (updateResult.error) {
+
+                    console.error(
+
+                        "Erreur modification tarif :",
+
+                        updateResult.error
+
+                    );
+
+                    showMessage(
+
+                        "Impossible de modifier le tarif.",
+
+                        "error"
+
+                    );
+
+                    return;
+
+                }
+
+                showMessage(
+
+                    "✅ Le tarif du quartier a été mis à jour.",
+
+                    "success"
+
+                );
+
+            } else {
+
+                const insertResult =
+
+                    await supabaseClient
+
+                        .from("delivery_rates")
+
+                        .insert({
+
+                            seller_id:
+
+                                currentUser.id,
+
+                            delivery_type:
+
+                                "district",
+
+                            district:
+
+                                district,
+
+                            price:
+
+                                price
+
+                        });
+
+                if (insertResult.error) {
+
+                    console.error(
+
+                        "Erreur ajout tarif :",
+
+                        insertResult.error
+
+                    );
+
+                    showMessage(
+
+                        "Impossible d'enregistrer le tarif.",
+
+                        "error"
+
+                    );
+
+                    return;
+
+                }
+
+                showMessage(
+
+                    "✅ Tarif du quartier enregistré.",
+
+                    "success"
+
+                );
+
+            }
+
+            districtInput.value = "";
+
+            priceInput.value = "";
+
+            await loadRates();
+
+        } catch (error) {
+
+            console.error(
+
+                "Erreur générale ajout quartier :",
+
+                error
+
+            );
+
+            showMessage(
+
+                "Une erreur est survenue.",
+
+                "error"
+
+            );
+
+        }
+
+    }
+
+    async function saveShippingRate() {
+
+        const price =
+
+            Number(
+
+                shippingPriceInput.value
+
+            );
+
+        if (
+
+            !Number.isFinite(price) ||
+
+            price < 0
+
+        ) {
+
+            showMessage(
+
+                "Veuillez indiquer un tarif d'expédition valide.",
+
+                "error"
+
+            );
+
+            return;
+
+        }
+
+        if (!currentUser) {
+
+            showMessage(
+
+                "Votre session vendeur n'est pas disponible.",
+
+                "error"
+
+            );
+
+            return;
+
+        }
+
+        try {
+
+            const result =
+
+                await supabaseClient
+
+                    .from("delivery_rates")
+
+                    .select("id, price")
+
+                    .eq(
+
+                        "seller_id",
+
+                        currentUser.id
+
+                    )
+
+                    .eq(
+
+                        "delivery_type",
+
+                        "shipping"
+
+                    )
+
+                    .limit(1);
+
+            const existingRates =
+
+                result.data;
+
+            const existingError =
+
+                result.error;
+
+            if (existingError) {
+
+                console.error(
+
+                    "Erreur vérification expédition :",
+
+                    existingError
+
+                );
+
+                showMessage(
+
+                    "Impossible de vérifier le tarif d'expédition.",
+
+                    "error"
+
+                );
+
+                return;
+
+            }
+
+            const existing =
+
+                existingRates &&
+
+                existingRates.length > 0
+
+                    ? existingRates[0]
+
+                    : null;
+
+            if (existing) {
+
+                const updateResult =
+
+                    await supabaseClient
+
+                        .from("delivery_rates")
+
+                        .update({
+
+                            price: price
+
+                        })
+
+                        .eq(
+
+                            "id",
+
+                            existing.id
+
+                        )
+
+                        .eq(
+
+                            "seller_id",
+
+                            currentUser.id
+
+                        );
+
+                if (updateResult.error) {
+
+                    console.error(
+
+                        "Erreur modification expédition :",
+
+                        updateResult.error
+
+                    );
+
+                    showMessage(
+
+                        "Impossible de modifier le tarif d'expédition.",
+
+                        "error"
+
+                    );
+
+                    return;
+
+                }
+
+            } else {
+
+                const insertResult =
+
+                    await supabaseClient
+
+                        .from("delivery_rates")
+
+                        .insert({
+
+                            seller_id:
+
+                                currentUser.id,
+
+                            delivery_type:
+
+                                "shipping",
+
+                            district:
+
+                                "Expédition",
+
+                            price:
+
+                                price
+
+                        });
+
+                if (insertResult.error) {
+
+                    console.error(
+
+                        "Erreur ajout expédition :",
+
+                        insertResult.error
+
+                    );
+
+                    showMessage(
+
+                        "Impossible d'enregistrer le tarif d'expédition.",
+
+                        "error"
+
+                    );
+
+                    return;
+
+                }
+
+            }
+
+            showMessage(
+
+                "✅ Tarif d'expédition enregistré.",
+
+                "success"
+
+            );
+
+            await loadRates();
+
+        } catch (error) {
+
+            console.error(
+
+                "Erreur générale expédition :",
+
+                error
+
+            );
+
+            showMessage(
+
+                "Une erreur est survenue.",
+
+                "error"
+
+            );
+
+        }
+
+    }
+
+    async function deleteRate(id) {
+
+        const confirmDelete =
+
+            confirm(
+
+                "Voulez-vous vraiment supprimer ce tarif ?"
+
+            );
+
+        if (!confirmDelete) {
+
+            return;
+
+        }
+
+        if (!currentUser) {
+
+            showMessage(
+
+                "Votre session vendeur n'est pas disponible.",
+
+                "error"
+
+            );
+
+            return;
+
+        }
+
+        const result =
+
+            await supabaseClient
+
+                .from("delivery_rates")
+
+                .delete()
+
+                .eq(
+
+                    "id",
+
+                    id
+
+                )
+
+                .eq(
+
+                    "seller_id",
+
+                    currentUser.id
+
+                );
+
+        if (result.error) {
+
+            console.error(
+
+                "Erreur suppression tarif :",
+
+                result.error
+
+            );
+
+            showMessage(
+
+                "Impossible de supprimer ce tarif.",
+
+                "error"
+
+            );
+
+            return;
+
+        }
+
+        showMessage(
+
+            "✅ Tarif supprimé.",
+
+            "success"
+
+        );
+
+        await loadRates();
+
+    }
+
+    addDistrictButton.addEventListener(
+
+        "click",
+
+        addDistrictRate
+
+    );
+
+    saveShippingButton.addEventListener(
+
+        "click",
+
+        saveShippingRate
+
+    );
+
+    async function start() {
+
+        const sellerOK =
+
+            await checkSeller();
+
+        if (!sellerOK) {
+
+            return;
+
+        }
+
+        await loadRates();
+
+    }
+
+    start();
+
+</script>
+
+</body>
+
+</html>
