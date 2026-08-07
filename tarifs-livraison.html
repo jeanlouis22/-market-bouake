@@ -948,7 +948,7 @@
 
                 .eq("district", district)
 
-                .eq("is_shipping", false)
+                .eq("delivery_type", "district")
 
                 .limit(1);
 
@@ -1054,17 +1054,17 @@
 
                             currentUser.id,
 
+                        delivery_type:
+
+                            "district",
+
                         district:
 
                             district,
 
                         price:
 
-                            price,
-
-                        is_shipping:
-
-                            false
+                            price
 
                     });
 
@@ -1127,39 +1127,42 @@
     }
 
 }
-    async function saveShippingRate() {
 
-        const price =
+async function saveShippingRate() {
 
-            Number(
+    const price =
 
-                shippingPriceInput.value
+        Number(
 
-            );
+            shippingPriceInput.value
 
-        if (
+        );
 
-            !Number.isFinite(price) ||
+    if (
 
-            price < 0
+        !Number.isFinite(price) ||
 
-        ) {
+        price < 0
 
-            showMessage(
+    ) {
 
-                "Veuillez indiquer un tarif d'expédition valide.",
+        showMessage(
 
-                "error"
+            "Veuillez indiquer un tarif d'expédition valide.",
 
-            );
+            "error"
 
-            return;
+        );
 
-        }
+        return;
+
+    }
+
+    try {
 
         const {
 
-            data: existing,
+            data: existingRates,
 
             error: existingError
 
@@ -1173,13 +1176,19 @@
 
                 .eq("seller_id", currentUser.id)
 
-                .eq("is_shipping", true)
+                .eq("delivery_type", "shipping")
 
-                .maybeSingle();
+                .limit(1);
 
         if (existingError) {
 
-            console.error(existingError);
+            console.error(
+
+                "Erreur vérification expédition :",
+
+                existingError
+
+            );
 
             showMessage(
 
@@ -1192,6 +1201,16 @@
             return;
 
         }
+
+        const existing =
+
+            existingRates &&
+
+            existingRates.length
+
+                ? existingRates[0]
+
+                : null;
 
         if (existing) {
 
@@ -1211,11 +1230,19 @@
 
                     })
 
-                    .eq("id", existing.id);
+                    .eq("id", existing.id)
+
+                    .eq("seller_id", currentUser.id);
 
             if (error) {
 
-                console.error(error);
+                console.error(
+
+                    "Erreur modification expédition :",
+
+                    error
+
+                );
 
                 showMessage(
 
@@ -1247,23 +1274,29 @@
 
                             currentUser.id,
 
+                        delivery_type:
+
+                            "shipping",
+
                         district:
 
                             "Expédition",
 
                         price:
 
-                            price,
-
-                        is_shipping:
-
-                            true
+                            price
 
                     });
 
             if (error) {
 
-                console.error(error);
+                console.error(
+
+                    "Erreur ajout expédition :",
+
+                    error
+
+                );
 
                 showMessage(
 
@@ -1289,8 +1322,27 @@
 
         await loadRates();
 
+    } catch (error) {
+
+        console.error(
+
+            "Erreur générale expédition :",
+
+            error
+
+        );
+
+        showMessage(
+
+            "Une erreur est survenue.",
+
+            "error"
+
+        );
+
     }
 
+}
     async function deleteRate(id) {
 
         const confirmDelete =
