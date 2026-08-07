@@ -1330,193 +1330,239 @@
 
 <script>
 
-    /* =====================================================
+/* =========================================================
 
-       PANIER
+   PANIER MARKET BOUAKÉ
 
-    ===================================================== */
+========================================================= */
 
-    let cart = JSON.parse(
+let cart = JSON.parse(
 
-        localStorage.getItem("market_bouake_cart") || "[]"
+    localStorage.getItem("market_bouake_cart") || "[]"
+
+);
+
+const cartItems = document.getElementById("cartItems");
+
+const emptyCart = document.getElementById("emptyCart");
+
+const subtotal = document.getElementById("subtotal");
+
+const cartTotal = document.getElementById("cartTotal");
+
+const cartCount = document.getElementById("cartCount");
+
+/* =========================================================
+
+   FORMAT PRIX
+
+========================================================= */
+
+function formatPrice(value) {
+
+    return Number(value || 0)
+
+        .toLocaleString("fr-FR") + " FCFA";
+
+}
+
+/* =========================================================
+
+   SAUVEGARDER LE PANIER
+
+========================================================= */
+
+function saveCart() {
+
+    localStorage.setItem(
+
+        "market_bouake_cart",
+
+        JSON.stringify(cart)
 
     );
 
-    const cartItems = document.getElementById("cartItems");
+}
 
-    const emptyCart = document.getElementById("emptyCart");
+/* =========================================================
 
-    const subtotal = document.getElementById("subtotal");
+   AFFICHER LE PANIER
 
-    const cartTotal = document.getElementById("cartTotal");
+========================================================= */
 
-    const cartCount = document.getElementById("cartCount");
+function renderCart() {
 
-    /* =====================================================
+    if (!cart.length) {
 
-       FORMAT PRIX
+        cartItems.innerHTML = "";
 
-    ===================================================== */
+        emptyCart.style.display = "block";
 
-    function formatPrice(value) {
+        subtotal.textContent = "0 FCFA";
 
-        return Number(value || 0).toLocaleString("fr-FR") + " FCFA";
+        cartTotal.textContent = "0 FCFA";
 
-    }
+        cartCount.textContent = "0";
 
-    /* =====================================================
-
-       SAUVEGARDER
-
-    ===================================================== */
-
-    function saveCart() {
-
-        localStorage.setItem(
-
-            "market_bouake_cart",
-
-            JSON.stringify(cart)
-
-        );
+        return;
 
     }
 
-    /* =====================================================
+    emptyCart.style.display = "none";
 
-       AFFICHER LE PANIER
+    let total = 0;
 
-    ===================================================== */
+    let quantityTotal = 0;
 
-    function renderCart() {
+    cartItems.innerHTML = cart.map(function(item, index) {
 
-        if (!cart.length) {
+        const quantity = Number(item.quantity || 1);
 
-            cartItems.innerHTML = "";
+        const price = Number(item.price || 0);
 
-            emptyCart.style.display = "block";
+        const itemTotal = price * quantity;
 
-            subtotal.textContent = "0 FCFA";
+        total += itemTotal;
 
-            cartTotal.textContent = "0 FCFA";
+        quantityTotal += quantity;
 
-            cartCount.textContent = "0";
+        const image =
 
-            return;
+            item.image ||
 
-        }
+            item.image_url ||
 
-        emptyCart.style.display = "none";
+            "";
 
-        let total = 0;
+        return `
 
-        let quantityTotal = 0;
+            <div class="cart-item">
 
-        cartItems.innerHTML = cart.map(function(item, index) {
+                <div class="item-image">
 
-            const quantity = Number(item.quantity || 1);
+                    ${
 
-            const price = Number(item.price || 0);
+                        image
 
-            const itemTotal = price * quantity;
+                        ?
 
-            total += itemTotal;
+                        `<img
 
-            quantityTotal += quantity;
+                            src="${escapeHtml(image)}"
 
-            const image = item.image || item.image_url;
+                            alt="${escapeHtml(item.name || "Produit")}"
 
-            return `
+                        >`
 
-                <div class="cart-item">
+                        :
 
-                    <div class="item-image">
+                        `📦`
 
-                        ${
+                    }
 
-                            image
+                </div>
 
-                            ?
+                <div>
 
-                            `<img src="${escapeHtml(image)}" alt="${escapeHtml(item.name)}">`
+                    <div class="item-name">
 
-                            :
+                        ${escapeHtml(
 
-                            `📦`
+                            item.name || "Produit"
 
-                        }
+                        )}
 
                     </div>
 
-                    <div>
+                    <div class="item-seller">
 
-                        <div class="item-name">
+                        🏪 ${escapeHtml(
 
-                            ${escapeHtml(item.name || "Produit")}
+                            item.seller_name || "Vendeur"
 
-                        </div>
+                        )}
+
+                    </div>
+
+                    <div class="item-price">
+
+                        ${formatPrice(price)}
+
+                    </div>
+
+                    ${
+
+                        item.size
+
+                        ?
+
+                        `
 
                         <div class="item-seller">
 
-                            🏪 ${escapeHtml(item.seller_name || "Vendeur")}
+                            Taille : ${escapeHtml(item.size)}
 
                         </div>
 
-                        <div class="item-price">
+                        `
 
-                            ${formatPrice(price)}
+                        :
 
-                        </div>
+                        ""
 
-                        <div class="quantity">
+                    }
 
-                            <button
+                    ${
 
-                                onclick="changeQuantity(${index}, -1)"
+                        item.color
 
-                            >
+                        ?
 
-                                −
+                        `
 
-                            </button>
+                        <div class="item-seller">
 
-                            <span>
-
-                                ${quantity}
-
-                            </span>
-
-                            <button
-
-                                onclick="changeQuantity(${index}, 1)"
-
-                            >
-
-                                +
-
-                            </button>
+                            Couleur : ${escapeHtml(item.color)}
 
                         </div>
 
-                    </div>
+                        `
 
-                    <div class="item-right">
+                        :
 
-                        <div class="item-total">
+                        ""
 
-                            ${formatPrice(itemTotal)}
+                    }
 
-                        </div>
+                    <div class="quantity">
 
                         <button
 
-                            class="remove-btn"
+                            type="button"
 
-                            onclick="removeItem(${index})"
+                            onclick="changeQuantity(${index}, -1)"
 
                         >
 
-                            🗑️ Supprimer
+                            −
+
+                        </button>
+
+                        <span>
+
+                            ${quantity}
+
+                        </span>
+
+                        <button
+
+                            type="button"
+
+                            onclick="changeQuantity(${index}, 1)"
+
+                        >
+
+                            +
 
                         </button>
 
@@ -1524,133 +1570,1109 @@
 
                 </div>
 
-            `;
+                <div class="item-right">
 
-        }).join("");
+                    <div class="item-total">
 
-        subtotal.textContent = formatPrice(total);
+                        ${formatPrice(itemTotal)}
 
-        cartTotal.textContent = formatPrice(total);
+                    </div>
 
-        cartCount.textContent = quantityTotal;
+                    <button
+
+                        type="button"
+
+                        class="remove-btn"
+
+                        onclick="removeItem(${index})"
+
+                    >
+
+                        🗑️ Supprimer
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }).join("");
+
+    subtotal.textContent = formatPrice(total);
+
+    cartTotal.textContent = formatPrice(total);
+
+    cartCount.textContent = quantityTotal;
+
+}
+
+/* =========================================================
+
+   MODIFIER QUANTITÉ
+
+========================================================= */
+
+function changeQuantity(index, amount) {
+
+    if (!cart[index]) {
+
+        return;
 
     }
 
-    /* =====================================================
+    cart[index].quantity =
 
-       QUANTITÉ
+        Number(cart[index].quantity || 1) + amount;
 
-    ===================================================== */
-
-    function changeQuantity(index, amount) {
-
-        if (!cart[index]) {
-
-            return;
-
-        }
-
-        cart[index].quantity =
-
-            Number(cart[index].quantity || 1) + amount;
-
-        if (cart[index].quantity <= 0) {
-
-            cart.splice(index, 1);
-
-        }
-
-        saveCart();
-
-        renderCart();
-
-    }
-
-    /* =====================================================
-
-       SUPPRIMER
-
-    ===================================================== */
-
-    function removeItem(index) {
-
-        if (!cart[index]) {
-
-            return;
-
-        }
+    if (cart[index].quantity <= 0) {
 
         cart.splice(index, 1);
 
-        saveCart();
+    }
 
-        renderCart();
+    saveCart();
+
+    renderCart();
+
+}
+
+/* =========================================================
+
+   SUPPRIMER UN PRODUIT
+
+========================================================= */
+
+function removeItem(index) {
+
+    if (!cart[index]) {
+
+        return;
 
     }
 
-    /* =====================================================
+    cart.splice(index, 1);
 
-       SÉCURITÉ HTML
+    saveCart();
 
-    ===================================================== */
+    renderCart();
 
-    function escapeHtml(value) {
+}
 
-        if (
+/* =========================================================
 
-            value === null ||
+   SÉCURITÉ HTML
 
-            value === undefined
+========================================================= */
 
-        ) {
+function escapeHtml(value) {
 
-            return "";
+    if (
 
-        }
+        value === null ||
 
-        return String(value)
+        value === undefined
 
-            .replace(/&/g, "&amp;")
+    ) {
 
-            .replace(/</g, "&lt;")
-
-            .replace(/>/g, "&gt;")
-
-            .replace(/"/g, "&quot;")
-
-            .replace(/'/g, "&#039;");
+        return "";
 
     }
 
-    /* =====================================================
+    return String(value)
 
-       MENU MOBILE
+        .replace(/&/g, "&amp;")
 
-    ===================================================== */
+        .replace(/</g, "&lt;")
 
-    document.getElementById("menuButton")
+        .replace(/>/g, "&gt;")
 
-        .addEventListener("click", function() {
+        .replace(/"/g, "&quot;")
 
-            document
+        .replace(/'/g, "&#039;");
 
-                .getElementById("menu")
+}
 
-                .classList.toggle("open");
+/* =========================================================
+
+   NUMÉRO WHATSAPP
+
+========================================================= */
+
+function normalizeWhatsAppNumber(number) {
+
+    if (!number) {
+
+        return "";
+
+    }
+
+    let value = String(number).trim();
+
+    value = value.replace(
+
+        /[\s\-\(\)]/g,
+
+        ""
+
+    );
+
+    if (value.startsWith("+")) {
+
+        value = value.substring(1);
+
+    }
+
+    if (value.startsWith("00")) {
+
+        value = value.substring(2);
+
+    }
+
+    /*
+
+       Numéro ivoirien au format :
+
+       0700000000
+
+       0500000000
+
+       0100000000
+
+    */
+
+    if (
+
+        value.startsWith("0") &&
+
+        value.length === 10
+
+    ) {
+
+        value = "225" + value;
+
+    }
+
+    return value;
+
+}
+
+/* =========================================================
+
+   RÉCUPÉRER LES INFORMATIONS MANQUANTES
+
+========================================================= */
+
+async function loadMissingProductData() {
+
+    if (
+
+        typeof supabaseClient === "undefined"
+
+    ) {
+
+        return;
+
+    }
+
+    const productIds = cart
+
+        .filter(function(item) {
+
+            return item.id;
+
+        })
+
+        .map(function(item) {
+
+            return item.id;
 
         });
 
-    /* =====================================================
+    if (!productIds.length) {
 
-       BOUTON COMMANDER
+        return;
 
-       POUR L'INSTANT : PRÉPARATION
+    }
 
-    ===================================================== */
+    try {
 
-    document.getElementById("checkoutButton")
+        const {
 
-        .addEventListener("click", function() {
+            data,
+
+            error
+
+        } = await supabaseClient
+
+            .from("products")
+
+            .select(
+
+                "id,seller_id,name,whatsapp_number"
+
+            )
+
+            .in("id", productIds);
+
+        if (error) {
+
+            console.error(
+
+                "Erreur récupération produits :",
+
+                error
+
+            );
+
+            return;
+
+        }
+
+        if (!data) {
+
+            return;
+
+        }
+
+        cart.forEach(function(item) {
+
+            const product =
+
+                data.find(function(product) {
+
+                    return product.id === item.id;
+
+                });
+
+            if (!product) {
+
+                return;
+
+            }
+
+            if (
+
+                !item.seller_id &&
+
+                product.seller_id
+
+            ) {
+
+                item.seller_id =
+
+                    product.seller_id;
+
+            }
+
+            if (
+
+                !item.whatsapp_number &&
+
+                product.whatsapp_number
+
+            ) {
+
+                item.whatsapp_number =
+
+                    product.whatsapp_number;
+
+            }
+
+        });
+
+        saveCart();
+
+    } catch (error) {
+
+        console.error(
+
+            "Erreur chargement données produit :",
+
+            error
+
+        );
+
+    }
+
+}
+
+/* =========================================================
+
+   REGROUPER LE PANIER PAR VENDEUR
+
+========================================================= */
+
+function groupCartBySeller() {
+
+    const sellers = {};
+
+    cart.forEach(function(item) {
+
+        /*
+
+           seller_id est prioritaire.
+
+           Le numéro WhatsApp sert de secours.
+
+        */
+
+        const sellerKey =
+
+            item.seller_id ||
+
+            item.sellerId ||
+
+            item.whatsapp_number ||
+
+            item.seller_name ||
+
+            "vendeur-inconnu";
+
+        if (!sellers[sellerKey]) {
+
+            sellers[sellerKey] = {
+
+                seller_id:
+
+                    item.seller_id || "",
+
+                seller_name:
+
+                    item.seller_name ||
+
+                    "Vendeur",
+
+                whatsapp_number:
+
+                    item.whatsapp_number ||
+
+                    "",
+
+                items: [],
+
+                total: 0
+
+            };
+
+        }
+
+        const quantity =
+
+            Number(item.quantity || 1);
+
+        const price =
+
+            Number(item.price || 0);
+
+        const itemTotal =
+
+            price * quantity;
+
+        sellers[sellerKey]
+
+            .items
+
+            .push(item);
+
+        sellers[sellerKey]
+
+            .total += itemTotal;
+
+        /*
+
+           Si le numéro WhatsApp existe
+
+           sur le produit, on le conserve.
+
+        */
+
+        if (
+
+            !sellers[sellerKey].whatsapp_number &&
+
+            item.whatsapp_number
+
+        ) {
+
+            sellers[sellerKey]
+
+                .whatsapp_number =
+
+                item.whatsapp_number;
+
+        }
+
+    });
+
+    return Object.values(sellers);
+
+}
+
+/* =========================================================
+
+   CRÉER LE MESSAGE WHATSAPP
+
+========================================================= */
+
+function createWhatsAppMessage(
+
+    seller,
+
+    delivery
+
+) {
+
+    let message = "";
+
+    message +=
+
+        "🛍️ *COMMANDE MARKET BOUAKÉ*";
+
+    message += "\n\n";
+
+    message +=
+
+        "Bonjour, je souhaite commander chez vous sur Market Bouaké.";
+
+    message += "\n\n";
+
+    message +=
+
+        "*PRODUITS*";
+
+    message += "\n\n";
+
+    seller.items.forEach(function(item) {
+
+        const quantity =
+
+            Number(item.quantity || 1);
+
+        const price =
+
+            Number(item.price || 0);
+
+        const total =
+
+            price * quantity;
+
+        message +=
+
+            "📦 " +
+
+            (item.name || "Produit") +
+
+            "\n";
+
+        message +=
+
+            "Quantité : " +
+
+            quantity +
+
+            "\n";
+
+        message +=
+
+            "Prix : " +
+
+            formatPrice(price) +
+
+            "\n";
+
+        message +=
+
+            "Total : " +
+
+            formatPrice(total) +
+
+            "\n";
+
+        if (item.size) {
+
+            message +=
+
+                "Taille : " +
+
+                item.size +
+
+                "\n";
+
+        }
+
+        if (item.color) {
+
+            message +=
+
+                "Couleur : " +
+
+                item.color +
+
+                "\n";
+
+        }
+
+        message += "\n";
+
+    });
+
+    message +=
+
+        "💰 *Sous-total : " +
+
+        formatPrice(seller.total) +
+
+        "*";
+
+    message += "\n";
+
+    message +=
+
+        "🚚 Livraison : 0 FCFA";
+
+    message += "\n\n";
+
+    message +=
+
+        "📍 *INFORMATIONS DE LIVRAISON*";
+
+    message += "\n";
+
+    message +=
+
+        "Nom : " +
+
+        delivery.firstName +
+
+        " " +
+
+        delivery.lastName;
+
+    message += "\n";
+
+    message +=
+
+        "Téléphone / WhatsApp : " +
+
+        delivery.phone;
+
+    message += "\n";
+
+    message +=
+
+        "Ville : " +
+
+        delivery.city;
+
+    message += "\n";
+
+    message +=
+
+        "Quartier : " +
+
+        delivery.district;
+
+    if (delivery.address) {
+
+        message += "\n";
+
+        message +=
+
+            "Adresse / indications : " +
+
+            delivery.address;
+
+    }
+
+    message += "\n\n";
+
+    message +=
+
+        "Merci. Je vous contacte depuis Market Bouaké.";
+
+    return message;
+
+}
+
+/* =========================================================
+
+   OUVRIR WHATSAPP DU VENDEUR
+
+========================================================= */
+
+function openSellerWhatsApp(
+
+    seller,
+
+    delivery
+
+) {
+
+    const number =
+
+        normalizeWhatsAppNumber(
+
+            seller.whatsapp_number
+
+        );
+
+    if (!number) {
+
+        alert(
+
+            "❌ Le numéro WhatsApp de " +
+
+            seller.seller_name +
+
+            " n'est pas disponible."
+
+        );
+
+        return;
+
+    }
+
+    const message =
+
+        createWhatsAppMessage(
+
+            seller,
+
+            delivery
+
+        );
+
+    const whatsappUrl =
+
+        "https://wa.me/" +
+
+        number +
+
+        "?text=" +
+
+        encodeURIComponent(message);
+
+    window.open(
+
+        whatsappUrl,
+
+        "_blank"
+
+    );
+
+}
+
+/* =========================================================
+
+   ZONE DES VENDEURS
+
+========================================================= */
+
+function createSellerOrdersArea() {
+
+    let area =
+
+        document.getElementById(
+
+            "sellerOrdersArea"
+
+        );
+
+    if (area) {
+
+        return area;
+
+    }
+
+    area =
+
+        document.createElement("div");
+
+    area.id =
+
+        "sellerOrdersArea";
+
+    area.style.marginTop =
+
+        "20px";
+
+    const summary =
+
+        document.querySelector(".summary");
+
+    summary.appendChild(area);
+
+    return area;
+
+}
+
+/* =========================================================
+
+   AFFICHER LES COMMANDES PAR VENDEUR
+
+========================================================= */
+
+function displaySellerOrders(
+
+    sellers,
+
+    delivery
+
+) {
+
+    const area =
+
+        createSellerOrdersArea();
+
+    area.innerHTML = "";
+
+    /*
+
+       MESSAGE POUR PLUSIEURS VENDEURS
+
+    */
+
+    if (sellers.length > 1) {
+
+        const notice =
+
+            document.createElement("div");
+
+        notice.style.background =
+
+            "#fff8ef";
+
+        notice.style.border =
+
+            "1px solid #f5d6ad";
+
+        notice.style.borderRadius =
+
+            "10px";
+
+        notice.style.padding =
+
+            "14px";
+
+        notice.style.marginBottom =
+
+            "15px";
+
+        notice.style.fontSize =
+
+            "13px";
+
+        notice.innerHTML =
+
+            "<strong>⚠️ Plusieurs vendeurs</strong><br><br>" +
+
+            "Votre panier contient des produits de " +
+
+            sellers.length +
+
+            " vendeurs différents.<br><br>" +
+
+            "Veuillez commander séparément chez chaque vendeur. " +
+
+            "Chaque vendeur recevra uniquement les produits " +
+
+            "qui lui appartiennent.";
+
+        area.appendChild(notice);
+
+    }
+
+    /*
+
+       CRÉER UNE CARTE POUR CHAQUE VENDEUR
+
+    */
+
+    sellers.forEach(function(seller) {
+
+        const card =
+
+            document.createElement("div");
+
+        card.style.background =
+
+            "#f8f9fa";
+
+        card.style.border =
+
+            "1px solid #e5e5e5";
+
+        card.style.borderRadius =
+
+            "10px";
+
+        card.style.padding =
+
+            "14px";
+
+        card.style.marginBottom =
+
+            "12px";
+
+        /*
+
+           NOM DU VENDEUR
+
+        */
+
+        const sellerName =
+
+            document.createElement("div");
+
+        sellerName.style.fontWeight =
+
+            "bold";
+
+        sellerName.style.fontSize =
+
+            "15px";
+
+        sellerName.style.marginBottom =
+
+            "7px";
+
+        sellerName.textContent =
+
+            "🏪 " +
+
+            seller.seller_name;
+
+        card.appendChild(
+
+            sellerName
+
+        );
+
+        /*
+
+           PRODUITS
+
+        */
+
+        const products =
+
+            document.createElement("div");
+
+        products.style.color =
+
+            "#666";
+
+        products.style.fontSize =
+
+            "12px";
+
+        products.style.lineHeight =
+
+            "1.6";
+
+        products.style.marginBottom =
+
+            "8px";
+
+        seller.items.forEach(
+
+            function(item) {
+
+                const quantity =
+
+                    Number(item.quantity || 1);
+
+                const line =
+
+                    document.createElement("div");
+
+                line.textContent =
+
+                    "📦 " +
+
+                    item.name +
+
+                    " × " +
+
+                    quantity;
+
+                products.appendChild(
+
+                    line
+
+                );
+
+            }
+
+        );
+
+        card.appendChild(
+
+            products
+
+        );
+
+        /*
+
+           TOTAL DU VENDEUR
+
+        */
+
+        const total =
+
+            document.createElement("div");
+
+        total.style.fontWeight =
+
+            "bold";
+
+        total.style.marginBottom =
+
+            "10px";
+
+        total.textContent =
+
+            "Total : " +
+
+            formatPrice(
+
+                seller.total
+
+            );
+
+        card.appendChild(
+
+            total
+
+        );
+
+        /*
+
+           BOUTON WHATSAPP
+
+        */
+
+        const button =
+
+            document.createElement("button");
+
+        button.type =
+
+            "button";
+
+        button.style.width =
+
+            "100%";
+
+        button.style.border =
+
+            "none";
+
+        button.style.background =
+
+            "#25D366";
+
+        button.style.color =
+
+            "white";
+
+        button.style.padding =
+
+            "12px";
+
+        button.style.borderRadius =
+
+            "8px";
+
+        button.style.fontWeight =
+
+            "bold";
+
+        button.style.cursor =
+
+            "pointer";
+
+        button.style.fontSize =
+
+            "14px";
+
+        button.textContent =
+
+            "📲 Commander chez ce vendeur";
+
+        button.addEventListener(
+
+            "click",
+
+            function() {
+
+                openSellerWhatsApp(
+
+                    seller,
+
+                    delivery
+
+                );
+
+            }
+
+        );
+
+        card.appendChild(
+
+            button
+
+        );
+
+        area.appendChild(
+
+            card
+
+        );
+
+    });
+
+    /*
+
+       Faire défiler doucement
+
+       vers les boutons.
+
+    */
+
+    area.scrollIntoView({
+
+        behavior: "smooth",
+
+        block: "nearest"
+
+    });
+
+}
+
+/* =========================================================
+
+   BOUTON PASSER LA COMMANDE
+
+========================================================= */
+
+document
+
+    .getElementById("checkoutButton")
+
+    .addEventListener(
+
+        "click",
+
+        async function() {
+
+            /*
+
+               PANIER VIDE
+
+            */
 
             if (!cart.length) {
 
@@ -1664,25 +2686,101 @@
 
             }
 
+            /*
+
+               RÉCUPÉRER LES INFORMATIONS
+
+            */
+
             const firstName =
 
-                document.getElementById("deliveryFirstName").value.trim();
+                document
+
+                    .getElementById(
+
+                        "deliveryFirstName"
+
+                    )
+
+                    .value
+
+                    .trim();
 
             const lastName =
 
-                document.getElementById("deliveryLastName").value.trim();
+                document
+
+                    .getElementById(
+
+                        "deliveryLastName"
+
+                    )
+
+                    .value
+
+                    .trim();
 
             const phone =
 
-                document.getElementById("deliveryPhone").value.trim();
+                document
+
+                    .getElementById(
+
+                        "deliveryPhone"
+
+                    )
+
+                    .value
+
+                    .trim();
 
             const city =
 
-                document.getElementById("deliveryCity").value.trim();
+                document
+
+                    .getElementById(
+
+                        "deliveryCity"
+
+                    )
+
+                    .value
+
+                    .trim();
 
             const district =
 
-                document.getElementById("deliveryDistrict").value.trim();
+                document
+
+                    .getElementById(
+
+                        "deliveryDistrict"
+
+                    )
+
+                    .value
+
+                    .trim();
+
+            const address =
+
+                document
+
+                    .getElementById(
+
+                        "deliveryAddress"
+
+                    )
+
+                    .value
+
+                    .trim();
+
+            /*
+
+               VÉRIFICATION
+
+            */
 
             if (
 
@@ -1708,24 +2806,197 @@
 
             }
 
-            alert(
+            const delivery = {
 
-                "✅ Les informations sont correctes. La prochaine étape sera l'envoi de la commande au WhatsApp du vendeur."
+                firstName:
+
+                    firstName,
+
+                lastName:
+
+                    lastName,
+
+                phone:
+
+                    phone,
+
+                city:
+
+                    city,
+
+                district:
+
+                    district,
+
+                address:
+
+                    address
+
+            };
+
+            /*
+
+               CHARGER LES INFORMATIONS
+
+               DES PRODUITS
+
+            */
+
+            await loadMissingProductData();
+
+            /*
+
+               REGROUPER PAR VENDEUR
+
+            */
+
+            const sellers =
+
+                groupCartBySeller();
+
+            if (!sellers.length) {
+
+                alert(
+
+                    "❌ Impossible de trouver les vendeurs des produits."
+
+                );
+
+                return;
+
+            }
+
+            /*
+
+               VÉRIFIER LES NUMÉROS WHATSAPP
+
+            */
+
+            const missing =
+
+                sellers.filter(
+
+                    function(seller) {
+
+                        return !normalizeWhatsAppNumber(
+
+                            seller.whatsapp_number
+
+                        );
+
+                    }
+
+                );
+
+            if (missing.length) {
+
+                const names =
+
+                    missing
+
+                        .map(function(seller) {
+
+                            return seller.seller_name;
+
+                        })
+
+                        .join(", ");
+
+                alert(
+
+                    "❌ Le numéro WhatsApp est manquant pour : " +
+
+                    names +
+
+                    "."
+
+                );
+
+                return;
+
+            }
+
+            /*
+
+               AFFICHER LES VENDEURS
+
+            */
+
+            displaySellerOrders(
+
+                sellers,
+
+                delivery
 
             );
 
-        });
+            /*
 
-    /* =====================================================
+               UN SEUL VENDEUR
 
-       DÉMARRAGE
+               = OUVERTURE DIRECTE
 
-    ===================================================== */
+            */
 
-    renderCart();
+            if (sellers.length === 1) {
+
+                openSellerWhatsApp(
+
+                    sellers[0],
+
+                    delivery
+
+                );
+
+            }
+
+        }
+
+    );
+
+/* =========================================================
+
+   MENU MOBILE
+
+========================================================= */
+
+document
+
+    .getElementById("menuButton")
+
+    .addEventListener(
+
+        "click",
+
+        function() {
+
+            document
+
+                .getElementById("menu")
+
+                .classList.toggle("open");
+
+        }
+
+    );
+
+/* =========================================================
+
+   DÉMARRAGE
+
+========================================================= */
+
+loadMissingProductData()
+
+    .finally(function() {
+
+        renderCart();
+
+    });
 
 </script>
 
+`
 </body>
 
 </html>
