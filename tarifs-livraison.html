@@ -886,51 +886,53 @@
 
     async function addDistrictRate() {
 
-        const district =
+    const district =
 
-            districtInput.value.trim();
+        districtInput.value.trim();
 
-        const price =
+    const price =
 
-            Number(priceInput.value);
+        Number(priceInput.value);
 
-        if (!district) {
+    if (!district) {
 
-            showMessage(
+        showMessage(
 
-                "Veuillez indiquer le quartier.",
+            "Veuillez indiquer le quartier.",
 
-                "error"
+            "error"
 
-            );
+        );
 
-            return;
+        return;
 
-        }
+    }
 
-        if (
+    if (
 
-            !Number.isFinite(price) ||
+        !Number.isFinite(price) ||
 
-            price < 0
+        price < 0
 
-        ) {
+    ) {
 
-            showMessage(
+        showMessage(
 
-                "Veuillez indiquer un tarif valide.",
+            "Veuillez indiquer un tarif valide.",
 
-                "error"
+            "error"
 
-            );
+        );
 
-            return;
+        return;
 
-        }
+    }
+
+    try {
 
         const {
 
-            data: existing,
+            data: existingRates,
 
             error: existingError
 
@@ -948,11 +950,17 @@
 
                 .eq("is_shipping", false)
 
-                .maybeSingle();
+                .limit(1);
 
         if (existingError) {
 
-            console.error(existingError);
+            console.error(
+
+                "Erreur vérification quartier :",
+
+                existingError
+
+            );
 
             showMessage(
 
@@ -965,6 +973,16 @@
             return;
 
         }
+
+        const existing =
+
+            existingRates &&
+
+            existingRates.length
+
+                ? existingRates[0]
+
+                : null;
 
         if (existing) {
 
@@ -984,11 +1002,19 @@
 
                     })
 
-                    .eq("id", existing.id);
+                    .eq("id", existing.id)
+
+                    .eq("seller_id", currentUser.id);
 
             if (error) {
 
-                console.error(error);
+                console.error(
+
+                    "Erreur modification tarif :",
+
+                    error
+
+                );
 
                 showMessage(
 
@@ -1044,7 +1070,13 @@
 
             if (error) {
 
-                console.error(error);
+                console.error(
+
+                    "Erreur ajout tarif :",
+
+                    error
+
+                );
 
                 showMessage(
 
@@ -1074,8 +1106,27 @@
 
         await loadRates();
 
+    } catch (error) {
+
+        console.error(
+
+            "Erreur générale :",
+
+            error
+
+        );
+
+        showMessage(
+
+            "Une erreur est survenue.",
+
+            "error"
+
+        );
+
     }
 
+}
     async function saveShippingRate() {
 
         const price =
