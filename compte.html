@@ -1,0 +1,3189 @@
+1"}
+
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mon compte | Market Bouaké</title>
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --orange: #f57c00;
+    --orange-dark: #e66f00;
+    --orange-light: #fff4e8;
+    --green: #198754;
+    --green-light: #d1e7dd;
+    --dark: #171717;
+    --text: #242424;
+    --muted: #777;
+    --bg: #f5f6f8;
+    --white: #ffffff;
+    --border: #e8e8e8;
+    --danger: #dc3545;
+    --danger-light: #f8d7da;
+    --blue: #0d6efd;
+    --blue-light: #cfe2ff;
+    --yellow: #ffc107;
+    --yellow-light: #fff3cd;
+    --shadow: 0 8px 25px rgba(0,0,0,0.07);
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 75px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+header {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+}
+
+.header-main {
+    min-height: 70px;
+    padding: 12px 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--dark);
+}
+
+.logo span {
+    color: var(--orange);
+}
+
+.header-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.header-links a,
+.header-links button {
+    border: none;
+    background: transparent;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.header-links a:hover,
+.header-links button:hover {
+    background: var(--orange-light);
+    color: var(--orange);
+}
+
+.logout-top {
+    color: var(--danger);
+}
+
+/* =========================
+   PAGE
+========================= */
+
+.page {
+    max-width: 1100px;
+    margin: auto;
+    padding: 35px 5%;
+}
+
+.page-title {
+    margin-bottom: 25px;
+}
+
+.page-title h1 {
+    font-size: 30px;
+    margin-bottom: 7px;
+}
+
+.page-title p {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+/* =========================
+   PROFILE
+========================= */
+
+.profile-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: var(--shadow);
+    margin-bottom: 25px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.profile-avatar {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background: var(--orange-light);
+    color: var(--orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+    font-weight: bold;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-name {
+    font-size: 21px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.profile-email {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.role-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background: var(--orange-light);
+    color: var(--orange);
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.info-box {
+    background: #f8f8f8;
+    border-radius: 11px;
+    padding: 14px;
+}
+
+.info-label {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+    margin-bottom: 5px;
+}
+
+.info-value {
+    font-size: 14px;
+    font-weight: bold;
+    word-break: break-word;
+}
+
+.button-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 16px;
+    border-radius: 9px;
+    border: none;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background: var(--orange);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--orange-dark);
+}
+
+.btn-green {
+    background: var(--green);
+    color: white;
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: white;
+}
+
+.btn-blue {
+    background: var(--blue);
+    color: white;
+}
+
+.btn-light {
+    background: #eeeeee;
+    color: #333;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+
+.section-title {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.action-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.04);
+    transition: 0.2s;
+}
+
+.action-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+    border-color: var(--orange);
+}
+
+.action-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 11px;
+    background: var(--orange-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 12px;
+}
+
+.action-card h3 {
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+.action-card p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* =========================
+   COMMANDES
+========================= */
+
+.orders-section {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+}
+
+.orders-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.orders-header h2 {
+    font-size: 20px;
+}
+
+.orders-header p {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.orders-refresh {
+    border: none;
+    background: var(--orange-light);
+    color: var(--orange);
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.order-card {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    background: #fafafa;
+}
+
+.order-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.order-number {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.order-date {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 4px;
+}
+
+.order-status {
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.status-pending {
+    background: var(--yellow-light);
+    color: #856404;
+}
+
+.status-confirmed {
+    background: #cff4fc;
+    color: #055160;
+}
+
+.status-processing {
+    background: var(--blue-light);
+    color: #084298;
+}
+
+.status-shipped {
+    background: #e2d9f3;
+    color: #432874;
+}
+
+.status-delivered {
+    background: var(--green-light);
+    color: #0f5132;
+}
+
+.status-cancelled {
+    background: var(--danger-light);
+    color: #842029;
+}
+
+.status-default {
+    background: #e9ecef;
+    color: #495057;
+}
+
+.order-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.order-detail-box {
+    background: white;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.order-detail-label {
+    display: block;
+    color: var(--muted);
+    font-size: 10px;
+    margin-bottom: 4px;
+}
+
+.order-detail-value {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.order-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+}
+
+.order-actions button {
+    border: none;
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.receive-button {
+    background: var(--green);
+    color: white;
+}
+
+.issue-button {
+    background: var(--danger);
+    color: white;
+}
+
+.review-button {
+    background: var(--yellow);
+    color: #222;
+}
+
+.received-message {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: var(--green-light);
+    color: #0f5132;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.issue-message {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: var(--danger-light);
+    color: #842029;
+    font-size: 12px;
+}
+
+.issue-status-message {
+    margin-top: 7px;
+    font-size: 11px;
+    color: #666;
+}
+
+.orders-empty {
+    text-align: center;
+    padding: 35px 15px;
+    color: var(--muted);
+}
+
+.orders-empty-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.orders-empty h3 {
+    color: var(--text);
+    margin-bottom: 6px;
+}
+
+.orders-loading {
+    text-align: center;
+    padding: 30px;
+    color: var(--muted);
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 6000;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-box {
+    background: white;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.modal-header h2 {
+    font-size: 19px;
+}
+
+.close-modal {
+    border: none;
+    background: #eeeeee;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    font-size: 18px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 9px;
+    padding: 11px;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+}
+
+.form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--orange);
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.modal-buttons button {
+    flex: 1;
+}
+
+/* =========================
+   ÉTOILES
+========================= */
+
+.rating-stars {
+    display: flex;
+    gap: 7px;
+    margin-top: 8px;
+}
+
+.rating-star {
+    border: none;
+    background: transparent;
+    font-size: 34px;
+    color: #ccc;
+    padding: 0;
+    line-height: 1;
+}
+
+.rating-star.active {
+    color: var(--yellow);
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.loading {
+    text-align: center;
+    padding: 70px 20px;
+    color: var(--muted);
+}
+
+.loading-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+}
+
+/* =========================
+   MESSAGE
+========================= */
+
+.message {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.message-icon {
+    font-size: 45px;
+    margin-bottom: 12px;
+}
+
+.message h2 {
+    margin-bottom: 8px;
+}
+
+.message p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 18px;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast {
+    position: fixed;
+    right: 20px;
+    bottom: 80px;
+    background: #171717;
+    color: white;
+    padding: 13px 17px;
+    border-radius: 9px;
+    display: none;
+    z-index: 7000;
+    font-size: 13px;
+    max-width: 320px;
+}
+
+.toast.show {
+    display: block;
+}
+
+/* =========================
+   BOTTOM NAV
+========================= */
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 62px;
+    background: white;
+    border-top: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    z-index: 2000;
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.06);
+}
+
+.bottom-nav a {
+    color: #666;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    position: relative;
+}
+
+.bottom-nav .bottom-icon {
+    display: block;
+    font-size: 21px;
+    margin-bottom: 2px;
+}
+
+.bottom-nav a.active {
+    color: var(--orange);
+}
+
+.cart-count {
+    position: absolute;
+    top: -4px;
+    right: 5px;
+    min-width: 17px;
+    height: 17px;
+    padding: 0 4px;
+    border-radius: 20px;
+    background: var(--orange);
+    color: white;
+    font-size: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 750px) {
+
+    .header-links {
+        display: none;
+    }
+
+    .page {
+        padding: 28px 15px;
+    }
+
+    .page-title h1 {
+        font-size: 25px;
+    }
+
+    .profile-card {
+        padding: 18px;
+    }
+
+    .profile-header {
+        align-items: flex-start;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .actions {
+        grid-template-columns: 1fr;
+    }
+
+    .button-row {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .orders-header {
+        align-items: flex-start;
+    }
+
+    .order-top {
+        align-items: flex-start;
+    }
+
+    .order-details {
+        grid-template-columns: 1fr;
+    }
+
+    .order-actions {
+        flex-direction: column;
+    }
+
+    .order-actions button {
+        width: 100%;
+    }
+
+    .modal-buttons {
+        flex-direction: column;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="header-main">
+
+<a href="index.html" class="logo">
+Market <span>Bouaké</span>
+</a>
+
+<div class="header-links">
+
+<a href="index.html">
+🏠 Accueil
+</a>
+
+<a href="panier.html">
+🛒 Panier
+</a>
+
+<buttontype="button"class="logout-top"id="topLogoutButton"
+
+
+
+🚪 Déconnexion</button>
+
+</div>
+
+</div>
+
+</header>
+
+<main class="page">
+
+<div
+id="loadingContainer"
+class="loading"
+>
+
+<div class="loading-icon">
+⏳
+</div>
+
+Chargement de votre compte...
+
+</div>
+
+<div
+id="accountContainer"
+style="display:none;"
+>
+
+<div class="page-title">
+
+<h1>
+👤 Mon compte
+</h1>
+
+<p>
+Gérez vos informations et accédez rapidement à vos espaces.
+</p>
+
+</div>
+
+<!-- =========================
+     PROFIL
+========================= -->
+
+<section class="profile-card">
+
+<div class="profile-header">
+
+<div
+class="profile-avatar"
+id="profileAvatar"
+>
+👤
+</div>
+
+<div>
+
+<div
+class="profile-name"
+id="profileName"
+>
+Utilisateur
+</div>
+
+<div
+class="profile-email"
+id="profileEmail"
+>
+—
+</div>
+
+<spanclass="role-badge"id="roleBadge"
+
+
+
+🛒 Acheteur</span>
+
+</div>
+
+</div>
+
+<div class="info-grid">
+
+<div class="info-box">
+
+<span class="info-label">
+Prénom
+</span>
+
+<spanclass="info-value"id="firstName"
+
+
+
+—</span>
+
+</div>
+
+<div class="info-box">
+
+<span class="info-label">
+Nom
+</span>
+
+<spanclass="info-value"id="lastName"
+
+
+
+—</span>
+
+</div>
+
+<div class="info-box">
+
+<span class="info-label">
+Téléphone / WhatsApp
+</span>
+
+<spanclass="info-value"id="phone"
+
+
+
+—</span>
+
+</div>
+
+<div class="info-box">
+
+<span class="info-label">
+Identifiant du compte
+</span>
+
+<spanclass="info-value"id="accountId"
+
+
+
+—</span>
+
+</div>
+
+</div>
+
+<div class="button-row">
+
+<ahref="panier.html"class="btn btn-primary"
+
+
+
+🛒 Mon panier</a>
+
+<buttontype="button"class="btn btn-danger"id="logoutButton"
+
+
+
+🚪 Se déconnecter</button>
+
+</div>
+
+</section>
+
+<!-- =========================
+     ACCÈS RAPIDES
+========================= -->
+
+<h2 class="section-title">
+Accès rapides
+</h2>
+
+<section class="actions">
+
+<ahref="panier.html"class="action-card"
+
+
+
+<div class="action-icon">
+🛒
+</div>
+
+<h3>
+Mon panier
+</h3>
+
+<p>
+Consultez les produits que vous avez ajoutés à votre panier.
+</p>
+
+</a>
+
+<ahref="#mes-commandes"class="action-card"
+
+
+
+<div class="action-icon">
+📦
+</div>
+
+<h3>
+Mes commandes
+</h3>
+
+<p>
+Consultez vos commandes, leur statut, leur réception et les éventuels problèmes.
+</p>
+
+</a>
+
+<ahref="vendeur.html"id="sellerAction"class="action-card"style="display;"
+
+
+
+<div class="action-icon">
+🏪
+</div>
+
+<h3>
+Espace vendeur
+</h3>
+
+<p>
+Gérez votre boutique, vos produits et vos commandes.
+</p>
+
+</a>
+
+<ahref="inscription.html"id="becomeSellerAction"class="action-card"
+
+
+
+<div class="action-icon">
+🏪
+</div>
+
+<h3>
+Devenir vendeur
+</h3>
+
+<p>
+Vous souhaitez vendre sur Market Bouaké ? Créez votre espace vendeur.
+</p>
+
+</a>
+
+<ahref="index.html"class="action-card"
+
+
+
+<div class="action-icon">
+🛍️
+</div>
+
+<h3>
+Continuer mes achats
+</h3>
+
+<p>
+Retournez à l'accueil et découvrez les produits disponibles.
+</p>
+
+</a>
+
+</section>
+
+<!-- =========================
+     MES COMMANDES
+========================= -->
+
+<section
+class="orders-section"
+id="mes-commandes"
+>
+
+<div class="orders-header">
+
+<div>
+
+<h2>
+📦 Mes commandes
+</h2>
+
+<p>
+Retrouvez ici vos commandes passées sur Market Bouaké.
+</p>
+
+</div>
+
+<buttontype="button"class="orders-refresh"id="refreshOrdersButton"
+
+
+
+🔄 Actualiser</button>
+
+</div>
+
+<div
+id="ordersList"
+class="orders-list"
+>
+
+<div class="orders-loading">
+⏳ Chargement de vos commandes...
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+<!-- =========================
+     PAS CONNECTÉ
+========================= -->
+
+<div
+id="notConnected"
+class="message"
+style="display:none;"
+>
+
+<div class="message-icon">
+🔐
+</div>
+
+<h2>
+Vous n'êtes pas connecté
+</h2>
+
+<p>
+Connectez-vous à votre compte pour accéder à votre espace personnel.
+</p>
+
+<div class="button-row">
+
+<ahref="connexion.html"class="btn btn-primary"
+
+
+
+🔐 Se connecter</a>
+
+<ahref="inscription.html"class="btn btn-green"
+
+
+
+✨ Créer un compte</a>
+
+</div>
+
+</div>
+
+</main>
+
+<!-- =========================
+     MODAL PROBLÈME
+========================= -->
+
+<div
+class="modal"
+id="issueModal"
+>
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h2>
+⚠️ Signaler un problème
+</h2>
+
+<buttontype="button"class="close-modal"id="closeIssueModal"
+
+
+
+×</button>
+
+</div>
+
+<p
+style="
+font-size:13px;
+color:#666;
+margin-bottom:18px;
+line-height:1.5;
+"
+>
+Si vous n'avez pas reçu votre livraison ou si vous rencontrez un problème, indiquez-nous ce qui s'est passé.
+</p>
+
+<div class="form-group">
+
+<label for="issueReason">
+Motif du problème
+</label>
+
+<select id="issueReason">
+
+<option value="">
+-- Choisir un motif --
+</option>
+
+<option value="Commande non reçue">
+Commande indiquée livrée mais non reçue
+</option>
+
+<option value="Livraison incomplète">
+Livraison incomplète
+</option>
+
+<option value="Produit manquant">
+Produit manquant
+</option>
+
+<option value="Autre problème">
+Autre problème
+</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label for="issueDescription">
+Description
+</label>
+
+<textarea
+id="issueDescription"
+placeholder="Expliquez-nous le problème..."
+></textarea>
+
+</div>
+
+<div class="modal-buttons">
+
+<buttontype="button"class="btn btn-light"id="cancelIssueButton"
+
+
+
+Annuler</button>
+
+<buttontype="button"class="btn btn-danger"id="submitIssueButton"
+
+
+
+⚠️ Signaler le problème</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- =========================
+     MODAL AVIS
+========================= -->
+
+<div
+class="modal"
+id="reviewModal"
+>
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h2>
+⭐ Donner votre avis
+</h2>
+
+<buttontype="button"class="close-modal"id="closeReviewModal"
+
+
+
+×</button>
+
+</div>
+
+<p
+style="
+font-size:13px;
+color:#666;
+margin-bottom:18px;
+line-height:1.5;
+"
+>
+Votre commande a été reçue. Vous pouvez maintenant donner une note et un avis.
+</p>
+
+<div
+class="form-group"
+>
+
+<label>
+Note
+</label>
+
+<div
+class="rating-stars"
+id="ratingStars"
+>
+
+<buttontype="button"class="rating-star"data-rating="1"
+
+
+
+★</button>
+
+<buttontype="button"class="rating-star"data-rating="2"
+
+
+
+★</button>
+
+<buttontype="button"class="rating-star"data-rating="3"
+
+
+
+★</button>
+
+<buttontype="button"class="rating-star"data-rating="4"
+
+
+
+★</button>
+
+<buttontype="button"class="rating-star"data-rating="5"
+
+
+
+★</button>
+
+</div>
+
+</div>
+
+<div class="form-group">
+
+<label for="reviewProduct">
+Produit
+</label>
+
+<select id="reviewProduct">
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label for="reviewComment">
+Votre avis
+</label>
+
+<textarea
+id="reviewComment"
+placeholder="Dites ce que vous pensez du produit..."
+></textarea>
+
+</div>
+
+<div class="modal-buttons">
+
+<buttontype="button"class="btn btn-light"id="cancelReviewButton"
+
+
+
+Annuler</button>
+
+<buttontype="button"class="btn btn-primary"id="submitReviewButton"
+
+
+
+⭐ Publier mon avis</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- =========================
+     NAVIGATION MOBILE
+========================= -->
+
+<nav class="bottom-nav">
+
+<a href="index.html">
+
+<span class="bottom-icon">
+🏠
+</span>
+
+Accueil
+
+</a>
+
+<a href="panier.html">
+
+<span class="bottom-icon">
+🛒
+</span>
+
+Panier
+
+<spanclass="cart-count"id="cartCount"
+
+
+
+0</span>
+
+</a>
+
+<ahref="compte.html"class="active"
+
+
+
+<span class="bottom-icon">
+👤
+</span>
+
+Mon compte
+
+</a>
+
+</nav>
+
+<div
+class="toast"
+id="toast"
+></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-config.js"></script>
+
+<script>
+
+/* =====================================================
+   ÉLÉMENTS
+===================================================== */
+
+const loadingContainer =
+document.getElementById("loadingContainer");
+
+const accountContainer =
+document.getElementById("accountContainer");
+
+const notConnected =
+document.getElementById("notConnected");
+
+const profileAvatar =
+document.getElementById("profileAvatar");
+
+const profileName =
+document.getElementById("profileName");
+
+const profileEmail =
+document.getElementById("profileEmail");
+
+const roleBadge =
+document.getElementById("roleBadge");
+
+const firstName =
+document.getElementById("firstName");
+
+const lastName =
+document.getElementById("lastName");
+
+const phone =
+document.getElementById("phone");
+
+const accountId =
+document.getElementById("accountId");
+
+const sellerAction =
+document.getElementById("sellerAction");
+
+const becomeSellerAction =
+document.getElementById("becomeSellerAction");
+
+const toast =
+document.getElementById("toast");
+
+const ordersList =
+document.getElementById("ordersList");
+
+const refreshOrdersButton =
+document.getElementById("refreshOrdersButton");
+
+const issueModal =
+document.getElementById("issueModal");
+
+const reviewModal =
+document.getElementById("reviewModal");
+
+const issueReason =
+document.getElementById("issueReason");
+
+const issueDescription =
+document.getElementById("issueDescription");
+
+const submitIssueButton =
+document.getElementById("submitIssueButton");
+
+const reviewProduct =
+document.getElementById("reviewProduct");
+
+const reviewComment =
+document.getElementById("reviewComment");
+
+const submitReviewButton =
+document.getElementById("submitReviewButton");
+
+let currentUserId = null;
+
+let currentIssueOrderId = null;
+
+let currentReviewOrderId = null;
+
+let selectedRating = 0;
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+function showToast(message) {
+
+    toast.textContent = message;
+
+    toast.className = "toast show";
+
+    setTimeout(function() {
+
+        toast.className = "toast";
+
+    }, 3500);
+
+}
+
+
+/* =====================================================
+   ÉCHAPPEMENT
+===================================================== */
+
+function escapeHtml(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* =====================================================
+   PRIX
+===================================================== */
+
+function formatPrice(value) {
+
+    return Number(value || 0)
+        .toLocaleString("fr-FR")
+        + " FCFA";
+
+}
+
+
+/* =====================================================
+   DATE
+===================================================== */
+
+function formatDate(dateValue) {
+
+    if (!dateValue) {
+        return "Date inconnue";
+    }
+
+    const date =
+        new Date(dateValue);
+
+    if (isNaN(date.getTime())) {
+        return "Date inconnue";
+    }
+
+    return date.toLocaleDateString(
+        "fr-FR",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
+
+}
+
+
+/* =====================================================
+   PANIER
+===================================================== */
+
+function updateCartCount() {
+
+    try {
+
+        const cart =
+            JSON.parse(
+                localStorage.getItem(
+                    "market_bouake_cart"
+                )
+            ) || [];
+
+        let total = 0;
+
+        cart.forEach(function(item) {
+
+            total += Number(
+                item.quantity || 1
+            );
+
+        });
+
+        document.getElementById(
+            "cartCount"
+        ).textContent = total;
+
+    } catch (error) {
+
+        document.getElementById(
+            "cartCount"
+        ).textContent = "0";
+
+    }
+
+}
+
+
+/* =====================================================
+   STATUT
+===================================================== */
+
+function getStatusInfo(status) {
+
+    const value =
+        String(status || "pending")
+            .toLowerCase();
+
+    const statuses = {
+
+        pending: {
+            label: "⏳ En attente",
+            className: "status-pending"
+        },
+
+        confirmed: {
+            label: "✅ Confirmée",
+            className: "status-confirmed"
+        },
+
+        processing: {
+            label: "🔄 En préparation",
+            className: "status-processing"
+        },
+
+        shipped: {
+            label: "🚚 Expédiée",
+            className: "status-shipped"
+        },
+
+        delivered: {
+            label: "📦 Livrée",
+            className: "status-delivered"
+        },
+
+        cancelled: {
+            label: "❌ Annulée",
+            className: "status-cancelled"
+        }
+
+    };
+
+    return statuses[value] || {
+
+        label:
+            escapeHtml(
+                status || "Statut inconnu"
+            ),
+
+        className:
+            "status-default"
+
+    };
+
+}
+
+
+/* =====================================================
+   CHARGER LES ARTICLES D'UNE COMMANDE
+===================================================== */
+
+async function loadOrderItems(orderId) {
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+        .from("order_items")
+        .select(`
+            id,
+            order_id,
+            product_id,
+            quantity,
+            unit_price
+        `)
+        .eq(
+            "order_id",
+            orderId
+        );
+
+    if (error) {
+
+        console.error(
+            "Erreur articles commande :",
+            error
+        );
+
+        return [];
+
+    }
+
+    return data || [];
+
+}
+
+
+/* =====================================================
+   OUVRIR MODAL AVIS
+===================================================== */
+
+async function openReviewModal(orderId) {
+
+    currentReviewOrderId =
+        orderId;
+
+    selectedRating = 0;
+
+    document
+        .querySelectorAll(".rating-star")
+        .forEach(function(star) {
+
+            star.classList.remove("active");
+
+        });
+
+    reviewComment.value = "";
+
+    reviewProduct.innerHTML = `
+        <option value="">
+            Chargement des produits...
+        </option>
+    `;
+
+    reviewModal.classList.add("show");
+
+    try {
+
+        const items =
+            await loadOrderItems(
+                orderId
+            );
+
+        if (!items.length) {
+
+            reviewProduct.innerHTML = `
+                <option value="">
+                    Aucun produit trouvé
+                </option>
+            `;
+
+            return;
+
+        }
+
+        reviewProduct.innerHTML = `
+            <option value="">
+                -- Choisir un produit --
+            </option>
+        `;
+
+        items.forEach(function(item) {
+
+            const option =
+                document.createElement("option");
+
+            option.value =
+                item.product_id;
+
+            option.dataset.itemId =
+                item.id;
+
+            option.textContent =
+                "Produit #" +
+                item.product_id;
+
+            reviewProduct.appendChild(
+                option
+            );
+
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        reviewProduct.innerHTML = `
+            <option value="">
+                Impossible de charger les produits
+            </option>
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   OUVRIR MODAL PROBLÈME
+===================================================== */
+
+function openIssueModal(orderId) {
+
+    currentIssueOrderId =
+        orderId;
+
+    issueReason.value = "";
+
+    issueDescription.value = "";
+
+    issueModal.classList.add("show");
+
+}
+
+
+/* =====================================================
+   FERMER MODALS
+===================================================== */
+
+function closeIssueModal() {
+
+    issueModal.classList.remove("show");
+
+    currentIssueOrderId = null;
+
+}
+
+function closeReviewModal() {
+
+    reviewModal.classList.remove("show");
+
+    currentReviewOrderId = null;
+
+    selectedRating = 0;
+
+}
+
+
+/* =====================================================
+   CONFIRMER RÉCEPTION
+===================================================== */
+
+async function confirmReceived(orderId) {
+
+    const confirmed =
+        confirm(
+            "Confirmez-vous avoir reçu cette commande ?"
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .rpc(
+                "confirm_order_received",
+                {
+                    p_order_id:
+                        orderId
+                }
+            );
+
+        if (error) {
+
+            throw error;
+
+        }
+
+        showToast(
+            "✅ Réception de la commande confirmée."
+        );
+
+        await loadBuyerOrders(
+            currentUserId
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Erreur confirmation réception :",
+            error
+        );
+
+        showToast(
+            "❌ " +
+            (
+                error.message ||
+                "Impossible de confirmer la réception."
+            )
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   SIGNALER PROBLÈME
+===================================================== */
+
+async function submitIssue() {
+
+    if (!currentIssueOrderId) {
+        return;
+    }
+
+    const reason =
+        issueReason.value.trim();
+
+    const description =
+        issueDescription.value.trim();
+
+    if (!reason) {
+
+        showToast(
+            "⚠️ Choisissez le motif du problème."
+        );
+
+        return;
+
+    }
+
+    submitIssueButton.disabled = true;
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .rpc(
+                "report_order_issue",
+                {
+                    p_order_id:
+                        currentIssueOrderId,
+
+                    p_reason:
+                        reason,
+
+                    p_description:
+                        description
+                }
+            );
+
+        if (error) {
+
+            throw error;
+
+        }
+
+        closeIssueModal();
+
+        showToast(
+            "✅ Votre signalement a été enregistré."
+        );
+
+        await loadBuyerOrders(
+            currentUserId
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Erreur signalement :",
+            error
+        );
+
+        showToast(
+            "❌ " +
+            (
+                error.message ||
+                "Impossible d'envoyer le signalement."
+            )
+        );
+
+    } finally {
+
+        submitIssueButton.disabled = false;
+
+    }
+
+}
+
+
+/* =====================================================
+   ÉTOILES
+===================================================== */
+
+document
+    .querySelectorAll(".rating-star")
+    .forEach(function(star) {
+
+        star.addEventListener(
+            "click",
+            function() {
+
+                selectedRating =
+                    Number(
+                        this.dataset.rating
+                    );
+
+                document
+                    .querySelectorAll(".rating-star")
+                    .forEach(function(item) {
+
+                        const rating =
+                            Number(
+                                item.dataset.rating
+                            );
+
+                        item.classList.toggle(
+                            "active",
+                            rating <= selectedRating
+                        );
+
+                    });
+
+            }
+        );
+
+    });
+
+
+/* =====================================================
+   ENVOYER AVIS
+===================================================== */
+
+async function submitReview() {
+
+    if (!currentReviewOrderId) {
+        return;
+    }
+
+    if (!selectedRating) {
+
+        showToast(
+            "⭐ Choisissez une note de 1 à 5."
+        );
+
+        return;
+
+    }
+
+    const productId =
+        reviewProduct.value;
+
+    if (!productId) {
+
+        showToast(
+            "⚠️ Choisissez un produit."
+        );
+
+        return;
+
+    }
+
+    const selectedOption =
+        reviewProduct.options[
+            reviewProduct.selectedIndex
+        ];
+
+    const orderItemId =
+        selectedOption?.dataset?.itemId ||
+        null;
+
+    submitReviewButton.disabled = true;
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .from("reviews")
+            .insert({
+
+                order_id:
+                    currentReviewOrderId,
+
+                order_item_id:
+                    orderItemId
+                        ? Number(orderItemId)
+                        : null,
+
+                product_id:
+                    Number(productId),
+
+                buyer_id:
+                    currentUserId,
+
+                rating:
+                    selectedRating,
+
+                comment:
+                    reviewComment.value.trim()
+
+            })
+            .select()
+            .single();
+
+        if (error) {
+
+            throw error;
+
+        }
+
+        closeReviewModal();
+
+        showToast(
+            "⭐ Merci ! Votre avis a été enregistré."
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Erreur avis :",
+            error
+        );
+
+        if (
+            String(error.message || "")
+                .toLowerCase()
+                .includes("duplicate")
+        ) {
+
+            showToast(
+                "⚠️ Vous avez déjà noté ce produit pour cette commande."
+            );
+
+        } else {
+
+            showToast(
+                "❌ " +
+                (
+                    error.message ||
+                    "Impossible d'enregistrer votre avis."
+                )
+            );
+
+        }
+
+    } finally {
+
+        submitReviewButton.disabled = false;
+
+    }
+
+}
+
+
+/* =====================================================
+   AFFICHER COMMANDES
+===================================================== */
+
+function displayOrders(orders) {
+
+    if (
+        !orders ||
+        !orders.length
+    ) {
+
+        ordersList.innerHTML = `
+
+            <div class="orders-empty">
+
+                <div class="orders-empty-icon">
+                    📦
+                </div>
+
+                <h3>
+                    Aucune commande
+                </h3>
+
+                <p>
+                    Vous n'avez encore passé aucune commande sur Market Bouaké.
+                </p>
+
+                <div class="button-row">
+
+                    <a
+                        href="index.html"
+                        class="btn btn-primary"
+                    >
+                        🛍️ Découvrir les produits
+                    </a>
+
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    ordersList.innerHTML =
+        orders.map(function(order) {
+
+            const status =
+                getStatusInfo(
+                    order.status
+                );
+
+            const deliveryName =
+                order.delivery_name ||
+                "Non renseigné";
+
+            const deliveryCity =
+                order.delivery_city ||
+                "Non renseignée";
+
+            const deliveryInfo =
+                order.delivery_info ||
+                "";
+
+            const isDelivered =
+                String(order.status)
+                    .toLowerCase()
+                    === "delivered";
+
+            const isReceived =
+                order.buyer_received === true;
+
+            const issueReported =
+                order.issue_reported === true;
+
+            let actionButtons = "";
+
+            if (
+                isDelivered &&
+                !isReceived &&
+                !issueReported
+            ) {
+
+                actionButtons = `
+
+                    <div class="order-actions">
+
+                        <button
+                            type="button"
+                            class="receive-button"
+                            onclick="confirmReceived(${Number(order.id)})"
+                        >
+                            ✅ J'ai reçu ma commande
+                        </button>
+
+                        <button
+                            type="button"
+                            class="issue-button"
+                            onclick="openIssueModal(${Number(order.id)})"
+                        >
+                            ⚠️ Je n'ai pas reçu / Signaler
+                        </button>
+
+                    </div>
+
+                `;
+
+            }
+
+
+            if (isReceived) {
+
+                actionButtons = `
+
+                    <div class="received-message">
+                        ✅ Vous avez confirmé avoir reçu cette commande.
+                    </div>
+
+                    <div class="order-actions">
+
+                        <button
+                            type="button"
+                            class="review-button"
+                            onclick="openReviewModal(${Number(order.id)})"
+                        >
+                            ⭐ Donner un avis et une note
+                        </button>
+
+                    </div>
+
+                `;
+
+            }
+
+
+            if (issueReported) {
+
+                let issueLabel =
+                    "⚠️ Problème signalé";
+
+                if (
+                    order.issue_status ===
+                    "open"
+                ) {
+
+                    issueLabel =
+                        "⚠️ Signalement en attente de traitement";
+
+                } else if (
+                    order.issue_status ===
+                    "under_review"
+                ) {
+
+                    issueLabel =
+                        "🔎 Signalement en cours d'examen";
+
+                } else if (
+                    order.issue_status ===
+                    "resolved"
+                ) {
+
+                    issueLabel =
+                        "✅ Signalement traité";
+
+                } else if (
+                    order.issue_status ===
+                    "rejected"
+                ) {
+
+                    issueLabel =
+                        "❌ Signalement rejeté";
+
+                }
+
+                actionButtons = `
+
+                    <div class="issue-message">
+
+                        ${escapeHtml(issueLabel)}
+
+                        <div class="issue-status-message">
+
+                            Motif :
+                            ${escapeHtml(
+                                order.issue_reason ||
+                                "Non précisé"
+                            )}
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+
+
+            return `
+
+                <div class="order-card">
+
+                    <div class="order-top">
+
+                        <div>
+
+                            <div class="order-number">
+
+                                📦 Commande #${escapeHtml(order.id)}
+
+                            </div>
+
+                            <div class="order-date">
+
+                                ${formatDate(
+                                    order.created_at
+                                )}
+
+                            </div>
+
+                        </div>
+
+                        <span
+                            class="order-status ${status.className}"
+                        >
+                            ${status.label}
+                        </span>
+
+                    </div>
+
+
+                    <div class="order-details">
+
+                        <div class="order-detail-box">
+
+                            <span class="order-detail-label">
+                                Total
+                            </span>
+
+                            <span class="order-detail-value">
+                                ${formatPrice(
+                                    order.total_amount
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="order-detail-box">
+
+                            <span class="order-detail-label">
+                                Livraison
+                            </span>
+
+                            <span class="order-detail-value">
+                                ${escapeHtml(
+                                    deliveryCity
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="order-detail-box">
+
+                            <span class="order-detail-label">
+                                Destinataire
+                            </span>
+
+                            <span class="order-detail-value">
+                                ${escapeHtml(
+                                    deliveryName
+                                )}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    ${
+                        deliveryInfo
+                        ?
+                        `
+
+                        <div
+                            style="
+                                margin-top:10px;
+                                font-size:12px;
+                                color:#666;
+                            "
+                        >
+                            📍 ${escapeHtml(
+                                deliveryInfo
+                            )}
+                        </div>
+
+                        `
+                        :
+                        ""
+                    }
+
+
+                    ${
+                        actionButtons
+                    }
+
+                </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+/* =====================================================
+   CHARGER COMMANDES
+===================================================== */
+
+async function loadBuyerOrders(userId) {
+
+    ordersList.innerHTML = `
+
+        <div class="orders-loading">
+
+            ⏳ Chargement de vos commandes...
+
+        </div>
+
+    `;
+
+
+    try {
+
+        const {
+            data: orders,
+            error
+        } =
+        await supabaseClient
+            .from("orders")
+            .select(`
+                id,
+                buyer_id,
+                total_amount,
+                status,
+                delivery_name,
+                delivery_phone,
+                delivery_city,
+                delivery_address,
+                delivery_info,
+                created_at,
+                updated_at,
+                buyer_received,
+                received_at,
+                issue_reported,
+                issue_reason,
+                issue_description,
+                issue_status,
+                issue_created_at,
+                issue_resolved_at
+            `)
+            .eq(
+                "buyer_id",
+                userId
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+        if (error) {
+
+            console.error(
+                "Erreur chargement commandes :",
+                error
+            );
+
+            ordersList.innerHTML = `
+
+                <div class="orders-empty">
+
+                    <div class="orders-empty-icon">
+                        ⚠️
+                    </div>
+
+                    <h3>
+                        Impossible de charger les commandes
+                    </h3>
+
+                    <p>
+                        ${escapeHtml(
+                            error.message
+                        )}
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        displayOrders(
+            orders || []
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Erreur commandes :",
+            error
+        );
+
+        ordersList.innerHTML = `
+
+            <div class="orders-empty">
+
+                <div class="orders-empty-icon">
+                    ⚠️
+                </div>
+
+                <h3>
+                    Une erreur est survenue
+                </h3>
+
+                <p>
+                    Impossible de récupérer vos commandes.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   DÉCONNEXION
+===================================================== */
+
+async function logout() {
+
+    try {
+
+        const {
+            error
+        } =
+        await supabaseClient
+            .auth
+            .signOut();
+
+        if (error) {
+
+            throw error;
+
+        }
+
+        window.location.href =
+            "index.html";
+
+    } catch (error) {
+
+        console.error(
+            "Erreur déconnexion :",
+            error
+        );
+
+        showToast(
+            "❌ Impossible de se déconnecter."
+        );
+
+    }
+
+}
+
+
+document
+    .getElementById(
+        "logoutButton"
+    )
+    .addEventListener(
+        "click",
+        logout
+    );
+
+
+document
+    .getElementById(
+        "topLogoutButton"
+    )
+    .addEventListener(
+        "click",
+        logout
+    );
+
+
+/* =====================================================
+   MODALS
+===================================================== */
+
+document
+    .getElementById(
+        "closeIssueModal"
+    )
+    .addEventListener(
+        "click",
+        closeIssueModal
+    );
+
+
+document
+    .getElementById(
+        "cancelIssueButton"
+    )
+    .addEventListener(
+        "click",
+        closeIssueModal
+    );
+
+
+document
+    .getElementById(
+        "closeReviewModal"
+    )
+    .addEventListener(
+        "click",
+        closeReviewModal
+    );
+
+
+document
+    .getElementById(
+        "cancelReviewButton"
+    )
+    .addEventListener(
+        "click",
+        closeReviewModal
+    );
+
+
+submitIssueButton
+    .addEventListener(
+        "click",
+        submitIssue
+    );
+
+
+submitReviewButton
+    .addEventListener(
+        "click",
+        submitReview
+    );
+
+
+issueModal.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target ===
+            issueModal
+        ) {
+
+            closeIssueModal();
+
+        }
+
+    }
+);
+
+
+reviewModal.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target ===
+            reviewModal
+        ) {
+
+            closeReviewModal();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   ACTUALISER
+===================================================== */
+
+refreshOrdersButton
+    .addEventListener(
+        "click",
+        async function() {
+
+            if (!currentUserId) {
+
+                showToast(
+                    "❌ Vous devez être connecté."
+                );
+
+                return;
+
+            }
+
+            await loadBuyerOrders(
+                currentUserId
+            );
+
+            showToast(
+                "✅ Commandes actualisées."
+            );
+
+        }
+    );
+
+
+/* =====================================================
+   CHARGER COMPTE
+===================================================== */
+
+async function loadAccount() {
+
+    try {
+
+        if (
+            typeof supabaseClient ===
+            "undefined"
+        ) {
+
+            throw new Error(
+                "Supabase n'est pas configuré."
+            );
+
+        }
+
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .auth
+            .getUser();
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        const user =
+            data.user;
+
+
+        if (!user) {
+
+            loadingContainer.style.display =
+                "none";
+
+            notConnected.style.display =
+                "block";
+
+            return;
+
+        }
+
+
+        currentUserId =
+            user.id;
+
+
+        /* =========================
+           PROFIL
+        ========================= */
+
+        const {
+            data: profile,
+            error: profileError
+        } =
+        await supabaseClient
+            .from("profiles")
+            .select("*")
+            .eq(
+                "id",
+                user.id
+            )
+            .maybeSingle();
+
+
+        if (profileError) {
+
+            console.error(
+                "Erreur profil :",
+                profileError
+            );
+
+        }
+
+
+        const role =
+            profile?.role ||
+            "buyer";
+
+
+        /* =========================
+           ADMIN
+        ========================= */
+
+        if (
+            role === "admin"
+        ) {
+
+            window.location.href =
+                "admin.html";
+
+            return;
+
+        }
+
+
+        /* =========================
+           VENDEUR
+        ========================= */
+
+        if (
+            role === "seller"
+        ) {
+
+            sellerAction.style.display =
+                "block";
+
+            becomeSellerAction.style.display =
+                "none";
+
+            roleBadge.textContent =
+                "🏪 Vendeur";
+
+        } else {
+
+            roleBadge.textContent =
+                "🛒 Acheteur";
+
+        }
+
+
+        /* =========================
+           INFORMATIONS
+        ========================= */
+
+        const first =
+            profile?.first_name ||
+            user.user_metadata?.first_name ||
+            "";
+
+        const last =
+            profile?.last_name ||
+            user.user_metadata?.last_name ||
+            "";
+
+        const userPhone =
+            profile?.phone ||
+            user.user_metadata?.phone ||
+            "";
+
+
+        const fullName =
+            (
+                first +
+                " " +
+                last
+            ).trim() ||
+            user.email ||
+            "Utilisateur";
+
+
+        profileName.textContent =
+            fullName;
+
+        profileEmail.textContent =
+            user.email ||
+            "—";
+
+        firstName.textContent =
+            first ||
+            "Non renseigné";
+
+        lastName.textContent =
+            last ||
+            "Non renseigné";
+
+        phone.textContent =
+            userPhone ||
+            "Non renseigné";
+
+        accountId.textContent =
+            user.id;
+
+
+        /* =========================
+           PHOTO
+        ========================= */
+
+        const possiblePhoto =
+            profile?.profile_photo ||
+            profile?.photo_url ||
+            profile?.avatar_url ||
+            user.user_metadata?.profile_photo ||
+            user.user_metadata?.photo_url ||
+            "";
+
+
+        if (possiblePhoto) {
+
+            profileAvatar.innerHTML = `
+
+                <img
+                    src="${escapeHtml(
+                        possiblePhoto
+                    )}"
+                    alt="Photo de profil"
+                    onerror="
+                        this.style.display='none';
+                    "
+                >
+
+            `;
+
+        } else {
+
+            const initial =
+                (
+                    first ||
+                    last ||
+                    "U"
+                )
+                .charAt(0)
+                .toUpperCase();
+
+            profileAvatar.textContent =
+                initial;
+
+        }
+
+
+        /* =========================
+           AFFICHER PAGE
+        ========================= */
+
+        loadingContainer.style.display =
+            "none";
+
+        accountContainer.style.display =
+            "block";
+
+
+        /* =========================
+           COMMANDES
+        ========================= */
+
+        await loadBuyerOrders(
+            user.id
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Erreur chargement compte :",
+            error
+        );
+
+        loadingContainer.style.display =
+            "none";
+
+        notConnected.style.display =
+            "block";
+
+    }
+
+}
+
+
+/* =====================================================
+   DÉMARRAGE
+===================================================== */
+
+updateCartCount();
+
+loadAccount();
+
+</script>
+
+<
