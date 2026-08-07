@@ -1,0 +1,4507 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Administration | Market Bouaké</title>
+
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+
+--orange:#f57c00;
+
+--orange-dark:#e66f00;
+
+--orange-light:#fff4e8;
+
+--dark:#171717;
+
+--text:#242424;
+
+--muted:#777;
+
+--bg:#f5f6f8;
+
+--white:#fff;
+
+--border:#e8e8e8;
+
+--green:#16803c;
+
+--green-light:#edf9f1;
+
+--red:#c62828;
+
+--red-light:#fff0f0;
+
+--blue:#2563eb;
+
+--blue-light:#eff6ff;
+
+--shadow:0 8px 30px rgba(0,0,0,.07)
+
+}
+
+body{
+
+font-family:Arial,Helvetica,sans-serif;
+
+background:var(--bg);
+
+color:var(--text);
+
+min-height:100vh
+
+}
+
+button,input,textarea,select{font-family:inherit}
+
+button{cursor:pointer}
+
+.mobile-header{
+
+display:none;
+
+height:65px;
+
+background:#fff;
+
+border-bottom:1px solid var(--border);
+
+align-items:center;
+
+justify-content:space-between;
+
+padding:0 18px;
+
+position:sticky;
+
+top:0;
+
+z-index:1000
+
+}
+
+.mobile-logo{
+
+font-size:20px;
+
+font-weight:800
+
+}
+
+.mobile-logo span{color:var(--orange)}
+
+.menu-button{
+
+border:none;
+
+background:var(--orange-light);
+
+width:42px;
+
+height:42px;
+
+border-radius:10px;
+
+font-size:22px
+
+}
+
+.app{
+
+display:flex;
+
+min-height:100vh
+
+}
+
+.sidebar{
+
+width:255px;
+
+background:#171717;
+
+color:#fff;
+
+position:fixed;
+
+left:0;
+
+top:0;
+
+bottom:0;
+
+padding:25px 15px;
+
+z-index:1100;
+
+overflow-y:auto
+
+}
+
+.brand{
+
+padding:5px 12px 25px;
+
+border-bottom:1px solid rgba(255,255,255,.08);
+
+margin-bottom:20px
+
+}
+
+.brand-title{
+
+font-size:24px;
+
+font-weight:800
+
+}
+
+.brand-title span{color:#ff8a00}
+
+.admin-label{
+
+margin-top:7px;
+
+font-size:12px;
+
+color:#aaa
+
+}
+
+.nav-title{
+
+color:#777;
+
+font-size:11px;
+
+font-weight:bold;
+
+text-transform:uppercase;
+
+padding:0 12px;
+
+margin:18px 0 8px;
+
+letter-spacing:.7px
+
+}
+
+.nav-item{
+
+width:100%;
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+border:none;
+
+background:transparent;
+
+color:#ccc;
+
+padding:12px;
+
+border-radius:9px;
+
+margin-bottom:4px;
+
+font-size:14px;
+
+text-align:left;
+
+transition:.2s
+
+}
+
+.nav-item:hover{
+
+background:rgba(255,255,255,.06);
+
+color:#fff
+
+}
+
+.nav-item.active{
+
+background:var(--orange);
+
+color:#fff
+
+}
+
+.nav-icon{
+
+width:23px;
+
+text-align:center;
+
+font-size:17px
+
+}
+
+.nav-badge{
+
+margin-left:auto;
+
+background:#ff4747;
+
+color:#fff;
+
+min-width:22px;
+
+height:22px;
+
+border-radius:20px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:11px;
+
+font-weight:bold
+
+}
+
+.sidebar-bottom{
+
+margin-top:30px;
+
+border-top:1px solid rgba(255,255,255,.08);
+
+padding-top:15px
+
+}
+
+.logout-button{
+
+width:100%;
+
+border:none;
+
+background:rgba(255,255,255,.06);
+
+color:#ddd;
+
+padding:12px;
+
+border-radius:9px;
+
+text-align:left;
+
+font-size:14px
+
+}
+
+.logout-button:hover{
+
+background:rgba(255,255,255,.12);
+
+color:#fff
+
+}
+
+.main{
+
+margin-left:255px;
+
+width:calc(100% - 255px);
+
+min-height:100vh
+
+}
+
+.topbar{
+
+height:76px;
+
+background:#fff;
+
+border-bottom:1px solid var(--border);
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+padding:0 35px;
+
+position:sticky;
+
+top:0;
+
+z-index:900
+
+}
+
+.page-title{
+
+font-size:21px;
+
+font-weight:800
+
+}
+
+.page-subtitle{
+
+color:var(--muted);
+
+font-size:12px;
+
+margin-top:4px
+
+}
+
+.admin-profile{
+
+display:flex;
+
+align-items:center;
+
+gap:10px
+
+}
+
+.admin-avatar{
+
+width:40px;
+
+height:40px;
+
+background:var(--orange-light);
+
+border-radius:50%;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:19px
+
+}
+
+.admin-info strong{
+
+display:block;
+
+font-size:13px
+
+}
+
+.admin-info span{
+
+display:block;
+
+color:var(--muted);
+
+font-size:11px;
+
+margin-top:2px
+
+}
+
+.content{
+
+padding:30px 35px 60px;
+
+max-width:1500px
+
+}
+
+.welcome{
+
+background:linear-gradient(120deg,#171717,#2a2a2a);
+
+color:#fff;
+
+padding:28px;
+
+border-radius:16px;
+
+margin-bottom:25px;
+
+position:relative;
+
+overflow:hidden
+
+}
+
+.welcome h2{
+
+font-size:24px;
+
+margin-bottom:7px
+
+}
+
+.welcome p{
+
+color:#ccc;
+
+font-size:14px
+
+}
+
+.stats-grid{
+
+display:grid;
+
+grid-template-columns:repeat(4,minmax(0,1fr));
+
+gap:16px;
+
+margin-bottom:28px
+
+}
+
+.stat-card{
+
+background:#fff;
+
+border:1px solid var(--border);
+
+border-radius:14px;
+
+padding:20px;
+
+box-shadow:0 3px 12px rgba(0,0,0,.03)
+
+}
+
+.stat-top{
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+margin-bottom:17px
+
+}
+
+.stat-icon{
+
+width:43px;
+
+height:43px;
+
+border-radius:11px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:20px;
+
+background:var(--orange-light)
+
+}
+
+.stat-card.blue .stat-icon{background:var(--blue-light)}
+
+.stat-card.green .stat-icon{background:var(--green-light)}
+
+.stat-card.red .stat-icon{background:var(--red-light)}
+
+.stat-number{
+
+font-size:28px;
+
+font-weight:800;
+
+margin-bottom:5px
+
+}
+
+.stat-label{
+
+color:var(--muted);
+
+font-size:13px
+
+}
+
+.section{display:none}
+
+.section.active{display:block}
+
+.section-header{
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+gap:15px;
+
+margin-bottom:18px
+
+}
+
+.section-header h2{
+
+font-size:20px
+
+}
+
+.section-header p{
+
+color:var(--muted);
+
+font-size:13px;
+
+margin-top:4px
+
+}
+
+.refresh-button{
+
+border:1px solid var(--border);
+
+background:#fff;
+
+padding:10px 14px;
+
+border-radius:8px;
+
+font-weight:bold;
+
+font-size:13px
+
+}
+
+.refresh-button:hover{
+
+border-color:var(--orange);
+
+color:var(--orange)
+
+}
+
+.request-list{
+
+display:grid;
+
+gap:15px
+
+}
+
+.request-card{
+
+background:#fff;
+
+border:1px solid var(--border);
+
+border-radius:14px;
+
+padding:20px;
+
+box-shadow:0 3px 12px rgba(0,0,0,.03)
+
+}
+
+.request-header{
+
+display:flex;
+
+justify-content:space-between;
+
+gap:15px;
+
+margin-bottom:17px
+
+}
+
+.request-person{
+
+display:flex;
+
+gap:12px;
+
+align-items:center
+
+}
+
+.request-avatar{
+
+width:47px;
+
+height:47px;
+
+border-radius:50%;
+
+background:var(--orange-light);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:21px
+
+}
+
+.request-person h3{
+
+font-size:16px
+
+}
+
+.request-person p{
+
+color:var(--muted);
+
+font-size:12px;
+
+margin-top:4px
+
+}
+
+.status{
+
+display:inline-flex;
+
+align-items:center;
+
+padding:6px 10px;
+
+border-radius:20px;
+
+font-size:11px;
+
+font-weight:bold;
+
+height:fit-content
+
+}
+
+.status.pending{
+
+background:#fff5df;
+
+color:#a45a00
+
+}
+
+.status.approved{
+
+background:var(--green-light);
+
+color:var(--green)
+
+}
+
+.status.rejected{
+
+background:var(--red-light);
+
+color:var(--red)
+
+}
+
+.status.blue{
+
+background:var(--blue-light);
+
+color:var(--blue)
+
+}
+
+.request-info{
+
+display:grid;
+
+grid-template-columns:repeat(4,minmax(0,1fr));
+
+gap:12px;
+
+padding:15px;
+
+background:#fafafa;
+
+border-radius:10px;
+
+margin-bottom:15px
+
+}
+
+.info-item span{
+
+display:block;
+
+color:var(--muted);
+
+font-size:11px;
+
+margin-bottom:5px
+
+}
+
+.info-item strong{
+
+font-size:13px;
+
+word-break:break-word
+
+}
+
+.description{
+
+color:#555;
+
+font-size:13px;
+
+line-height:1.6;
+
+margin-bottom:15px
+
+}
+
+.request-actions{
+
+display:flex;
+
+gap:9px;
+
+flex-wrap:wrap
+
+}
+
+.action-button{
+
+border:none;
+
+padding:10px 15px;
+
+border-radius:8px;
+
+font-weight:bold;
+
+font-size:12px
+
+}
+
+.approve-button{
+
+background:var(--green);
+
+color:#fff
+
+}
+
+.reject-button{
+
+background:var(--red-light);
+
+color:var(--red)
+
+}
+
+.blue-button{
+
+background:var(--blue);
+
+color:#fff
+
+}
+
+.dark-button{
+
+background:#171717;
+
+color:#fff
+
+}
+
+.empty{
+
+background:#fff;
+
+border:1px dashed #ddd;
+
+border-radius:14px;
+
+padding:50px 20px;
+
+text-align:center;
+
+color:var(--muted)
+
+}
+
+.empty-icon{
+
+font-size:40px;
+
+margin-bottom:12px
+
+}
+
+.empty strong{
+
+display:block;
+
+color:var(--text);
+
+margin-bottom:5px
+
+}
+
+.table-card{
+
+background:#fff;
+
+border:1px solid var(--border);
+
+border-radius:14px;
+
+overflow:hidden
+
+}
+
+.table-scroll{
+
+overflow-x:auto
+
+}
+
+table{
+
+width:100%;
+
+border-collapse:collapse;
+
+min-width:750px
+
+}
+
+th,td{
+
+padding:14px 16px;
+
+text-align:left;
+
+border-bottom:1px solid #eee;
+
+font-size:13px
+
+}
+
+th{
+
+background:#fafafa;
+
+color:#666;
+
+font-size:11px;
+
+text-transform:uppercase;
+
+letter-spacing:.3px
+
+}
+
+td strong{
+
+font-size:13px
+
+}
+
+tr:last-child td{
+
+border-bottom:none
+
+}
+
+.search-box{
+
+margin-bottom:15px
+
+}
+
+.search-box input{
+
+width:100%;
+
+max-width:420px;
+
+padding:12px 14px;
+
+border:1px solid var(--border);
+
+border-radius:9px;
+
+outline:none;
+
+background:#fff
+
+}
+
+.search-box input:focus{
+
+border-color:var(--orange)
+
+}
+
+.filter-row{
+
+display:flex;
+
+gap:10px;
+
+flex-wrap:wrap;
+
+margin-bottom:15px
+
+}
+
+.filter-row select{
+
+padding:10px 12px;
+
+border:1px solid var(--border);
+
+border-radius:8px;
+
+background:#fff
+
+}
+
+.rating{
+
+color:#f5a000;
+
+font-size:16px;
+
+letter-spacing:1px
+
+}
+
+.problem{
+
+background:var(--red-light);
+
+color:var(--red);
+
+padding:8px 10px;
+
+border-radius:8px;
+
+font-size:12px;
+
+font-weight:bold
+
+}
+
+.received{
+
+background:var(--green-light);
+
+color:var(--green);
+
+padding:8px 10px;
+
+border-radius:8px;
+
+font-size:12px;
+
+font-weight:bold
+
+}
+
+.toast{
+
+position:fixed;
+
+right:25px;
+
+bottom:25px;
+
+background:#171717;
+
+color:#fff;
+
+padding:14px 18px;
+
+border-radius:10px;
+
+box-shadow:var(--shadow);
+
+display:none;
+
+z-index:3000;
+
+max-width:380px;
+
+font-size:13px
+
+}
+
+.toast.show{display:block}
+
+.toast.success{border-left:4px solid var(--green)}
+
+.toast.error{border-left:4px solid var(--red)}
+
+.loading{
+
+background:#fff;
+
+border-radius:14px;
+
+padding:35px;
+
+text-align:center;
+
+color:var(--muted)
+
+}
+
+.spinner{
+
+width:35px;
+
+height:35px;
+
+border:3px solid #eee;
+
+border-top-color:var(--orange);
+
+border-radius:50%;
+
+animation:spin .8s linear infinite;
+
+margin:0 auto 12px
+
+}
+
+@keyframes spin{
+
+to{transform:rotate(360deg)}
+
+}
+
+@media(max-width:1050px){
+
+.stats-grid{
+
+grid-template-columns:repeat(2,minmax(0,1fr))
+
+}
+
+.request-info{
+
+grid-template-columns:repeat(2,minmax(0,1fr))
+
+}
+
+}
+
+@media(max-width:750px){
+
+.mobile-header{
+
+display:flex
+
+}
+
+.sidebar{
+
+transform:translateX(-100%);
+
+transition:transform .25s ease
+
+}
+
+.sidebar.open{
+
+transform:translateX(0)
+
+}
+
+.main{
+
+margin-left:0;
+
+width:100%
+
+}
+
+.topbar{
+
+display:none
+
+}
+
+.content{
+
+padding:20px 15px 45px
+
+}
+
+.welcome{
+
+padding:22px
+
+}
+
+.welcome h2{
+
+font-size:20px
+
+}
+
+.stats-grid{
+
+grid-template-columns:1fr 1fr;
+
+gap:10px
+
+}
+
+.stat-card{
+
+padding:15px
+
+}
+
+.stat-number{
+
+font-size:23px
+
+}
+
+.stat-icon{
+
+width:38px;
+
+height:38px
+
+}
+
+.request-header{
+
+flex-direction:column
+
+}
+
+.request-info{
+
+grid-template-columns:1fr 1fr
+
+}
+
+.section-header{
+
+align-items:flex-start;
+
+flex-direction:column
+
+}
+
+}
+
+@media(max-width:430px){
+
+.stats-grid{
+
+grid-template-columns:1fr
+
+}
+
+.request-info{
+
+grid-template-columns:1fr
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="mobile-header">
+
+<div class="mobile-logo">Market <span>Bouaké</span></div>
+
+<button class="menu-button" id="menuButton">☰</button>
+
+</div>
+
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+
+<div class="brand">
+
+<div class="brand-title">Market <span>Bouaké</span></div>
+
+<div class="admin-label">👑 Administration principale</div>
+
+</div>
+
+<div class="nav-title">Principal</div>
+
+<button class="nav-item active" data-section="dashboard">
+
+<span class="nav-icon">📊</span>
+
+Tableau de bord
+
+</button>
+
+<button class="nav-item" data-section="requests">
+
+<span class="nav-icon">🔔</span>
+
+Demandes
+
+<span class="nav-badge" id="requestBadge">0</span>
+
+</button>
+
+<div class="nav-title">Gestion</div>
+
+<button class="nav-item" data-section="accounts">
+
+<span class="nav-icon">👥</span>
+
+Comptes
+
+</button>
+
+<button class="nav-item" data-section="sellers">
+
+<span class="nav-icon">🏪</span>
+
+Vendeurs
+
+</button>
+
+<button class="nav-item" data-section="products">
+
+<span class="nav-icon">📦</span>
+
+Produits
+
+</button>
+
+<button class="nav-item" data-section="orders">
+
+<span class="nav-icon">🛒</span>
+
+Commandes
+
+</button>
+
+<button class="nav-item" data-section="reviews">
+
+<span class="nav-icon">⭐</span>
+
+Avis & notes
+
+</button>
+
+<div class="nav-title">Organisation</div>
+
+<button class="nav-item" data-section="badges">
+
+<span class="nav-icon">🏅</span>
+
+Badges
+
+</button>
+
+<button class="nav-item" data-section="blocked">
+
+<span class="nav-icon">🚫</span>
+
+Comptes bloqués
+
+</button>
+
+<button class="nav-item" data-section="categories">
+
+<span class="nav-icon">🗂️</span>
+
+Catégories
+
+</button>
+
+<div class="nav-title">Système</div>
+
+<button class="nav-item" data-section="settings">
+
+<span class="nav-icon">⚙️</span>
+
+Paramètres
+
+</button>
+
+<div class="sidebar-bottom">
+
+<button class="logout-button" id="logoutButton">
+
+🚪 Déconnexion
+
+</button>
+
+</div>
+
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+
+<div>
+
+<div class="page-title" id="pageTitle">Tableau de bord</div>
+
+<div class="page-subtitle">Gestion de Market Bouaké</div>
+
+</div>
+
+<div class="admin-profile">
+
+<div class="admin-avatar">👑</div>
+
+<div class="admin-info">
+
+<strong id="adminName">Administrateur</strong>
+
+<span>Admin principal</span>
+
+</div>
+
+</div>
+
+</header>
+
+<div class="content">
+
+<section class="section active" id="section-dashboard">
+
+<div class="welcome">
+
+<h2>Bienvenue dans ton espace Admin 👑</h2>
+
+<p>Gérez les comptes, vendeurs, produits, commandes et avis de Market Bouaké.</p>
+
+</div>
+
+<div class="stats-grid">
+
+<div class="stat-card">
+
+<div class="stat-top">
+
+<div class="stat-icon">👥</div>
+
+</div>
+
+<div class="stat-number" id="totalAccounts">0</div>
+
+<div class="stat-label">Comptes</div>
+
+</div>
+
+<div class="stat-card blue">
+
+<div class="stat-top">
+
+<div class="stat-icon">🛍️</div>
+
+</div>
+
+<div class="stat-number" id="totalBuyers">0</div>
+
+<div class="stat-label">Acheteurs</div>
+
+</div>
+
+<div class="stat-card green">
+
+<div class="stat-top">
+
+<div class="stat-icon">🏪</div>
+
+</div>
+
+<div class="stat-number" id="totalSellers">0</div>
+
+<div class="stat-label">Vendeurs</div>
+
+</div>
+
+<div class="stat-card red">
+
+<div class="stat-top">
+
+<div class="stat-icon">🔔</div>
+
+</div>
+
+<div class="stat-number" id="pendingRequests">0</div>
+
+<div class="stat-label">Demandes en attente</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-top">
+
+<div class="stat-icon">📦</div>
+
+</div>
+
+<div class="stat-number" id="totalProducts">0</div>
+
+<div class="stat-label">Produits</div>
+
+</div>
+
+<div class="stat-card green">
+
+<div class="stat-top">
+
+<div class="stat-icon">✅</div>
+
+</div>
+
+<div class="stat-number" id="approvedRequests">0</div>
+
+<div class="stat-label">Vendeurs acceptés</div>
+
+</div>
+
+<div class="stat-card red">
+
+<div class="stat-top">
+
+<div class="stat-icon">❌</div>
+
+</div>
+
+<div class="stat-number" id="rejectedRequests">0</div>
+
+<div class="stat-label">Demandes refusées</div>
+
+</div>
+
+<div class="stat-card blue">
+
+<div class="stat-top">
+
+<div class="stat-icon">⭐</div>
+
+</div>
+
+<div class="stat-number" id="totalReviews">0</div>
+
+<div class="stat-label">Avis & notes</div>
+
+</div>
+
+</div>
+
+<div class="section-header">
+
+<div>
+
+<h2>🔔 Dernières demandes</h2>
+
+<p>Les demandes vendeur les plus récentes.</p>
+
+</div>
+
+<button class="refresh-button" id="refreshDashboard">
+
+🔄 Actualiser
+
+</button>
+
+</div>
+
+<div id="dashboardRequests"></div>
+
+</section>
+
+<section class="section" id="section-requests">
+
+<div class="section-header">
+
+<div>
+
+<h2>🔔 Demandes vendeur</h2>
+
+<p>Validez ou refusez les demandes de création de boutique.</p>
+
+</div>
+
+<button class="refresh-button" id="refreshRequests">
+
+🔄 Actualiser
+
+</button>
+
+</div>
+
+<div id="requestsContainer"></div>
+
+</section>
+
+<section class="section" id="section-accounts">
+
+<div class="section-header">
+
+<div>
+
+<h2>👥 Comptes</h2>
+
+<p>Tous les comptes inscrits sur Market Bouaké.</p>
+
+</div>
+
+<button class="refresh-button" id="refreshAccounts">
+
+🔄 Actualiser
+
+</button>
+
+</div>
+
+<div class="search-box">
+
+<input type="search" id="accountSearch" placeholder="🔎 Rechercher un compte...">
+
+</div>
+
+<div class="table-card">
+
+<div class="table-scroll">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Nom</th>
+
+<th>Email</th>
+
+<th>Téléphone</th>
+
+<th>Rôle</th>
+
+<th>Genre</th>
+
+<th>Statut</th>
+
+<th>Inscription</th>
+
+</tr>
+
+</thead>
+
+<tbody id="accountsTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="section" id="section-sellers">
+
+<div class="section-header">
+
+<div>
+
+<h2>🏪 Vendeurs</h2>
+
+<p>Gestion des boutiques et vendeurs.</p>
+
+</div>
+
+<button class="refresh-button" id="refreshSellers">
+
+🔄 Actualiser
+
+</button>
+
+</div>
+
+<div class="search-box">
+
+<input type="search" id="sellerSearch" placeholder="🔎 Rechercher un vendeur...">
+
+</div>
+
+<div class="table-card">
+
+<div class="table-scroll">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Vendeur</th>
+
+<th>Email</th>
+
+<th>Téléphone</th>
+
+<th>Statut</th>
+
+<th>Inscription</th>
+
+</tr>
+
+</thead>
+
+<tbody id="sellersTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="section" id="section-products">
+
+<div class="section-header">
+
+<div>
+
+<h2>📦 Produits</h2>
+
+<p>Produits enregistrés sur la marketplace.</p>
+
+</div>
+
+<button class="refresh-button" id="refreshProducts">
+
+🔄 Actualiser
+
+</button>
+
+</div>
+
+<div class="search-box">
+
+<input type="search" id="productSearch" placeholder="🔎 Rechercher un produit...">
+
+</div>
+
+<div class="table-card">
+
+<div class="table-scroll">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Produit</th>
+
+<th>Vendeur</th>
+
+<th>Catégorie</th>
+
+<th>Prix</th>
+
+<th>Stock</th>
+
+<th>Statut</th>
+
+</tr>
+
+</thead>
+
+<tbody id="productsTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="section" id="section-orders">
+
+<div class="section-header">
+
+<div>
+
+<h2>🛒 Commandes</h2>
+
+<p>Suivi des commandes et réception des livraisons.</p>
+
+</div>
+
+<button class="refresh-button" id="refreshOrders">
+
+🔄 Actualiser
+
+</button>
+
+</div>
+
+<div class="filter-row">
+
+<select id="orderFilter">
+
+<option value="all">Toutes les commandes</option>
+
+<option value="pending">En attente</option>
+
+<option value="confirmed">Confirmées</option>
+
+<option value="shipped">Expédiées</option>
+
+<option value="delivered">Livrées</option>
+
+<option value="not_received">Non reçues</option>
+
+<option value="problem">Problème</option>
+
+</select>
+
+</div>
+
+<div class="table-card">
+
+<div class="table-scroll">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Commande</th>
+
+<th>Destinataire</th>
+
+<th>Total</th>
+
+<th>Ville</th>
+
+<th>Statut</th>
+
+<th>Réception</th>
+
+</tr>
+
+</thead>
+
+<tbody id="ordersTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="section" id="section-reviews">
+
+<div class="section-header">
+
+<div>
+
+<h2>⭐ Avis & notes</h2>
+
+<p>Consultez les notes et les avis laissés par les acheteurs.</p>
+
+</div>
+
+<button class="refresh-button" id="refreshReviews">
+
+🔄 Actualiser
+
+</button>
+
+</div>
+
+<div class="filter-row">
+
+<select id="reviewFilter">
+
+<option value="all">Tous les avis</option>
+
+<option value="5">⭐ 5 étoiles</option>
+
+<option value="4">⭐ 4 étoiles</option>
+
+<option value="3">⭐ 3 étoiles</option>
+
+<option value="2">⭐ 2 étoiles</option>
+
+<option value="1">⭐ 1 étoile</option>
+
+</select>
+
+</div>
+
+<div class="table-card">
+
+<div class="table-scroll">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Note</th>
+
+<th>Avis</th>
+
+<th>Acheteur</th>
+
+<th>Produit</th>
+
+<th>Commande</th>
+
+<th>Date</th>
+
+</tr>
+
+</thead>
+
+<tbody id="reviewsTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="section" id="section-badges">
+
+<div class="section-header">
+
+<div>
+
+<h2>🏅 Badges</h2>
+
+<p>Gestion des badges disponibles sur Market Bouaké.</p>
+
+</div>
+
+<button class="refresh-button" id="refreshBadges">
+
+🔄 Actualiser
+
+</button>
+
+</div>
+
+<div class="table-card">
+
+<div class="table-scroll">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Badge</th>
+
+<th>Description</th>
+
+<th>Icône</th>
+
+<th>Création</th>
+
+</tr>
+
+</thead>
+
+<tbody id="badgesTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="section" id="section-blocked">
+
+<div class="section-header">
+
+<div>
+
+<h2>🚫 Comptes bloqués</h2>
+
+<p>Comptes suspendus ou bloqués.</p>
+
+</div>
+
+<button class="refresh-button" id="refreshBlocked">
+
+🔄 Actualiser
+
+</button>
+
+</div>
+
+<div class="table-card">
+
+<div class="table-scroll">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Nom</th>
+
+<th>Email</th>
+
+<th>Téléphone</th>
+
+<th>Rôle</th>
+
+<th>Motif</th>
+
+<th>Date</th>
+
+</tr>
+
+</thead>
+
+<tbody id="blockedTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="section" id="section-categories">
+
+<div class="section-header">
+
+<div>
+
+<h2>🗂️ Catégories</h2>
+
+<p>Catégories enregistrées dans Market Bouaké.</p>
+
+</div>
+
+<button class="refresh-button" id="refreshCategories">
+
+🔄 Actualiser
+
+</button>
+
+</div>
+
+<div class="table-card">
+
+<div class="table-scroll">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Nom</th>
+
+<th>Description</th>
+
+<th>Statut</th>
+
+<th>Création</th>
+
+</tr>
+
+</thead>
+
+<tbody id="categoriesTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="section" id="section-settings">
+
+<div class="section-header">
+
+<div>
+
+<h2>⚙️ Paramètres</h2>
+
+<p>Informations de sécurité de l'administration.</p>
+
+</div>
+
+</div>
+
+<div class="empty">
+
+<div class="empty-icon">👑</div>
+
+<strong>Administrateur connecté</strong>
+
+<p id="adminSettingsText">
+
+Ton compte possède les droits administrateur.
+
+</p>
+
+</div>
+
+</section>
+
+</div>
+
+</main>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-config.js"></script>
+
+<script>
+
+"use strict";
+
+/* =========================================================
+
+   DONNEES
+
+========================================================= */
+
+let dashboardData = {
+
+accounts:[],
+
+sellers:[],
+
+products_list:[],
+
+seller_requests:[],
+
+orders:[],
+
+reviews:[],
+
+badges:[],
+
+categories:[]
+
+};
+
+const sidebar=document.getElementById("sidebar");
+
+const menuButton=document.getElementById("menuButton");
+
+const toast=document.getElementById("toast");
+
+/* =========================================================
+
+   OUTILS
+
+========================================================= */
+
+function escapeHtml(value){
+
+if(value===null || value===undefined){
+
+return "";
+
+}
+
+return String(value)
+
+.replace(/&/g,"&amp;")
+
+.replace(/</g,"&lt;")
+
+.replace(/>/g,"&gt;")
+
+.replace(/"/g,"&quot;")
+
+.replace(/'/g,"&#039;");
+
+}
+
+function formatDate(value){
+
+if(!value){
+
+return "-";
+
+}
+
+const date=new Date(value);
+
+if(Number.isNaN(date.getTime())){
+
+return "-";
+
+}
+
+return date.toLocaleDateString("fr-FR",{
+
+day:"2-digit",
+
+month:"2-digit",
+
+year:"numeric"
+
+});
+
+}
+
+function formatDateTime(value){
+
+if(!value){
+
+return "-";
+
+}
+
+const date=new Date(value);
+
+if(Number.isNaN(date.getTime())){
+
+return "-";
+
+}
+
+return date.toLocaleString("fr-FR",{
+
+day:"2-digit",
+
+month:"2-digit",
+
+year:"numeric",
+
+hour:"2-digit",
+
+minute:"2-digit"
+
+});
+
+}
+
+function formatPrice(value){
+
+const number=Number(value);
+
+if(!Number.isFinite(number)){
+
+return "0 FCFA";
+
+}
+
+return number.toLocaleString("fr-FR")+" FCFA";
+
+}
+
+function showToast(message,type="success"){
+
+toast.textContent=message;
+
+toast.className="toast show "+type;
+
+setTimeout(function(){
+
+toast.className="toast";
+
+},4000);
+
+}
+
+function statusText(status){
+
+const value=String(status || "").toLowerCase();
+
+const labels={
+
+pending:"En attente",
+
+approved:"Acceptée",
+
+rejected:"Refusée",
+
+confirmed:"Confirmée",
+
+shipped:"Expédiée",
+
+delivered:"Livrée",
+
+not_received:"Non reçue",
+
+problem:"Problème",
+
+cancelled:"Annulée",
+
+active:"Actif",
+
+inactive:"Inactif",
+
+published:"Publié",
+
+draft:"Brouillon"
+
+};
+
+return labels[value] || status || "-";
+
+}
+
+function statusClass(status){
+
+const value=String(status || "").toLowerCase();
+
+if(
+
+value==="approved" ||
+
+value==="delivered" ||
+
+value==="confirmed" ||
+
+value==="active" ||
+
+value==="published"
+
+){
+
+return "approved";
+
+}
+
+if(
+
+value==="rejected" ||
+
+value==="problem" ||
+
+value==="cancelled" ||
+
+value==="not_received" ||
+
+value==="inactive"
+
+){
+
+return "rejected";
+
+}
+
+return "pending";
+
+}
+
+/* =========================================================
+
+   VERIFICATION ADMIN
+
+========================================================= */
+
+async function verifyAdmin(){
+
+try{
+
+const sessionResult=await supabaseClient.auth.getSession();
+
+if(
+
+sessionResult.error ||
+
+!sessionResult.data ||
+
+!sessionResult.data.session
+
+){
+
+window.location.href="connexion.html";
+
+return false;
+
+}
+
+const user=sessionResult.data.session.user;
+
+const profileResult=await supabaseClient
+
+.from("profiles")
+
+.select("first_name,last_name,email,role,account_status")
+
+.eq("id",user.id)
+
+.maybeSingle();
+
+if(profileResult.error){
+
+throw profileResult.error;
+
+}
+
+if(
+
+!profileResult.data ||
+
+profileResult.data.role!=="admin" ||
+
+profileResult.data.account_status!=="active"
+
+){
+
+alert("Accès refusé. Cette page est réservée à l'administrateur.");
+
+await supabaseClient.auth.signOut();
+
+window.location.href="connexion.html";
+
+return false;
+
+}
+
+const profile=profileResult.data;
+
+const fullName=(
+
+(profile.first_name || "")+
+
+" "+
+
+(profile.last_name || "")
+
+).trim();
+
+document.getElementById("adminName").textContent=
+
+fullName || "Administrateur";
+
+document.getElementById("adminSettingsText").textContent=
+
+"Compte administrateur : "+
+
+(profile.email || user.email || "Administrateur")+
+
+" — statut actif.";
+
+return true;
+
+}catch(error){
+
+console.error("Erreur vérification admin :",error);
+
+alert("Impossible de vérifier les droits administrateur.");
+
+window.location.href="connexion.html";
+
+return false;
+
+}
+
+}
+
+/* =========================================================
+
+   DASHBOARD
+
+========================================================= */
+
+async function loadDashboard(){
+
+const container=document.getElementById("dashboardRequests");
+
+container.innerHTML=`
+
+<div class="loading">
+
+<div class="spinner"></div>
+
+Chargement des données...
+
+</div>
+
+`;
+
+try{
+
+const result=await supabaseClient.rpc("admin_get_dashboard");
+
+if(result.error){
+
+throw result.error;
+
+}
+
+const data=result.data || {};
+
+dashboardData.accounts=
+
+Array.isArray(data.accounts)
+
+?data.accounts
+
+:[];
+
+dashboardData.sellers=
+
+Array.isArray(data.sellers_list)
+
+?data.sellers_list
+
+:Array.isArray(data.sellers)
+
+?data.sellers
+
+:[];
+
+dashboardData.products_list=
+
+Array.isArray(data.products_list)
+
+?data.products_list
+
+:[];
+
+dashboardData.seller_requests=
+
+Array.isArray(data.seller_requests)
+
+?data.seller_requests
+
+:[];
+
+const totalAccounts=Number(data.total_accounts)||dashboardData.accounts.length;
+
+const buyers=Number(data.buyers)||dashboardData.accounts.filter(
+
+account=>account.role==="buyer"
+
+).length;
+
+const sellers=Number(data.sellers)||dashboardData.sellers.length;
+
+const products=Number(data.products)||dashboardData.products_list.length;
+
+const pending=Number(data.pending_requests)||dashboardData.seller_requests.filter(
+
+request=>String(request.status).toLowerCase()==="pending"
+
+).length;
+
+const approved=Number(data.approved_requests)||0;
+
+const rejected=Number(data.rejected_requests)||0;
+
+document.getElementById("totalAccounts").textContent=totalAccounts;
+
+document.getElementById("totalBuyers").textContent=buyers;
+
+document.getElementById("totalSellers").textContent=sellers;
+
+document.getElementById("totalProducts").textContent=products;
+
+document.getElementById("pendingRequests").textContent=pending;
+
+document.getElementById("approvedRequests").textContent=approved;
+
+document.getElementById("rejectedRequests").textContent=rejected;
+
+document.getElementById("requestBadge").textContent=pending;
+
+renderDashboardRequests(dashboardData.seller_requests);
+
+renderRequests(dashboardData.seller_requests);
+
+renderAccounts(dashboardData.accounts);
+
+renderSellers(dashboardData.sellers);
+
+renderProducts(dashboardData.products_list);
+
+await Promise.all([
+
+loadOrders(),
+
+loadReviews(),
+
+loadBadges(),
+
+loadCategories(),
+
+loadBlocked()
+
+]);
+
+}catch(error){
+
+console.error("Erreur dashboard :",error);
+
+container.innerHTML=`
+
+<div class="empty">
+
+<div class="empty-icon">⚠️</div>
+
+<strong>Impossible de charger les données</strong>
+
+<p>${escapeHtml(error.message || "Erreur inconnue")}</p>
+
+</div>
+
+`;
+
+showToast(
+
+"Erreur lors du chargement du tableau de bord.",
+
+"error"
+
+);
+
+}
+
+}
+
+/* =========================================================
+
+   DEMANDES VENDEURS
+
+========================================================= */
+
+function requestCard(request){
+
+const status=String(
+
+request.status || "pending"
+
+).toLowerCase();
+
+const canAct=status==="pending";
+
+return `
+
+<div class="request-card">
+
+<div class="request-header">
+
+<div class="request-person">
+
+<div class="request-avatar">🏪</div>
+
+<div>
+
+<h3>
+
+${escapeHtml(request.shop_name || "Boutique")}
+
+</h3>
+
+<p>
+
+${escapeHtml(request.first_name || "")}
+
+${escapeHtml(request.last_name || "")}
+
+•
+
+${escapeHtml(request.email || "")}
+
+</p>
+
+</div>
+
+</div>
+
+<span class="status ${statusClass(status)}">
+
+${escapeHtml(statusText(status))}
+
+</span>
+
+</div>
+
+<div class="request-info">
+
+<div class="info-item">
+
+<span>Téléphone</span>
+
+<strong>${escapeHtml(request.phone || "-")}</strong>
+
+</div>
+
+<div class="info-item">
+
+<span>Ville</span>
+
+<strong>${escapeHtml(request.city || "-")}</strong>
+
+</div>
+
+<div class="info-item">
+
+<span>Quartier</span>
+
+<strong>${escapeHtml(request.district || "-")}</strong>
+
+</div>
+
+<div class="info-item">
+
+<span>Demande</span>
+
+<strong>${formatDate(request.created_at)}</strong>
+
+</div>
+
+</div>
+
+${
+
+request.shop_description
+
+?
+
+`
+
+<div class="description">
+
+<strong>Description :</strong>
+
+${escapeHtml(request.shop_description)}
+
+</div>
+
+`
+
+:""
+
+}
+
+${
+
+request.birth_date
+
+?
+
+`
+
+<div class="description">
+
+<strong>Date de naissance :</strong>
+
+${formatDate(request.birth_date)}
+
+</div>
+
+`
+
+:""
+
+}
+
+${
+
+status==="rejected" && request.rejection_reason
+
+?
+
+`
+
+<div class="description">
+
+<strong>Motif du refus :</strong>
+
+${escapeHtml(request.rejection_reason)}
+
+</div>
+
+`
+
+:""
+
+}
+
+${
+
+canAct
+
+?
+
+`
+
+<div class="request-actions">
+
+<button
+
+class="action-button approve-button"
+
+onclick="approveRequest('${request.id}')"
+
+>
+
+✅ Accepter le vendeur
+
+</button>
+
+<button
+
+class="action-button reject-button"
+
+onclick="rejectRequest('${request.id}')"
+
+>
+
+❌ Refuser
+
+</button>
+
+</div>
+
+`
+
+:""
+
+}
+
+</div>
+
+`;
+
+}
+
+function renderDashboardRequests(requests){
+
+const container=document.getElementById("dashboardRequests");
+
+const pendingRequests=requests.filter(
+
+request=>String(request.status).toLowerCase()==="pending"
+
+);
+
+if(!pendingRequests.length){
+
+container.innerHTML=`
+
+<div class="empty">
+
+<div class="empty-icon">🎉</div>
+
+<strong>Aucune demande en attente</strong>
+
+<p>Il n'y a actuellement aucune demande vendeur à traiter.</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+container.innerHTML=
+
+'<div class="request-list">'+
+
+pendingRequests
+
+.slice(0,3)
+
+.map(requestCard)
+
+.join("")+
+
+'</div>';
+
+}
+
+function renderRequests(requests){
+
+const container=document.getElementById("requestsContainer");
+
+if(!requests.length){
+
+container.innerHTML=`
+
+<div class="empty">
+
+<div class="empty-icon">🔔</div>
+
+<strong>Aucune demande</strong>
+
+<p>Les demandes vendeur apparaîtront ici.</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+container.innerHTML=
+
+'<div class="request-list">'+
+
+requests.map(requestCard).join("")+
+
+'</div>';
+
+}
+
+/* =========================================================
+
+   APPROBATION
+
+========================================================= */
+
+async function approveRequest(requestId){
+
+if(!confirm(
+
+"Voulez-vous vraiment accepter cette demande vendeur ?"
+
+)){
+
+return;
+
+}
+
+try{
+
+const result=await supabaseClient.rpc(
+
+"admin_approve_seller_request",
+
+{
+
+request_id:requestId
+
+}
+
+);
+
+if(result.error){
+
+throw result.error;
+
+}
+
+showToast(
+
+"✅ Le vendeur a été accepté avec succès.",
+
+"success"
+
+);
+
+await loadDashboard();
+
+}catch(error){
+
+console.error(error);
+
+showToast(
+
+"❌ "+(error.message || "Impossible d'accepter la demande."),
+
+"error"
+
+);
+
+}
+
+}
+
+async function rejectRequest(requestId){
+
+const reason=prompt(
+
+"Pourquoi refusez-vous cette demande ?\n\nVous pouvez laisser vide."
+
+);
+
+if(reason===null){
+
+return;
+
+}
+
+try{
+
+const result=await supabaseClient.rpc(
+
+"admin_reject_seller_request",
+
+{
+
+request_id:requestId,
+
+reason:reason.trim() || null
+
+}
+
+);
+
+if(result.error){
+
+throw result.error;
+
+}
+
+showToast(
+
+"❌ La demande a été refusée.",
+
+"success"
+
+);
+
+await loadDashboard();
+
+}catch(error){
+
+console.error(error);
+
+showToast(
+
+"❌ "+(error.message || "Impossible de refuser la demande."),
+
+"error"
+
+);
+
+}
+
+}
+
+/* =========================================================
+
+   COMPTES
+
+========================================================= */
+
+function renderAccounts(accounts){
+
+const tbody=document.getElementById("accountsTable");
+
+if(!accounts.length){
+
+tbody.innerHTML=`
+
+<tr>
+
+<td colspan="7">Aucun compte.</td>
+
+</tr>
+
+`;
+
+return;
+
+}
+
+tbody.innerHTML=accounts.map(account=>{
+
+let role=account.role || "-";
+
+if(role==="buyer"){
+
+role="🛍️ Acheteur";
+
+}
+
+else if(role==="seller"){
+
+role="🏪 Vendeur";
+
+}
+
+else if(role==="admin"){
+
+role="👑 Admin";
+
+}
+
+return `
+
+<tr>
+
+<td>
+
+<strong>
+
+${escapeHtml(account.first_name || "")}
+
+${escapeHtml(account.last_name || "")}
+
+</strong>
+
+</td>
+
+<td>${escapeHtml(account.email || "-")}</td>
+
+<td>${escapeHtml(account.phone || "-")}</td>
+
+<td>${role}</td>
+
+<td>${escapeHtml(account.gender || "-")}</td>
+
+<td>
+
+<span class="status ${statusClass(account.account_status)}">
+
+${escapeHtml(statusText(account.account_status))}
+
+</span>
+
+</td>
+
+<td>${formatDate(account.created_at)}</td>
+
+</tr>
+
+`;
+
+}).join("");
+
+}
+
+/* =========================================================
+
+   VENDEURS
+
+========================================================= */
+
+function renderSellers(sellers){
+
+const tbody=document.getElementById("sellersTable");
+
+if(!sellers.length){
+
+tbody.innerHTML=`
+
+<tr>
+
+<td colspan="5">Aucun vendeur.</td>
+
+</tr>
+
+`;
+
+return;
+
+}
+
+tbody.innerHTML=sellers.map(seller=>{
+
+const name=(
+
+(seller.first_name || "")+
+
+" "+
+
+(seller.last_name || "")
+
+).trim();
+
+return `
+
+<tr>
+
+<td>
+
+<strong>
+
+${escapeHtml(name || "-")}
+
+</strong>
+
+</td>
+
+<td>
+
+${escapeHtml(seller.email || "-")}
+
+</td>
+
+<td>
+
+${escapeHtml(seller.phone || "-")}
+
+</td>
+
+<td>
+
+<span class="status ${statusClass(
+
+seller.account_status || "active"
+
+)}">
+
+${escapeHtml(
+
+statusText(
+
+seller.account_status || "active"
+
+)
+
+)}
+
+</span>
+
+</td>
+
+<td>
+
+${formatDate(seller.created_at)}
+
+</td>
+
+</tr>
+
+`;
+
+}).join("");
+
+}
+
+/* =========================================================
+
+   PRODUITS
+
+========================================================= */
+
+function renderProducts(products){
+
+const tbody=document.getElementById("productsTable");
+
+if(!products.length){
+
+tbody.innerHTML=`
+
+<tr>
+
+<td colspan="6">Aucun produit.</td>
+
+</tr>
+
+`;
+
+return;
+
+}
+
+tbody.innerHTML=products.map(product=>{
+
+return `
+
+<tr>
+
+<td>
+
+<strong>
+
+${escapeHtml(product.name || "-")}
+
+</strong>
+
+</td>
+
+<td>
+
+${escapeHtml(product.seller_name || "-")}
+
+</td>
+
+<td>
+
+${escapeHtml(product.category || "-")}
+
+</td>
+
+<td>
+
+${formatPrice(product.price)}
+
+</td>
+
+<td>
+
+${escapeHtml(String(product.stock ?? 0))}
+
+</td>
+
+<td>
+
+<span class="status ${statusClass(
+
+product.status || (
+
+product.is_active
+
+?"active"
+
+:"inactive"
+
+)
+
+)}">
+
+${escapeHtml(
+
+statusText(
+
+product.status || (
+
+product.is_active
+
+?"active"
+
+:"inactive"
+
+)
+
+)
+
+)}
+
+</span>
+
+</td>
+
+</tr>
+
+`;
+
+}).join("");
+
+}
+
+/* =========================================================
+
+   COMMANDES
+
+========================================================= */
+
+async function loadOrders(){
+
+try{
+
+const result=await supabaseClient
+
+.from("orders")
+
+.select(
+
+"id,buyer_id,total_amount,status,delivery_name,delivery_phone,delivery_city,delivery_address,delivery_info,created_at,updated_at,received_at,buyer_received,issue_reported,issue_reason,issue_description,issue_status,issue_created_at,issue_resolved_at,issue_admin_note"
+
+)
+
+.order("created_at",{ascending:false});
+
+if(result.error){
+
+throw result.error;
+
+}
+
+dashboardData.orders=
+
+Array.isArray(result.data)
+
+?result.data
+
+:[];
+
+renderOrders(dashboardData.orders);
+
+}catch(error){
+
+console.error("Erreur commandes :",error);
+
+dashboardData.orders=[];
+
+document.getElementById("ordersTable").innerHTML=`
+
+<tr>
+
+<td colspan="6">
+
+Impossible de charger les commandes.
+
+</td>
+
+</tr>
+
+`;
+
+}
+
+}
+
+function renderOrders(orders){
+
+const tbody=document.getElementById("ordersTable");
+
+const filter=document.getElementById("orderFilter").value;
+
+const filtered=
+
+filter==="all"
+
+?orders
+
+:orders.filter(
+
+order=>
+
+String(order.status || "").toLowerCase()===filter
+
+);
+
+if(!filtered.length){
+
+tbody.innerHTML=`
+
+<tr>
+
+<td colspan="6">
+
+Aucune commande pour ce filtre.
+
+</td>
+
+</tr>
+
+`;
+
+return;
+
+}
+
+tbody.innerHTML=filtered.map(order=>{
+
+const status=
+
+String(order.status || "pending").toLowerCase();
+
+let reception="-";
+
+if(order.buyer_received===true){
+
+reception='<span class="received">✅ Reçue</span>';
+
+}
+
+else if(status==="delivered"){
+
+reception='<span class="received">📦 Livrée</span>';
+
+}
+
+if(order.issue_reported===true){
+
+reception='<span class="problem">🚨 Problème</span>';
+
+}
+
+return `
+
+<tr>
+
+<td>
+
+<strong>
+
+#${escapeHtml(order.id)}
+
+</strong>
+
+<br>
+
+<small>
+
+${formatDateTime(order.created_at)}
+
+</small>
+
+</td>
+
+<td>
+
+${escapeHtml(order.delivery_name || "-")}
+
+<br>
+
+<small>
+
+${escapeHtml(order.delivery_phone || "")}
+
+</small>
+
+</td>
+
+<td>
+
+${formatPrice(order.total_amount)}
+
+</td>
+
+<td>
+
+${escapeHtml(order.delivery_city || "-")}
+
+</td>
+
+<td>
+
+<span class="status ${statusClass(status)}">
+
+${escapeHtml(statusText(status))}
+
+</span>
+
+</td>
+
+<td>
+
+${reception}
+
+</td>
+
+</tr>
+
+`;
+
+}).join("");
+
+}
+
+/* =========================================================
+
+   AVIS : PRODUCT_REVIEWS
+
+========================================================= */
+
+async function loadReviews(){
+
+try{
+
+const result=await supabaseClient
+
+.from("product_reviews")
+
+.select("*")
+
+.order("created_at",{ascending:false});
+
+if(result.error){
+
+throw result.error;
+
+}
+
+dashboardData.reviews=
+
+Array.isArray(result.data)
+
+?result.data
+
+:[];
+
+document.getElementById("totalReviews").textContent=
+
+dashboardData.reviews.length;
+
+renderReviews(dashboardData.reviews);
+
+}catch(error){
+
+console.warn(
+
+"Erreur avis :",
+
+error.message
+
+);
+
+dashboardData.reviews=[];
+
+document.getElementById("totalReviews").textContent="0";
+
+document.getElementById("reviewsTable").innerHTML=`
+
+<tr>
+
+<td colspan="6">
+
+Aucun avis disponible pour le moment.
+
+</td>
+
+</tr>
+
+`;
+
+}
+
+}
+
+function renderReviews(reviews){
+
+const tbody=document.getElementById("reviewsTable");
+
+const filter=document.getElementById("reviewFilter").value;
+
+const filtered=
+
+filter==="all"
+
+?reviews
+
+:reviews.filter(
+
+review=>
+
+Number(review.rating)===Number(filter)
+
+);
+
+if(!filtered.length){
+
+tbody.innerHTML=`
+
+<tr>
+
+<td colspan="6">
+
+Aucun avis pour ce filtre.
+
+</td>
+
+</tr>
+
+`;
+
+return;
+
+}
+
+tbody.innerHTML=filtered.map(review=>{
+
+const rating=Math.max(
+
+0,
+
+Math.min(
+
+5,
+
+Number(review.rating)||0
+
+)
+
+);
+
+const stars=
+
+"★".repeat(rating)+
+
+"☆".repeat(5-rating);
+
+return `
+
+<tr>
+
+<td>
+
+<span class="rating">
+
+${stars}
+
+</span>
+
+</td>
+
+<td>
+
+${escapeHtml(review.comment || "-")}
+
+</td>
+
+<td>
+
+${escapeHtml(review.buyer_id || "-")}
+
+</td>
+
+<td>
+
+${escapeHtml(review.product_id || "-")}
+
+</td>
+
+<td>
+
+${escapeHtml(review.order_id || "-")}
+
+</td>
+
+<td>
+
+${formatDate(review.created_at)}
+
+</td>
+
+</tr>
+
+`;
+
+}).join("");
+
+}
+
+/* =========================================================
+
+   BADGES
+
+========================================================= */
+
+async function loadBadges(){
+
+try{
+
+const result=await supabaseClient
+
+.from("badges")
+
+.select("id,name,description,icon,created_at")
+
+.order("created_at",{ascending:false});
+
+if(result.error){
+
+throw result.error;
+
+}
+
+dashboardData.badges=
+
+Array.isArray(result.data)
+
+?result.data
+
+:[];
+
+renderBadges(dashboardData.badges);
+
+}catch(error){
+
+console.warn("Erreur badges :",error.message);
+
+dashboardData.badges=[];
+
+document.getElementById("badgesTable").innerHTML=`
+
+<tr>
+
+<td colspan="4">Aucun badge disponible.</td>
+
+</tr>
+
+`;
+
+}
+
+}
+
+function renderBadges(badges){
+
+const tbody=document.getElementById("badgesTable");
+
+if(!badges.length){
+
+tbody.innerHTML=`
+
+<tr>
+
+<td colspan="4">Aucun badge.</td>
+
+</tr>
+
+`;
+
+return;
+
+}
+
+tbody.innerHTML=badges.map(badge=>`
+
+<tr>
+
+<td>
+
+<strong>
+
+${escapeHtml(badge.name || "-")}
+
+</strong>
+
+</td>
+
+<td>
+
+${escapeHtml(badge.description || "-")}
+
+</td>
+
+<td>
+
+${escapeHtml(badge.icon || "🏅")}
+
+</td>
+
+<td>
+
+${formatDate(badge.created_at)}
+
+</td>
+
+</tr>
+
+`).join("");
+
+}
+
+/* =========================================================
+
+   CATEGORIES
+
+========================================================= */
+
+async function loadCategories(){
+
+try{
+
+const result=await supabaseClient
+
+.from("categories")
+
+.select(
+
+"id,name,description,is_active,created_at,updated_at"
+
+)
+
+.order("created_at",{ascending:false});
+
+if(result.error){
+
+throw result.error;
+
+}
+
+dashboardData.categories=
+
+Array.isArray(result.data)
+
+?result.data
+
+:[];
+
+renderCategories(dashboardData.categories);
+
+}catch(error){
+
+console.warn(
+
+"Erreur catégories :",
+
+error.message
+
+);
+
+dashboardData.categories=[];
+
+document.getElementById("categoriesTable").innerHTML=`
+
+<tr>
+
+<td colspan="4">Aucune catégorie disponible.</td>
+
+</tr>
+
+`;
+
+}
+
+}
+
+function renderCategories(categories){
+
+const tbody=document.getElementById("categoriesTable");
+
+if(!categories.length){
+
+tbody.innerHTML=`
+
+<tr>
+
+<td colspan="4">Aucune catégorie.</td>
+
+</tr>
+
+`;
+
+return;
+
+}
+
+tbody.innerHTML=categories.map(category=>`
+
+<tr>
+
+<td>
+
+<strong>
+
+${escapeHtml(category.name || "-")}
+
+</strong>
+
+</td>
+
+<td>
+
+${escapeHtml(category.description || "-")}
+
+</td>
+
+<td>
+
+<span class="status ${
+
+category.is_active
+
+?"approved"
+
+:"rejected"
+
+}">
+
+${
+
+category.is_active
+
+?"Active"
+
+:"Inactive"
+
+}
+
+</span>
+
+</td>
+
+<td>
+
+${formatDate(category.created_at)}
+
+</td>
+
+</tr>
+
+`).join("");
+
+}
+
+/* =========================================================
+
+   COMPTES BLOQUES
+
+========================================================= */
+
+async function loadBlocked(){
+
+try{
+
+const result=await supabaseClient
+
+.from("profiles")
+
+.select(
+
+"id,first_name,last_name,email,phone,role,account_status,blocked_at,blocked_reason"
+
+)
+
+.in(
+
+"account_status",
+
+["blocked","suspended"]
+
+)
+
+.order("blocked_at",{ascending:false});
+
+if(result.error){
+
+throw result.error;
+
+}
+
+const blocked=
+
+Array.isArray(result.data)
+
+?result.data
+
+:[];
+
+renderBlocked(blocked);
+
+}catch(error){
+
+console.warn(
+
+"Erreur comptes bloqués :",
+
+error.message
+
+);
+
+document.getElementById("blockedTable").innerHTML=`
+
+<tr>
+
+<td colspan="6">
+
+Aucun compte bloqué ou suspendu.
+
+</td>
+
+</tr>
+
+`;
+
+}
+
+}
+
+function renderBlocked(accounts){
+
+const tbody=document.getElementById("blockedTable");
+
+if(!accounts.length){
+
+tbody.innerHTML=`
+
+<tr>
+
+<td colspan="6">
+
+Aucun compte bloqué ou suspendu.
+
+</td>
+
+</tr>
+
+`;
+
+return;
+
+}
+
+tbody.innerHTML=accounts.map(account=>`
+
+<tr>
+
+<td>
+
+<strong>
+
+${escapeHtml(account.first_name || "")}
+
+${escapeHtml(account.last_name || "")}
+
+</strong>
+
+</td>
+
+<td>
+
+${escapeHtml(account.email || "-")}
+
+</td>
+
+<td>
+
+${escapeHtml(account.phone || "-")}
+
+</td>
+
+<td>
+
+${escapeHtml(account.role || "-")}
+
+</td>
+
+<td>
+
+${escapeHtml(account.blocked_reason || "-")}
+
+</td>
+
+<td>
+
+${formatDate(account.blocked_at)}
+
+</td>
+
+</tr>
+
+`).join("");
+
+}
+
+/* =========================================================
+
+   NAVIGATION
+
+========================================================= */
+
+const navItems=
+
+document.querySelectorAll(".nav-item");
+
+const titles={
+
+dashboard:"Tableau de bord",
+
+requests:"Demandes vendeur",
+
+accounts:"Comptes",
+
+sellers:"Vendeurs",
+
+products:"Produits",
+
+orders:"Commandes",
+
+reviews:"Avis & notes",
+
+badges:"Badges",
+
+blocked:"Comptes bloqués",
+
+categories:"Catégories",
+
+settings:"Paramètres"
+
+};
+
+navItems.forEach(function(item){
+
+item.addEventListener("click",function(){
+
+const section=item.dataset.section;
+
+navItems.forEach(function(nav){
+
+nav.classList.remove("active");
+
+});
+
+item.classList.add("active");
+
+document
+
+.querySelectorAll(".section")
+
+.forEach(function(sec){
+
+sec.classList.remove("active");
+
+});
+
+const target=document.getElementById(
+
+"section-"+section
+
+);
+
+if(target){
+
+target.classList.add("active");
+
+}
+
+document.getElementById("pageTitle").textContent=
+
+titles[section] || "Administration";
+
+sidebar.classList.remove("open");
+
+});
+
+});
+
+/* =========================================================
+
+   MENU MOBILE
+
+========================================================= */
+
+menuButton.addEventListener("click",function(){
+
+sidebar.classList.toggle("open");
+
+});
+
+/* =========================================================
+
+   ACTUALISATION
+
+========================================================= */
+
+document.getElementById("refreshDashboard")
+
+.addEventListener("click",loadDashboard);
+
+document.getElementById("refreshRequests")
+
+.addEventListener("click",loadDashboard);
+
+document.getElementById("refreshAccounts")
+
+.addEventListener("click",loadDashboard);
+
+document.getElementById("refreshSellers")
+
+.addEventListener("click",loadDashboard);
+
+document.getElementById("refreshProducts")
+
+.addEventListener("click",loadDashboard);
+
+document.getElementById("refreshOrders")
+
+.addEventListener("click",loadOrders);
+
+document.getElementById("refreshReviews")
+
+.addEventListener("click",loadReviews);
+
+document.getElementById("refreshBadges")
+
+.addEventListener("click",loadBadges);
+
+document.getElementById("refreshCategories")
+
+.addEventListener("click",loadCategories);
+
+document.getElementById("refreshBlocked")
+
+.addEventListener("click",loadBlocked);
+
+/* =========================================================
+
+   RECHERCHE COMPTES
+
+========================================================= */
+
+document.getElementById("accountSearch")
+
+.addEventListener("input",function(event){
+
+const query=event.target.value
+
+.toLowerCase()
+
+.trim();
+
+const filtered=dashboardData.accounts.filter(
+
+account=>{
+
+const text=(
+
+(account.first_name || "")+
+
+" "+
+
+(account.last_name || "")+
+
+" "+
+
+(account.email || "")+
+
+" "+
+
+(account.phone || "")+
+
+" "+
+
+(account.role || "")+
+
+" "+
+
+(account.account_status || "")
+
+).toLowerCase();
+
+return text.includes(query);
+
+});
+
+renderAccounts(filtered);
+
+});
+
+/* =========================================================
+
+   RECHERCHE VENDEURS
+
+========================================================= */
+
+document.getElementById("sellerSearch")
+
+.addEventListener("input",function(event){
+
+const query=event.target.value
+
+.toLowerCase()
+
+.trim();
+
+const filtered=dashboardData.sellers.filter(
+
+seller=>{
+
+const text=(
+
+(seller.first_name || "")+
+
+" "+
+
+(seller.last_name || "")+
+
+" "+
+
+(seller.email || "")+
+
+" "+
+
+(seller.phone || "")
+
+).toLowerCase();
+
+return text.includes(query);
+
+});
+
+renderSellers(filtered);
+
+});
+
+/* =========================================================
+
+   RECHERCHE PRODUITS
+
+========================================================= */
+
+document.getElementById("productSearch")
+
+.addEventListener("input",function(event){
+
+const query=event.target.value
+
+.toLowerCase()
+
+.trim();
+
+const filtered=dashboardData.products_list.filter(
+
+product=>{
+
+const text=(
+
+(product.name || "")+
+
+" "+
+
+(product.category || "")+
+
+" "+
+
+(product.description || "")+
+
+" "+
+
+(product.seller_name || "")
+
+).toLowerCase();
+
+return text.includes(query);
+
+});
+
+renderProducts(filtered);
+
+});
+
+/* =========================================================
+
+   FILTRES
+
+========================================================= */
+
+document.getElementById("orderFilter")
+
+.addEventListener("change",function(){
+
+renderOrders(dashboardData.orders);
+
+});
+
+document.getElementById("reviewFilter")
+
+.addEventListener("change",function(){
+
+renderReviews(dashboardData.reviews);
+
+});
+
+/* =========================================================
+
+   DECONNEXION
+
+========================================================= */
+
+document.getElementById("logoutButton")
+
+.addEventListener("click",async function(){
+
+if(!confirm("Voulez-vous vous déconnecter ?")){
+
+return;
+
+}
+
+try{
+
+await supabaseClient.auth.signOut();
+
+}catch(error){
+
+console.error(error);
+
+}
+
+window.location.href="connexion.html";
+
+});
+
+/* =========================================================
+
+   DEMARRAGE
+
+========================================================= */
+
+async function startAdmin(){
+
+if(typeof supabaseClient==="undefined"){
+
+alert(
+
+"Supabase n'est pas configuré. Vérifie supabase-config.js."
+
+);
+
+return;
+
+}
+
+const isAdmin=await verifyAdmin();
+
+if(!isAdmin){
+
+return;
+
+}
+
+await loadDashboard();
+
+}
+
+startAdmin();
+
+</script>
+
+</body>
+
+</html>
