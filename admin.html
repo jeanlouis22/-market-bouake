@@ -1,0 +1,4459 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Administration | Market Bouaké</title>
+
+    <style>
+
+        * {
+
+            margin: 0;
+
+            padding: 0;
+
+            box-sizing: border-box;
+
+        }
+
+        :root {
+
+            --orange: #f57c00;
+
+            --orange-dark: #e66f00;
+
+            --orange-light: #fff4e8;
+
+            --dark: #171717;
+
+            --text: #242424;
+
+            --muted: #777;
+
+            --bg: #f5f6f8;
+
+            --white: #ffffff;
+
+            --border: #e8e8e8;
+
+            --green: #16803c;
+
+            --green-light: #edf9f1;
+
+            --red: #c62828;
+
+            --red-light: #fff0f0;
+
+            --blue: #2563eb;
+
+            --blue-light: #eff6ff;
+
+            --shadow: 0 8px 30px rgba(0,0,0,0.07);
+
+        }
+
+        body {
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            background: var(--bg);
+
+            color: var(--text);
+
+            min-height: 100vh;
+
+        }
+
+        button,
+
+        input,
+
+        textarea,
+
+        select {
+
+            font-family: inherit;
+
+        }
+
+        button {
+
+            cursor: pointer;
+
+        }
+
+        /* =====================================================
+
+           MOBILE HEADER
+
+        ===================================================== */
+
+        .mobile-header {
+
+            display: none;
+
+            height: 65px;
+
+            background: var(--white);
+
+            border-bottom: 1px solid var(--border);
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 18px;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1000;
+
+        }
+
+        .mobile-logo {
+
+            font-size: 20px;
+
+            font-weight: 800;
+
+        }
+
+        .mobile-logo span {
+
+            color: var(--orange);
+
+        }
+
+        .menu-button {
+
+            border: none;
+
+            background: var(--orange-light);
+
+            width: 42px;
+
+            height: 42px;
+
+            border-radius: 10px;
+
+            font-size: 22px;
+
+        }
+
+        /* =====================================================
+
+           LAYOUT
+
+        ===================================================== */
+
+        .app {
+
+            display: flex;
+
+            min-height: 100vh;
+
+        }
+
+        /* =====================================================
+
+           SIDEBAR
+
+        ===================================================== */
+
+        .sidebar {
+
+            width: 255px;
+
+            background: #171717;
+
+            color: white;
+
+            position: fixed;
+
+            left: 0;
+
+            top: 0;
+
+            bottom: 0;
+
+            padding: 25px 15px;
+
+            z-index: 1100;
+
+            overflow-y: auto;
+
+        }
+
+        .brand {
+
+            padding: 5px 12px 25px;
+
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+
+            margin-bottom: 20px;
+
+        }
+
+        .brand-title {
+
+            font-size: 24px;
+
+            font-weight: 800;
+
+        }
+
+        .brand-title span {
+
+            color: #ff8a00;
+
+        }
+
+        .admin-label {
+
+            margin-top: 7px;
+
+            font-size: 12px;
+
+            color: #aaa;
+
+        }
+
+        .nav-title {
+
+            color: #777;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            text-transform: uppercase;
+
+            padding: 0 12px;
+
+            margin: 18px 0 8px;
+
+            letter-spacing: 0.7px;
+
+        }
+
+        .nav-item {
+
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            border: none;
+
+            background: transparent;
+
+            color: #ccc;
+
+            padding: 12px;
+
+            border-radius: 9px;
+
+            margin-bottom: 4px;
+
+            font-size: 14px;
+
+            text-align: left;
+
+            transition: 0.2s;
+
+        }
+
+        .nav-item:hover {
+
+            background: rgba(255,255,255,0.06);
+
+            color: white;
+
+        }
+
+        .nav-item.active {
+
+            background: var(--orange);
+
+            color: white;
+
+        }
+
+        .nav-icon {
+
+            width: 23px;
+
+            text-align: center;
+
+            font-size: 17px;
+
+        }
+
+        .nav-badge {
+
+            margin-left: auto;
+
+            background: #ff4747;
+
+            color: white;
+
+            min-width: 22px;
+
+            height: 22px;
+
+            border-radius: 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+        }
+
+        .sidebar-bottom {
+
+            margin-top: 30px;
+
+            border-top: 1px solid rgba(255,255,255,0.08);
+
+            padding-top: 15px;
+
+        }
+
+        .logout-button {
+
+            width: 100%;
+
+            border: none;
+
+            background: rgba(255,255,255,0.06);
+
+            color: #ddd;
+
+            padding: 12px;
+
+            border-radius: 9px;
+
+            text-align: left;
+
+            font-size: 14px;
+
+        }
+
+        .logout-button:hover {
+
+            background: rgba(255,255,255,0.12);
+
+            color: white;
+
+        }
+
+        /* =====================================================
+
+           MAIN
+
+        ===================================================== */
+
+        .main {
+
+            margin-left: 255px;
+
+            width: calc(100% - 255px);
+
+            min-height: 100vh;
+
+        }
+
+        .topbar {
+
+            height: 76px;
+
+            background: white;
+
+            border-bottom: 1px solid var(--border);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 35px;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 900;
+
+        }
+
+        .page-title {
+
+            font-size: 21px;
+
+            font-weight: 800;
+
+        }
+
+        .page-subtitle {
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+            margin-top: 4px;
+
+        }
+
+        .admin-profile {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+        }
+
+        .admin-avatar {
+
+            width: 40px;
+
+            height: 40px;
+
+            background: var(--orange-light);
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 19px;
+
+        }
+
+        .admin-info strong {
+
+            display: block;
+
+            font-size: 13px;
+
+        }
+
+        .admin-info span {
+
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            margin-top: 2px;
+
+        }
+
+        /* =====================================================
+
+           CONTENT
+
+        ===================================================== */
+
+        .content {
+
+            padding: 30px 35px 60px;
+
+            max-width: 1500px;
+
+        }
+
+        .welcome {
+
+            background: linear-gradient(
+
+                120deg,
+
+                #171717,
+
+                #2a2a2a
+
+            );
+
+            color: white;
+
+            padding: 28px;
+
+            border-radius: 16px;
+
+            margin-bottom: 25px;
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+        .welcome::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 230px;
+
+            height: 230px;
+
+            border-radius: 50%;
+
+            right: -80px;
+
+            top: -100px;
+
+            background: rgba(245,124,0,0.25);
+
+        }
+
+        .welcome h2 {
+
+            font-size: 24px;
+
+            margin-bottom: 7px;
+
+        }
+
+        .welcome p {
+
+            color: #ccc;
+
+            font-size: 14px;
+
+        }
+
+        /* =====================================================
+
+           STATISTICS
+
+        ===================================================== */
+
+        .stats-grid {
+
+            display: grid;
+
+            grid-template-columns:
+
+                repeat(4, minmax(0, 1fr));
+
+            gap: 16px;
+
+            margin-bottom: 28px;
+
+        }
+
+        .stat-card {
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 14px;
+
+            padding: 20px;
+
+            box-shadow: 0 3px 12px rgba(0,0,0,0.03);
+
+        }
+
+        .stat-top {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 17px;
+
+        }
+
+        .stat-icon {
+
+            width: 43px;
+
+            height: 43px;
+
+            border-radius: 11px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 20px;
+
+            background: var(--orange-light);
+
+        }
+
+        .stat-card.blue .stat-icon {
+
+            background: var(--blue-light);
+
+        }
+
+        .stat-card.green .stat-icon {
+
+            background: var(--green-light);
+
+        }
+
+        .stat-card.red .stat-icon {
+
+            background: var(--red-light);
+
+        }
+
+        .stat-number {
+
+            font-size: 28px;
+
+            font-weight: 800;
+
+            margin-bottom: 5px;
+
+        }
+
+        .stat-label {
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+        }
+
+        /* =====================================================
+
+           SECTIONS
+
+        ===================================================== */
+
+        .section {
+
+            display: none;
+
+        }
+
+        .section.active {
+
+            display: block;
+
+        }
+
+        .section-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 18px;
+
+        }
+
+        .section-header h2 {
+
+            font-size: 20px;
+
+        }
+
+        .section-header p {
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+            margin-top: 4px;
+
+        }
+
+        .refresh-button {
+
+            border: 1px solid var(--border);
+
+            background: white;
+
+            padding: 10px 14px;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+
+            font-size: 13px;
+
+        }
+
+        .refresh-button:hover {
+
+            border-color: var(--orange);
+
+            color: var(--orange);
+
+        }
+
+        /* =====================================================
+
+           REQUESTS
+
+        ===================================================== */
+
+        .request-list {
+
+            display: grid;
+
+            gap: 15px;
+
+        }
+
+        .request-card {
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 14px;
+
+            padding: 20px;
+
+            box-shadow: 0 3px 12px rgba(0,0,0,0.03);
+
+        }
+
+        .request-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 17px;
+
+        }
+
+        .request-person {
+
+            display: flex;
+
+            gap: 12px;
+
+            align-items: center;
+
+        }
+
+        .request-avatar {
+
+            width: 47px;
+
+            height: 47px;
+
+            border-radius: 50%;
+
+            background: var(--orange-light);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 21px;
+
+        }
+
+        .request-person h3 {
+
+            font-size: 16px;
+
+        }
+
+        .request-person p {
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+            margin-top: 4px;
+
+        }
+
+        .status {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            height: fit-content;
+
+        }
+
+        .status.pending {
+
+            background: #fff5df;
+
+            color: #a45a00;
+
+        }
+
+        .status.approved {
+
+            background: var(--green-light);
+
+            color: var(--green);
+
+        }
+
+        .status.rejected {
+
+            background: var(--red-light);
+
+            color: var(--red);
+
+        }
+
+        .request-info {
+
+            display: grid;
+
+            grid-template-columns:
+
+                repeat(4, minmax(0, 1fr));
+
+            gap: 12px;
+
+            padding: 15px;
+
+            background: #fafafa;
+
+            border-radius: 10px;
+
+            margin-bottom: 15px;
+
+        }
+
+        .info-item span {
+
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            margin-bottom: 5px;
+
+        }
+
+        .info-item strong {
+
+            font-size: 13px;
+
+            word-break: break-word;
+
+        }
+
+        .description {
+
+            color: #555;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
+            margin-bottom: 15px;
+
+        }
+
+        .request-actions {
+
+            display: flex;
+
+            gap: 9px;
+
+            flex-wrap: wrap;
+
+        }
+
+        .action-button {
+
+            border: none;
+
+            padding: 10px 15px;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+
+            font-size: 12px;
+
+        }
+
+        .approve-button {
+
+            background: var(--green);
+
+            color: white;
+
+        }
+
+        .approve-button:hover {
+
+            opacity: 0.9;
+
+        }
+
+        .reject-button {
+
+            background: var(--red-light);
+
+            color: var(--red);
+
+        }
+
+        .reject-button:hover {
+
+            background: #ffe0e0;
+
+        }
+
+        .empty {
+
+            background: white;
+
+            border: 1px dashed #ddd;
+
+            border-radius: 14px;
+
+            padding: 50px 20px;
+
+            text-align: center;
+
+            color: var(--muted);
+
+        }
+
+        .empty-icon {
+
+            font-size: 40px;
+
+            margin-bottom: 12px;
+
+        }
+
+        .empty strong {
+
+            display: block;
+
+            color: var(--text);
+
+            margin-bottom: 5px;
+
+        }
+
+        /* =====================================================
+
+           TABLE
+
+        ===================================================== */
+
+        .table-card {
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 14px;
+
+            overflow: hidden;
+
+        }
+
+        .table-scroll {
+
+            overflow-x: auto;
+
+        }
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 700px;
+
+        }
+
+        th,
+
+        td {
+
+            padding: 14px 16px;
+
+            text-align: left;
+
+            border-bottom: 1px solid #eee;
+
+            font-size: 13px;
+
+        }
+
+        th {
+
+            background: #fafafa;
+
+            color: #666;
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.3px;
+
+        }
+
+        td strong {
+
+            font-size: 13px;
+
+        }
+
+        tr:last-child td {
+
+            border-bottom: none;
+
+        }
+
+        /* =====================================================
+
+           SEARCH
+
+        ===================================================== */
+
+        .search-box {
+
+            margin-bottom: 15px;
+
+        }
+
+        .search-box input {
+
+            width: 100%;
+
+            max-width: 420px;
+
+            padding: 12px 14px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 9px;
+
+            outline: none;
+
+            background: white;
+
+        }
+
+        .search-box input:focus {
+
+            border-color: var(--orange);
+
+        }
+
+        /* =====================================================
+
+           COMING SOON
+
+        ===================================================== */
+
+        .coming {
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 16px;
+
+            padding: 55px 25px;
+
+            text-align: center;
+
+        }
+
+        .coming-icon {
+
+            font-size: 48px;
+
+            margin-bottom: 14px;
+
+        }
+
+        .coming h2 {
+
+            margin-bottom: 8px;
+
+        }
+
+        .coming p {
+
+            color: var(--muted);
+
+            font-size: 14px;
+
+            max-width: 500px;
+
+            margin: auto;
+
+            line-height: 1.6;
+
+        }
+
+        /* =====================================================
+
+           LOADING
+
+        ===================================================== */
+
+        .loading {
+
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 35px;
+
+            text-align: center;
+
+            color: var(--muted);
+
+        }
+
+        .spinner {
+
+            width: 35px;
+
+            height: 35px;
+
+            border: 3px solid #eee;
+
+            border-top-color: var(--orange);
+
+            border-radius: 50%;
+
+            animation: spin 0.8s linear infinite;
+
+            margin: 0 auto 12px;
+
+        }
+
+        @keyframes spin {
+
+            to {
+
+                transform: rotate(360deg);
+
+            }
+
+        }
+
+        /* =====================================================
+
+           TOAST
+
+        ===================================================== */
+
+        .toast {
+
+            position: fixed;
+
+            right: 25px;
+
+            bottom: 25px;
+
+            background: #171717;
+
+            color: white;
+
+            padding: 14px 18px;
+
+            border-radius: 10px;
+
+            box-shadow: var(--shadow);
+
+            display: none;
+
+            z-index: 3000;
+
+            max-width: 360px;
+
+            font-size: 13px;
+
+        }
+
+        .toast.show {
+
+            display: block;
+
+        }
+
+        .toast.success {
+
+            border-left: 4px solid var(--green);
+
+        }
+
+        .toast.error {
+
+            border-left: 4px solid var(--red);
+
+        }
+
+        /* =====================================================
+
+           MOBILE
+
+        ===================================================== */
+
+        @media (max-width: 1050px) {
+
+            .stats-grid {
+
+                grid-template-columns:
+
+                    repeat(2, minmax(0, 1fr));
+
+            }
+
+            .request-info {
+
+                grid-template-columns:
+
+                    repeat(2, minmax(0, 1fr));
+
+            }
+
+        }
+
+        @media (max-width: 750px) {
+
+            .mobile-header {
+
+                display: flex;
+
+            }
+
+            .sidebar {
+
+                transform: translateX(-100%);
+
+                transition: transform 0.25s ease;
+
+            }
+
+            .sidebar.open {
+
+                transform: translateX(0);
+
+            }
+
+            .main {
+
+                margin-left: 0;
+
+                width: 100%;
+
+            }
+
+            .topbar {
+
+                display: none;
+
+            }
+
+            .content {
+
+                padding: 20px 15px 45px;
+
+            }
+
+            .welcome {
+
+                padding: 22px;
+
+            }
+
+            .welcome h2 {
+
+                font-size: 20px;
+
+            }
+
+            .stats-grid {
+
+                grid-template-columns: 1fr 1fr;
+
+                gap: 10px;
+
+            }
+
+            .stat-card {
+
+                padding: 15px;
+
+            }
+
+            .stat-number {
+
+                font-size: 23px;
+
+            }
+
+            .stat-icon {
+
+                width: 38px;
+
+                height: 38px;
+
+            }
+
+            .request-header {
+
+                flex-direction: column;
+
+            }
+
+            .request-info {
+
+                grid-template-columns: 1fr 1fr;
+
+            }
+
+            .section-header {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+
+            }
+
+        }
+
+        @media (max-width: 430px) {
+
+            .stats-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .request-info {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- =========================================================
+
+     MOBILE HEADER
+
+========================================================= -->
+
+<div class="mobile-header">
+
+    <div class="mobile-logo">
+
+        Market <span>Bouaké</span>
+
+    </div>
+
+    <button
+
+        class="menu-button"
+
+        id="menuButton"
+
+    >
+
+        ☰
+
+    </button>
+
+</div>
+
+<div class="app">
+
+<!-- =========================================================
+
+     SIDEBAR
+
+========================================================= -->
+
+<aside
+
+    class="sidebar"
+
+    id="sidebar"
+
+>
+
+    <div class="brand">
+
+        <div class="brand-title">
+
+            Market <span>Bouaké</span>
+
+        </div>
+
+        <div class="admin-label">
+
+            👑 Administration principale
+
+        </div>
+
+    </div>
+
+    <div class="nav-title">
+
+        Principal
+
+    </div>
+
+    <button
+
+        class="nav-item active"
+
+        data-section="dashboard"
+
+    >
+
+        <span class="nav-icon">📊</span>
+
+        Tableau de bord
+
+    </button>
+
+    <button
+
+        class="nav-item"
+
+        data-section="requests"
+
+    >
+
+        <span class="nav-icon">🔔</span>
+
+        Demandes
+
+        <span
+
+            class="nav-badge"
+
+            id="requestBadge"
+
+        >
+
+            0
+
+        </span>
+
+    </button>
+
+    <div class="nav-title">
+
+        Gestion
+
+    </div>
+
+    <button
+
+        class="nav-item"
+
+        data-section="accounts"
+
+    >
+
+        <span class="nav-icon">👥</span>
+
+        Comptes
+
+    </button>
+
+    <button
+
+        class="nav-item"
+
+        data-section="sellers"
+
+    >
+
+        <span class="nav-icon">🏪</span>
+
+        Vendeurs
+
+    </button>
+
+    <button
+
+        class="nav-item"
+
+        data-section="products"
+
+    >
+
+        <span class="nav-icon">📦</span>
+
+        Produits
+
+    </button>
+
+    <button
+
+        class="nav-item"
+
+        data-section="orders"
+
+    >
+
+        <span class="nav-icon">🛒</span>
+
+        Commandes
+
+    </button>
+
+    <div class="nav-title">
+
+        Organisation
+
+    </div>
+
+    <button
+
+        class="nav-item"
+
+        data-section="badges"
+
+    >
+
+        <span class="nav-icon">🏅</span>
+
+        Badges
+
+    </button>
+
+    <button
+
+        class="nav-item"
+
+        data-section="blocked"
+
+    >
+
+        <span class="nav-icon">🚫</span>
+
+        Comptes bloqués
+
+    </button>
+
+    <button
+
+        class="nav-item"
+
+        data-section="categories"
+
+    >
+
+        <span class="nav-icon">🗂️</span>
+
+        Catégories
+
+    </button>
+
+    <div class="nav-title">
+
+        Système
+
+    </div>
+
+    <button
+
+        class="nav-item"
+
+        data-section="settings"
+
+    >
+
+        <span class="nav-icon">⚙️</span>
+
+        Paramètres
+
+    </button>
+
+    <div class="sidebar-bottom">
+
+        <button
+
+            class="logout-button"
+
+            id="logoutButton"
+
+        >
+
+            🚪 Déconnexion
+
+        </button>
+
+    </div>
+
+</aside>
+
+<!-- =========================================================
+
+     MAIN
+
+========================================================= -->
+
+<main class="main">
+
+    <header class="topbar">
+
+        <div>
+
+            <div
+
+                class="page-title"
+
+                id="pageTitle"
+
+            >
+
+                Tableau de bord
+
+            </div>
+
+            <div class="page-subtitle">
+
+                Gestion de Market Bouaké
+
+            </div>
+
+        </div>
+
+        <div class="admin-profile">
+
+            <div class="admin-avatar">
+
+                👑
+
+            </div>
+
+            <div class="admin-info">
+
+                <strong id="adminName">
+
+                    Administrateur
+
+                </strong>
+
+                <span>
+
+                    Admin principal
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <div class="content">
+
+        <!-- =================================================
+
+             DASHBOARD
+
+        ================================================= -->
+
+        <section
+
+            class="section active"
+
+            id="section-dashboard"
+
+        >
+
+            <div class="welcome">
+
+                <h2>
+
+                    Bienvenue dans ton espace Admin 👑
+
+                </h2>
+
+                <p>
+
+                    Gérez les comptes, vendeurs, produits
+
+                    et activités de Market Bouaké.
+
+                </p>
+
+            </div>
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <div class="stat-icon">
+
+                            👥
+
+                        </div>
+
+                    </div>
+
+                    <div
+
+                        class="stat-number"
+
+                        id="totalAccounts"
+
+                    >
+
+                        0
+
+                    </div>
+
+                    <div class="stat-label">
+
+                        Comptes
+
+                    </div>
+
+                </div>
+
+                <div class="stat-card blue">
+
+                    <div class="stat-top">
+
+                        <div class="stat-icon">
+
+                            🛍️
+
+                        </div>
+
+                    </div>
+
+                    <div
+
+                        class="stat-number"
+
+                        id="totalBuyers"
+
+                    >
+
+                        0
+
+                    </div>
+
+                    <div class="stat-label">
+
+                        Acheteurs
+
+                    </div>
+
+                </div>
+
+                <div class="stat-card green">
+
+                    <div class="stat-top">
+
+                        <div class="stat-icon">
+
+                            🏪
+
+                        </div>
+
+                    </div>
+
+                    <div
+
+                        class="stat-number"
+
+                        id="totalSellers"
+
+                    >
+
+                        0
+
+                    </div>
+
+                    <div class="stat-label">
+
+                        Vendeurs
+
+                    </div>
+
+                </div>
+
+                <div class="stat-card red">
+
+                    <div class="stat-top">
+
+                        <div class="stat-icon">
+
+                            🔔
+
+                        </div>
+
+                    </div>
+
+                    <div
+
+                        class="stat-number"
+
+                        id="pendingRequests"
+
+                    >
+
+                        0
+
+                    </div>
+
+                    <div class="stat-label">
+
+                        Demandes en attente
+
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <div class="stat-icon">
+
+                            📦
+
+                        </div>
+
+                    </div>
+
+                    <div
+
+                        class="stat-number"
+
+                        id="totalProducts"
+
+                    >
+
+                        0
+
+                    </div>
+
+                    <div class="stat-label">
+
+                        Produits
+
+                    </div>
+
+                </div>
+
+                <div class="stat-card green">
+
+                    <div class="stat-top">
+
+                        <div class="stat-icon">
+
+                            ✅
+
+                        </div>
+
+                    </div>
+
+                    <div
+
+                        class="stat-number"
+
+                        id="approvedRequests"
+
+                    >
+
+                        0
+
+                    </div>
+
+                    <div class="stat-label">
+
+                        Vendeurs acceptés
+
+                    </div>
+
+                </div>
+
+                <div class="stat-card red">
+
+                    <div class="stat-top">
+
+                        <div class="stat-icon">
+
+                            ❌
+
+                        </div>
+
+                    </div>
+
+                    <div
+
+                        class="stat-number"
+
+                        id="rejectedRequests"
+
+                    >
+
+                        0
+
+                    </div>
+
+                    <div class="stat-label">
+
+                        Demandes refusées
+
+                    </div>
+
+                </div>
+
+                <div class="stat-card blue">
+
+                    <div class="stat-top">
+
+                        <div class="stat-icon">
+
+                            🟢
+
+                        </div>
+
+                    </div>
+
+                    <div
+
+                        class="stat-number"
+
+                        id="activeProducts"
+
+                    >
+
+                        0
+
+                    </div>
+
+                    <div class="stat-label">
+
+                        Produits actifs
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+
+                        🔔 Dernières demandes
+
+                    </h2>
+
+                    <p>
+
+                        Les demandes vendeur les plus récentes.
+
+                    </p>
+
+                </div>
+
+                <button
+
+                    class="refresh-button"
+
+                    id="refreshDashboard"
+
+                >
+
+                    🔄 Actualiser
+
+                </button>
+
+            </div>
+
+            <div id="dashboardRequests"></div>
+
+        </section>
+
+        <!-- =================================================
+
+             REQUESTS
+
+        ================================================= -->
+
+        <section
+
+            class="section"
+
+            id="section-requests"
+
+        >
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+
+                        🔔 Demandes vendeur
+
+                    </h2>
+
+                    <p>
+
+                        Validez ou refusez les demandes
+
+                        de création de boutique.
+
+                    </p>
+
+                </div>
+
+                <button
+
+                    class="refresh-button"
+
+                    id="refreshRequests"
+
+                >
+
+                    🔄 Actualiser
+
+                </button>
+
+            </div>
+
+            <div id="requestsContainer"></div>
+
+        </section>
+
+        <!-- =================================================
+
+             ACCOUNTS
+
+        ================================================= -->
+
+        <section
+
+            class="section"
+
+            id="section-accounts"
+
+        >
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+
+                        👥 Comptes
+
+                    </h2>
+
+                    <p>
+
+                        Tous les comptes inscrits sur Market Bouaké.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="search-box">
+
+                <input
+
+                    type="search"
+
+                    id="accountSearch"
+
+                    placeholder="🔎 Rechercher un compte..."
+
+                >
+
+            </div>
+
+            <div class="table-card">
+
+                <div class="table-scroll">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+
+                                    Nom
+
+                                </th>
+
+                                <th>
+
+                                    Email
+
+                                </th>
+
+                                <th>
+
+                                    Téléphone
+
+                                </th>
+
+                                <th>
+
+                                    Rôle
+
+                                </th>
+
+                                <th>
+
+                                    Genre
+
+                                </th>
+
+                                <th>
+
+                                    Inscription
+
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="accountsTable">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =================================================
+
+             SELLERS
+
+        ================================================= -->
+
+        <section
+
+            class="section"
+
+            id="section-sellers"
+
+        >
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+
+                        🏪 Vendeurs
+
+                    </h2>
+
+                    <p>
+
+                        Gestion des boutiques et vendeurs.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="table-card">
+
+                <div class="table-scroll">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+
+                                    Boutique
+
+                                </th>
+
+                                <th>
+
+                                    Ville
+
+                                </th>
+
+                                <th>
+
+                                    Quartier
+
+                                </th>
+
+                                <th>
+
+                                    Statut
+
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="sellersTable">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =================================================
+
+             PRODUCTS
+
+        ================================================= -->
+
+        <section
+
+            class="section"
+
+            id="section-products"
+
+        >
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+
+                        📦 Produits
+
+                    </h2>
+
+                    <p>
+
+                        Produits enregistrés sur la marketplace.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="table-card">
+
+                <div class="table-scroll">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+
+                                    Produit
+
+                                </th>
+
+                                <th>
+
+                                    Catégorie
+
+                                </th>
+
+                                <th>
+
+                                    Prix
+
+                                </th>
+
+                                <th>
+
+                                    Stock
+
+                                </th>
+
+                                <th>
+
+                                    Statut
+
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="productsTable">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =================================================
+
+             COMMANDES
+
+        ================================================= -->
+
+        <section
+
+            class="section"
+
+            id="section-orders"
+
+        >
+
+            <div class="coming">
+
+                <div class="coming-icon">
+
+                    🛒
+
+                </div>
+
+                <h2>
+
+                    Commandes
+
+                </h2>
+
+                <p>
+
+                    Le système de commandes sera construit
+
+                    lorsque nous créerons les tables
+
+                    <strong>orders</strong> et
+
+                    <strong>order_items</strong>.
+
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- =================================================
+
+             BADGES
+
+        ================================================= -->
+
+        <section
+
+            class="section"
+
+            id="section-badges"
+
+        >
+
+            <div class="coming">
+
+                <div class="coming-icon">
+
+                    🏅
+
+                </div>
+
+                <h2>
+
+                    Badges
+
+                </h2>
+
+                <p>
+
+                    Cette partie permettra à l'administrateur
+
+                    de donner ou retirer des badges aux vendeurs.
+
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- =================================================
+
+             BLOCKED
+
+        ================================================= -->
+
+        <section
+
+            class="section"
+
+            id="section-blocked"
+
+        >
+
+            <div class="coming">
+
+                <div class="coming-icon">
+
+                    🚫
+
+                </div>
+
+                <h2>
+
+                    Comptes bloqués
+
+                </h2>
+
+                <p>
+
+                    Le système de blocage et de suspension
+
+                    des comptes sera ajouté dans la prochaine étape.
+
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- =================================================
+
+             CATEGORIES
+
+        ================================================= -->
+
+        <section
+
+            class="section"
+
+            id="section-categories"
+
+        >
+
+            <div class="coming">
+
+                <div class="coming-icon">
+
+                    🗂️
+
+                </div>
+
+                <h2>
+
+                    Catégories
+
+                </h2>
+
+                <p>
+
+                    L'administrateur pourra créer, modifier
+
+                    et supprimer les catégories de produits.
+
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- =================================================
+
+             SETTINGS
+
+        ================================================= -->
+
+        <section
+
+            class="section"
+
+            id="section-settings"
+
+        >
+
+            <div class="coming">
+
+                <div class="coming-icon">
+
+                    ⚙️
+
+                </div>
+
+                <h2>
+
+                    Paramètres
+
+                </h2>
+
+                <p>
+
+                    Les paramètres généraux de Market Bouaké
+
+                    seront ajoutés progressivement.
+
+                </p>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+</div>
+
+<div
+
+    class="toast"
+
+    id="toast"
+
+></div>
+
+<!-- =========================================================
+
+     SUPABASE
+
+========================================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-config.js"></script>
+
+<script>
+
+    /* =====================================================
+
+       VARIABLES
+
+    ===================================================== */
+
+    let dashboardData = null;
+
+    const sidebar =
+
+        document.getElementById("sidebar");
+
+    const menuButton =
+
+        document.getElementById("menuButton");
+
+    const toast =
+
+        document.getElementById("toast");
+
+    /* =====================================================
+
+       TOAST
+
+    ===================================================== */
+
+    function showToast(message, type = "success") {
+
+        toast.textContent = message;
+
+        toast.className =
+
+            "toast show " + type;
+
+        setTimeout(function() {
+
+            toast.className = "toast";
+
+        }, 3500);
+
+    }
+
+    /* =====================================================
+
+       VERIFICATION ADMIN
+
+    ===================================================== */
+
+    async function verifyAdmin() {
+
+        try {
+
+            const {
+
+                data: sessionData,
+
+                error: sessionError
+
+            } =
+
+                await supabaseClient.auth.getSession();
+
+            if (sessionError ||
+
+                !sessionData.session) {
+
+                window.location.href =
+
+                    "connexion.html";
+
+                return false;
+
+            }
+
+            const user =
+
+                sessionData.session.user;
+
+            const {
+
+                data: profile,
+
+                error: profileError
+
+            } =
+
+                await supabaseClient
+
+                    .from("profiles")
+
+                    .select(
+
+                        "first_name,last_name,email,role"
+
+                    )
+
+                    .eq("id", user.id)
+
+                    .maybeSingle();
+
+            if (
+
+                profileError ||
+
+                !profile ||
+
+                profile.role !== "admin"
+
+            ) {
+
+                alert(
+
+                    "Accès refusé. Cette page est réservée à l'administrateur."
+
+                );
+
+                await supabaseClient.auth.signOut();
+
+                window.location.href =
+
+                    "connexion.html";
+
+                return false;
+
+            }
+
+            document.getElementById(
+
+                "adminName"
+
+            ).textContent =
+
+                (
+
+                    profile.first_name || ""
+
+                ) +
+
+                " " +
+
+                (
+
+                    profile.last_name || ""
+
+                );
+
+            return true;
+
+        } catch (error) {
+
+            console.error(error);
+
+            window.location.href =
+
+                "connexion.html";
+
+            return false;
+
+        }
+
+    }
+
+    /* =====================================================
+
+       CHARGER LE TABLEAU DE BORD
+
+    ===================================================== */
+
+    async function loadDashboard() {
+
+        const dashboardRequests =
+
+            document.getElementById(
+
+                "dashboardRequests"
+
+            );
+
+        dashboardRequests.innerHTML = `
+
+            <div class="loading">
+
+                <div class="spinner"></div>
+
+                Chargement des données...
+
+            </div>
+
+        `;
+
+        try {
+
+            const {
+
+                data,
+
+                error
+
+            } =
+
+                await supabaseClient.rpc(
+
+                    "admin_get_dashboard"
+
+                );
+
+            if (error) {
+
+                console.error(error);
+
+                throw error;
+
+            }
+
+            dashboardData = data;
+
+            /* =========================
+
+               STATISTIQUES
+
+            ========================= */
+
+            document.getElementById(
+
+                "totalAccounts"
+
+            ).textContent =
+
+                data.total_accounts || 0;
+
+            document.getElementById(
+
+                "totalBuyers"
+
+            ).textContent =
+
+                data.buyers || 0;
+
+            document.getElementById(
+
+                "totalSellers"
+
+            ).textContent =
+
+                data.sellers || 0;
+
+            document.getElementById(
+
+                "pendingRequests"
+
+            ).textContent =
+
+                data.pending_requests || 0;
+
+            document.getElementById(
+
+                "totalProducts"
+
+            ).textContent =
+
+                data.products || 0;
+
+            document.getElementById(
+
+                "approvedRequests"
+
+            ).textContent =
+
+                data.approved_requests || 0;
+
+            document.getElementById(
+
+                "rejectedRequests"
+
+            ).textContent =
+
+                data.rejected_requests || 0;
+
+            document.getElementById(
+
+                "activeProducts"
+
+            ).textContent =
+
+                data.active_products || 0;
+
+            /* =========================
+
+               BADGE DEMANDES
+
+            ========================= */
+
+            document.getElementById(
+
+                "requestBadge"
+
+            ).textContent =
+
+                data.pending_requests || 0;
+
+            renderDashboardRequests(
+
+                data.seller_requests || []
+
+            );
+
+            renderRequests(
+
+                data.seller_requests || []
+
+            );
+
+            renderAccounts(
+
+                data.accounts || []
+
+            );
+
+            renderSellers(
+
+                data.sellers || []
+
+            );
+
+            renderProducts(
+
+                data.products_list || []
+
+            );
+
+        } catch (error) {
+
+            console.error(
+
+                "Erreur tableau de bord :",
+
+                error
+
+            );
+
+            dashboardRequests.innerHTML = `
+
+                <div class="empty">
+
+                    <div class="empty-icon">
+
+                        ⚠️
+
+                    </div>
+
+                    <strong>
+
+                        Impossible de charger les données
+
+                    </strong>
+
+                    <p>
+
+                        ${escapeHtml(
+
+                            error.message ||
+
+                            "Erreur inconnue"
+
+                        )}
+
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+    /* =====================================================
+
+       AFFICHER DERNIÈRES DEMANDES
+
+    ===================================================== */
+
+    function renderDashboardRequests(requests) {
+
+        const container =
+
+            document.getElementById(
+
+                "dashboardRequests"
+
+            );
+
+        if (!requests.length) {
+
+            container.innerHTML = `
+
+                <div class="empty">
+
+                    <div class="empty-icon">
+
+                        🎉
+
+                    </div>
+
+                    <strong>
+
+                        Aucune demande vendeur
+
+                    </strong>
+
+                    <p>
+
+                        Il n'y a actuellement aucune demande.
+
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+        const recent =
+
+            requests.slice(0, 3);
+
+        container.innerHTML =
+
+            '<div class="request-list">' +
+
+            recent.map(
+
+                requestCard
+
+            ).join("") +
+
+            '</div>';
+
+    }
+
+    /* =====================================================
+
+       AFFICHER TOUTES LES DEMANDES
+
+    ===================================================== */
+
+    function renderRequests(requests) {
+
+        const container =
+
+            document.getElementById(
+
+                "requestsContainer"
+
+            );
+
+        if (!requests.length) {
+
+            container.innerHTML = `
+
+                <div class="empty">
+
+                    <div class="empty-icon">
+
+                        🔔
+
+                    </div>
+
+                    <strong>
+
+                        Aucune demande
+
+                    </strong>
+
+                    <p>
+
+                        Les nouvelles demandes vendeur
+
+                        apparaîtront ici.
+
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+        container.innerHTML =
+
+            '<div class="request-list">' +
+
+            requests.map(
+
+                requestCard
+
+            ).join("") +
+
+            '</div>';
+
+    }
+
+    /* =====================================================
+
+       CARTE DEMANDE
+
+    ===================================================== */
+
+    function requestCard(request) {
+
+        const status =
+
+            request.status || "pending";
+
+        let statusText =
+
+            "En attente";
+
+        if (status === "approved") {
+
+            statusText =
+
+                "Acceptée";
+
+        }
+
+        if (status === "rejected") {
+
+            statusText =
+
+                "Refusée";
+
+        }
+
+        const canAct =
+
+            status === "pending";
+
+        return `
+
+            <div
+
+                class="request-card"
+
+                data-request-id="${escapeHtml(
+
+                    request.id
+
+                )}"
+
+            >
+
+                <div class="request-header">
+
+                    <div class="request-person">
+
+                        <div class="request-avatar">
+
+                            🏪
+
+                        </div>
+
+                        <div>
+
+                            <h3>
+
+                                ${escapeHtml(
+
+                                    request.shop_name
+
+                                )}
+
+                            </h3>
+
+                            <p>
+
+                                ${escapeHtml(
+
+                                    request.first_name
+
+                                )}
+
+                                ${escapeHtml(
+
+                                    request.last_name
+
+                                )}
+
+                                •
+
+                                ${escapeHtml(
+
+                                    request.email
+
+                                )}
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <span
+
+                        class="status ${escapeHtml(
+
+                            status
+
+                        )}"
+
+                    >
+
+                        ${statusText}
+
+                    </span>
+
+                </div>
+
+                <div class="request-info">
+
+                    <div class="info-item">
+
+                        <span>
+
+                            Téléphone
+
+                        </span>
+
+                        <strong>
+
+                            ${escapeHtml(
+
+                                request.phone
+
+                            )}
+
+                        </strong>
+
+                    </div>
+
+                    <div class="info-item">
+
+                        <span>
+
+                            Ville
+
+                        </span>
+
+                        <strong>
+
+                            ${escapeHtml(
+
+                                request.city
+
+                            )}
+
+                        </strong>
+
+                    </div>
+
+                    <div class="info-item">
+
+                        <span>
+
+                            Quartier
+
+                        </span>
+
+                        <strong>
+
+                            ${escapeHtml(
+
+                                request.district
+
+                            )}
+
+                        </strong>
+
+                    </div>
+
+                    <div class="info-item">
+
+                        <span>
+
+                            Demande
+
+                        </span>
+
+                        <strong>
+
+                            ${formatDate(
+
+                                request.created_at
+
+                            )}
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                ${
+
+                    request.shop_description
+
+                    ?
+
+                    `
+
+                    <div class="description">
+
+                        <strong>
+
+                            Description :
+
+                        </strong>
+
+                        ${escapeHtml(
+
+                            request.shop_description
+
+                        )}
+
+                    </div>
+
+                    `
+
+                    :
+
+                    ""
+
+                }
+
+                ${
+
+                    status === "rejected" &&
+
+                    request.rejection_reason
+
+                    ?
+
+                    `
+
+                    <div class="description">
+
+                        <strong>
+
+                            Motif du refus :
+
+                        </strong>
+
+                        ${escapeHtml(
+
+                            request.rejection_reason
+
+                        )}
+
+                    </div>
+
+                    `
+
+                    :
+
+                    ""
+
+                }
+
+                ${
+
+                    canAct
+
+                    ?
+
+                    `
+
+                    <div class="request-actions">
+
+                        <button
+
+                            class="action-button approve-button"
+
+                            onclick="approveRequest('${request.id}')"
+
+                        >
+
+                            ✅ Accepter le vendeur
+
+                        </button>
+
+                        <button
+
+                            class="action-button reject-button"
+
+                            onclick="rejectRequest('${request.id}')"
+
+                        >
+
+                            ❌ Refuser
+
+                        </button>
+
+                    </div>
+
+                    `
+
+                    :
+
+                    ""
+
+                }
+
+            </div>
+
+        `;
+
+    }
+
+    /* =====================================================
+
+       ACCEPTER VENDEUR
+
+    ===================================================== */
+
+    async function approveRequest(requestId) {
+
+        const confirmation =
+
+            confirm(
+
+                "Voulez-vous vraiment accepter cette demande vendeur ?"
+
+            );
+
+        if (!confirmation) {
+
+            return;
+
+        }
+
+        try {
+
+            const {
+
+                data,
+
+                error
+
+            } =
+
+                await supabaseClient.rpc(
+
+                    "admin_approve_seller_request",
+
+                    {
+
+                        request_id: requestId
+
+                    }
+
+                );
+
+            if (error) {
+
+                console.error(error);
+
+                throw error;
+
+            }
+
+            showToast(
+
+                "✅ Le vendeur a été accepté avec succès.",
+
+                "success"
+
+            );
+
+            await loadDashboard();
+
+        } catch (error) {
+
+            console.error(error);
+
+            showToast(
+
+                "❌ " +
+
+                (
+
+                    error.message ||
+
+                    "Impossible d'accepter la demande."
+
+                ),
+
+                "error"
+
+            );
+
+        }
+
+    }
+
+    /* =====================================================
+
+       REFUSER VENDEUR
+
+    ===================================================== */
+
+    async function rejectRequest(requestId) {
+
+        const reason =
+
+            prompt(
+
+                "Pourquoi refusez-vous cette demande ?\n\nVous pouvez laisser vide si vous le souhaitez."
+
+            );
+
+        if (reason === null) {
+
+            return;
+
+        }
+
+        try {
+
+            const {
+
+                data,
+
+                error
+
+            } =
+
+                await supabaseClient.rpc(
+
+                    "admin_reject_seller_request",
+
+                    {
+
+                        request_id: requestId,
+
+                        reason:
+
+                            reason.trim() ||
+
+                            null
+
+                    }
+
+                );
+
+            if (error) {
+
+                console.error(error);
+
+                throw error;
+
+            }
+
+            showToast(
+
+                "❌ La demande a été refusée.",
+
+                "success"
+
+            );
+
+            await loadDashboard();
+
+        } catch (error) {
+
+            console.error(error);
+
+            showToast(
+
+                "❌ " +
+
+                (
+
+                    error.message ||
+
+                    "Impossible de refuser la demande."
+
+                ),
+
+                "error"
+
+            );
+
+        }
+
+    }
+
+    /* =====================================================
+
+       COMPTES
+
+    ===================================================== */
+
+    function renderAccounts(accounts) {
+
+        const tbody =
+
+            document.getElementById(
+
+                "accountsTable"
+
+            );
+
+        if (!accounts.length) {
+
+            tbody.innerHTML = `
+
+                <tr>
+
+                    <td colspan="6">
+
+                        Aucun compte.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+
+        }
+
+        tbody.innerHTML =
+
+            accounts.map(function(account) {
+
+                let role =
+
+                    account.role;
+
+                if (role === "buyer") {
+
+                    role = "🛍️ Acheteur";
+
+                }
+
+                if (role === "seller") {
+
+                    role = "🏪 Vendeur";
+
+                }
+
+                if (role === "admin") {
+
+                    role = "👑 Admin";
+
+                }
+
+                return `
+
+                    <tr>
+
+                        <td>
+
+                            <strong>
+
+                                ${escapeHtml(
+
+                                    account.first_name
+
+                                )}
+
+                                ${escapeHtml(
+
+                                    account.last_name
+
+                                )}
+
+                            </strong>
+
+                        </td>
+
+                        <td>
+
+                            ${escapeHtml(
+
+                                account.email || "-"
+
+                            )}
+
+                        </td>
+
+                        <td>
+
+                            ${escapeHtml(
+
+                                account.phone || "-"
+
+                            )}
+
+                        </td>
+
+                        <td>
+
+                            ${role}
+
+                        </td>
+
+                        <td>
+
+                            ${escapeHtml(
+
+                                account.gender || "-"
+
+                            )}
+
+                        </td>
+
+                        <td>
+
+                            ${formatDate(
+
+                                account.created_at
+
+                            )}
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }).join("");
+
+    }
+
+    /* =====================================================
+
+       VENDEURS
+
+    ===================================================== */
+
+    function renderSellers(sellers) {
+
+        const tbody =
+
+            document.getElementById(
+
+                "sellersTable"
+
+            );
+
+        if (!sellers.length) {
+
+            tbody.innerHTML = `
+
+                <tr>
+
+                    <td colspan="4">
+
+                        Aucun vendeur.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+
+        }
+
+        tbody.innerHTML =
+
+            sellers.map(function(seller) {
+
+                return `
+
+                    <tr>
+
+                        <td>
+
+                            <strong>
+
+                                ${escapeHtml(
+
+                                    seller.shop_name ||
+
+                                    "-"
+
+                                )}
+
+                            </strong>
+
+                        </td>
+
+                        <td>
+
+                            ${escapeHtml(
+
+                                seller.city ||
+
+                                "-"
+
+                            )}
+
+                        </td>
+
+                        <td>
+
+                            ${escapeHtml(
+
+                                seller.district ||
+
+                                "-"
+
+                            )}
+
+                        </td>
+
+                        <td>
+
+                            <span class="status approved">
+
+                                ${escapeHtml(
+
+                                    seller.verification_status ||
+
+                                    "pending"
+
+                                )}
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }).join("");
+
+    }
+
+    /* =====================================================
+
+       PRODUITS
+
+    ===================================================== */
+
+    function renderProducts(products) {
+
+        const tbody =
+
+            document.getElementById(
+
+                "productsTable"
+
+            );
+
+        if (!products.length) {
+
+            tbody.innerHTML = `
+
+                <tr>
+
+                    <td colspan="5">
+
+                        Aucun produit.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+
+        }
+
+        tbody.innerHTML =
+
+            products.map(function(product) {
+
+                return `
+
+                    <tr>
+
+                        <td>
+
+                            <strong>
+
+                                ${escapeHtml(
+
+                                    product.name ||
+
+                                    "-"
+
+                                )}
+
+                            </strong>
+
+                        </td>
+
+                        <td>
+
+                            ${escapeHtml(
+
+                                product.category ||
+
+                                "-"
+
+                            )}
+
+                        </td>
+
+                        <td>
+
+                            ${formatPrice(
+
+                                product.price
+
+                            )}
+
+                        </td>
+
+                        <td>
+
+                            ${escapeHtml(
+
+                                String(
+
+                                    product.stock ??
+
+                                    0
+
+                                )
+
+                            )}
+
+                        </td>
+
+                        <td>
+
+                            <span
+
+                                class="status ${
+
+                                    product.is_active
+
+                                    ?
+
+                                    "approved"
+
+                                    :
+
+                                    "rejected"
+
+                                }"
+
+                            >
+
+                                ${
+
+                                    product.is_active
+
+                                    ?
+
+                                    "Actif"
+
+                                    :
+
+                                    "Inactif"
+
+                                }
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }).join("");
+
+    }
+
+    /* =====================================================
+
+       NAVIGATION
+
+    ===================================================== */
+
+    const navItems =
+
+        document.querySelectorAll(
+
+            ".nav-item"
+
+        );
+
+    navItems.forEach(function(item) {
+
+        item.addEventListener(
+
+            "click",
+
+            function() {
+
+                const section =
+
+                    item.dataset.section;
+
+                navItems.forEach(function(nav) {
+
+                    nav.classList.remove(
+
+                        "active"
+
+                    );
+
+                });
+
+                item.classList.add(
+
+                    "active"
+
+                );
+
+                document
+
+                    .querySelectorAll(".section")
+
+                    .forEach(function(sec) {
+
+                        sec.classList.remove(
+
+                            "active"
+
+                        );
+
+                    });
+
+                const target =
+
+                    document.getElementById(
+
+                        "section-" +
+
+                        section
+
+                    );
+
+                if (target) {
+
+                    target.classList.add(
+
+                        "active"
+
+                    );
+
+                }
+
+                const titles = {
+
+                    dashboard:
+
+                        "Tableau de bord",
+
+                    requests:
+
+                        "Demandes vendeur",
+
+                    accounts:
+
+                        "Comptes",
+
+                    sellers:
+
+                        "Vendeurs",
+
+                    products:
+
+                        "Produits",
+
+                    orders:
+
+                        "Commandes",
+
+                    badges:
+
+                        "Badges",
+
+                    blocked:
+
+                        "Comptes bloqués",
+
+                    categories:
+
+                        "Catégories",
+
+                    settings:
+
+                        "Paramètres"
+
+                };
+
+                document.getElementById(
+
+                    "pageTitle"
+
+                ).textContent =
+
+                    titles[section] ||
+
+                    "Administration";
+
+                sidebar.classList.remove(
+
+                    "open"
+
+                );
+
+            }
+
+        );
+
+    });
+
+    /* =====================================================
+
+       MENU MOBILE
+
+    ===================================================== */
+
+    menuButton.addEventListener(
+
+        "click",
+
+        function() {
+
+            sidebar.classList.toggle(
+
+                "open"
+
+            );
+
+        }
+
+    );
+
+    /* =====================================================
+
+       ACTUALISATION
+
+    ===================================================== */
+
+    document.getElementById(
+
+        "refreshDashboard"
+
+    ).addEventListener(
+
+        "click",
+
+        loadDashboard
+
+    );
+
+    document.getElementById(
+
+        "refreshRequests"
+
+    ).addEventListener(
+
+        "click",
+
+        loadDashboard
+
+    );
+
+    /* =====================================================
+
+       RECHERCHE COMPTES
+
+    ===================================================== */
+
+    document.getElementById(
+
+        "accountSearch"
+
+    ).addEventListener(
+
+        "input",
+
+        function(event) {
+
+            const query =
+
+                event.target.value
+
+                    .toLowerCase()
+
+                    .trim();
+
+            const accounts =
+
+                dashboardData?.accounts ||
+
+                [];
+
+            const filtered =
+
+                accounts.filter(
+
+                    function(account) {
+
+                        const text =
+
+                            (
+
+                                account.first_name +
+
+                                " " +
+
+                                account.last_name +
+
+                                " " +
+
+                                (
+
+                                    account.email ||
+
+                                    ""
+
+                                ) +
+
+                                " " +
+
+                                (
+
+                                    account.phone ||
+
+                                    ""
+
+                                ) +
+
+                                " " +
+
+                                (
+
+                                    account.role ||
+
+                                    ""
+
+                                )
+
+                            ).toLowerCase();
+
+                        return text.includes(
+
+                            query
+
+                        );
+
+                    }
+
+                );
+
+            renderAccounts(filtered);
+
+        }
+
+    );
+
+    /* =====================================================
+
+       DECONNEXION
+
+    ===================================================== */
+
+    document.getElementById(
+
+        "logoutButton"
+
+    ).addEventListener(
+
+        "click",
+
+        async function() {
+
+            const confirmation =
+
+                confirm(
+
+                    "Voulez-vous vous déconnecter ?"
+
+                );
+
+            if (!confirmation) {
+
+                return;
+
+            }
+
+            await supabaseClient.auth.signOut();
+
+            window.location.href =
+
+                "connexion.html";
+
+        }
+
+    );
+
+    /* =====================================================
+
+       OUTILS
+
+    ===================================================== */
+
+    function escapeHtml(value) {
+
+        if (value === null ||
+
+            value === undefined) {
+
+            return "";
+
+        }
+
+        return String(value)
+
+            .replace(/&/g, "&amp;")
+
+            .replace(/</g, "&lt;")
+
+            .replace(/>/g, "&gt;")
+
+            .replace(/"/g, "&quot;")
+
+            .replace(/'/g, "&#039;");
+
+    }
+
+    function formatDate(value) {
+
+        if (!value) {
+
+            return "-";
+
+        }
+
+        try {
+
+            return new Date(value)
+
+                .toLocaleDateString(
+
+                    "fr-FR",
+
+                    {
+
+                        day: "2-digit",
+
+                        month: "2-digit",
+
+                        year: "numeric"
+
+                    }
+
+                );
+
+        } catch {
+
+            return "-";
+
+        }
+
+    }
+
+    function formatPrice(value) {
+
+        const number =
+
+            Number(value || 0);
+
+        return number.toLocaleString(
+
+            "fr-FR"
+
+        ) + " FCFA";
+
+    }
+
+    /* =====================================================
+
+       DEMARRAGE
+
+    ===================================================== */
+
+    async function startAdmin() {
+
+        if (
+
+            typeof supabaseClient ===
+
+            "undefined"
+
+        ) {
+
+            alert(
+
+                "Supabase n'est pas configuré."
+
+            );
+
+            return;
+
+        }
+
+        const isAdmin =
+
+            await verifyAdmin();
+
+        if (!isAdmin) {
+
+            return;
+
+        }
+
+        await loadDashboard();
+
+    }
+
+    startAdmin();
+
+</script>
+
+</body>
+
+</html>
