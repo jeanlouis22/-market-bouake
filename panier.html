@@ -1768,25 +1768,13 @@ async function loadMissingProductData() {
 
     if (typeof supabaseClient === "undefined") {
 
+        console.error("Supabase n'est pas disponible.");
+
         return;
 
     }
 
-    const productIds = cart
-
-        .filter(function(item) {
-
-            return item.id;
-
-        })
-
-        .map(function(item) {
-
-            return item.id;
-
-        });
-
-    if (!productIds.length) {
+    if (!cart.length) {
 
         return;
 
@@ -1796,7 +1784,73 @@ async function loadMissingProductData() {
 
         /* =====================================================
 
-           RÉCUPÉRER LES PRODUITS ET LEUR VENDEUR
+           1. VÉRIFIER QUE L'ACHETEUR EST CONNECTÉ
+
+        ===================================================== */
+
+        const {
+
+            data: sessionData,
+
+            error: sessionError
+
+        } = await supabaseClient.auth.getSession();
+
+        if (sessionError) {
+
+            console.error(
+
+                "Erreur récupération session :",
+
+                sessionError
+
+            );
+
+            return;
+
+        }
+
+        if (!sessionData || !sessionData.session) {
+
+            console.error(
+
+                "Aucune session utilisateur trouvée."
+
+            );
+
+            return;
+
+        }
+
+        /* =====================================================
+
+           2. RÉCUPÉRER LES ID DES PRODUITS DU PANIER
+
+        ===================================================== */
+
+        const productIds = cart
+
+            .filter(function(item) {
+
+                return item.id;
+
+            })
+
+            .map(function(item) {
+
+                return item.id;
+
+            });
+
+        if (!productIds.length) {
+
+            return;
+
+        }
+
+        /* =====================================================
+
+           3. RÉCUPÉRER LES VENDEURS DES PRODUITS
 
         ===================================================== */
 
@@ -1810,9 +1864,19 @@ async function loadMissingProductData() {
 
             .from("products")
 
-            .select("id,seller_id,name")
+            .select(
 
-            .in("id", productIds);
+                "id,seller_id,name"
+
+            )
+
+            .in(
+
+                "id",
+
+                productIds
+
+            );
 
         if (productsError) {
 
@@ -1830,13 +1894,27 @@ async function loadMissingProductData() {
 
         if (!products || !products.length) {
 
+            console.error(
+
+                "Aucun produit trouvé."
+
+            );
+
             return;
 
         }
 
+        console.log(
+
+            "Produits récupérés :",
+
+            products
+
+        );
+
         /* =====================================================
 
-           RÉCUPÉRER LES ID DES VENDEURS
+           4. RÉCUPÉRER LES ID DES VENDEURS
 
         ===================================================== */
 
@@ -1850,7 +1928,11 @@ async function loadMissingProductData() {
 
             .map(function(product) {
 
-                return product.seller_id;
+                return String(
+
+                    product.seller_id
+
+                );
 
             });
 
@@ -1862,13 +1944,27 @@ async function loadMissingProductData() {
 
         if (!uniqueSellerIds.length) {
 
+            console.error(
+
+                "Aucun vendeur trouvé pour les produits."
+
+            );
+
             return;
 
         }
 
+        console.log(
+
+            "Vendeurs trouvés :",
+
+            uniqueSellerIds
+
+        );
+
         /* =====================================================
 
-           RÉCUPÉRER LES NUMÉROS DANS PROFILES
+           5. RÉCUPÉRER LES PROFILS DES VENDEURS
 
         ===================================================== */
 
@@ -1882,15 +1978,25 @@ async function loadMissingProductData() {
 
             .from("profiles")
 
-            .select("id,phone")
+            .select(
 
-            .in("id", uniqueSellerIds);
+                "id,role,phone"
+
+            )
+
+            .in(
+
+                "id",
+
+                uniqueSellerIds
+
+            );
 
         if (profilesError) {
 
             console.error(
 
-                "Erreur récupération vendeurs :",
+                "Erreur récupération profils vendeurs :",
 
                 profilesError
 
@@ -1900,9 +2006,29 @@ async function loadMissingProductData() {
 
         }
 
+        if (!profiles || !profiles.length) {
+
+            console.error(
+
+                "Aucun profil vendeur récupéré."
+
+            );
+
+            return;
+
+        }
+
+        console.log(
+
+            "Profils vendeurs récupérés :",
+
+            profiles
+
+        );
+
         /* =====================================================
 
-           AJOUTER LE NUMÉRO WHATSAPP AU PANIER
+           6. AJOUTER LE VENDEUR ET SON WHATSAPP AU PANIER
 
         ===================================================== */
 
@@ -1926,13 +2052,17 @@ async function loadMissingProductData() {
 
             }
 
+            /* ID DU VENDEUR */
+
             if (product.seller_id) {
 
                 item.seller_id =
 
-                    product.seller_id;
+                    String(product.seller_id);
 
             }
+
+            /* PROFIL DU VENDEUR */
 
             const profile = profiles.find(
 
@@ -1946,23 +2076,65 @@ async function loadMissingProductData() {
 
             );
 
-            if (
+            if (!profile) {
 
-                profile &&
+                console.error(
 
-                profile.phone
+                    "Profil vendeur introuvable pour :",
 
-            ) {
+                    product.name,
 
-                item.whatsapp_number =
+                    product.seller_id
 
-                    profile.phone;
+                );
+
+                return;
 
             }
 
+            /* NUMÉRO WHATSAPP */
+
+            if (profile.phone) {
+
+                item.whatsapp_number =
+
+                    String(profile.phone).trim();
+
+            }
+
+            console.log(
+
+                "Produit :",
+
+                product.name,
+
+                "| Vendeur :",
+
+                product.seller_id,
+
+                "| WhatsApp :",
+
+                item.whatsapp_number
+
+            );
+
         });
 
+        /* =====================================================
+
+           7. SAUVEGARDER LE PANIER
+
+        ===================================================== */
+
         saveCart();
+
+        console.log(
+
+            "Panier après récupération des vendeurs :",
+
+            cart
+
+        );
 
     } catch (error) {
 
