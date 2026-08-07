@@ -2672,22 +2672,31 @@
 
             cart.push({
 
-                id: product.id,
+    id: product.id,
 
-                name: product.name,
+    name: product.name,
 
-                price: product.price,
+    price: product.price,
 
-                image_1: product.image_1 || "",
+    image_1: product.image_1 || "",
 
-                category: product.category || "",
+    image_url: product.image_url || "",
 
-                seller_id: product.seller_id || null,
+    category: product.category || "",
 
-                quantity: 1
+    seller_id: product.seller_id || null,
 
-            });
+    whatsapp_number: product.whatsapp_number || "",
 
+    seller_name: product.seller_name || "Vendeur",
+
+    size: product.size || "",
+
+    color: product.color || "",
+
+    quantity: 1
+
+});
         }
 
         saveCart(cart);
