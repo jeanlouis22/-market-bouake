@@ -1,0 +1,2561 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Market Bouaké</title>
+
+    <style>
+
+        * {
+
+            margin: 0;
+
+            padding: 0;
+
+            box-sizing: border-box;
+
+        }
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            background: #f5f6f8;
+
+            color: #222;
+
+            min-height: 100vh;
+
+        }
+
+        /* =========================
+
+           HEADER
+
+        ========================= */
+
+        header {
+
+            background: white;
+
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1000;
+
+        }
+
+        .navbar {
+
+            width: 95%;
+
+            max-width: 1200px;
+
+            margin: auto;
+
+            min-height: 70px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 20px;
+
+        }
+
+        .logo {
+
+            font-size: 25px;
+
+            font-weight: bold;
+
+            text-decoration: none;
+
+            color: #222;
+
+            white-space: nowrap;
+
+        }
+
+        .logo span {
+
+            color: #f57c00;
+
+        }
+
+        .search-container {
+
+            flex: 1;
+
+            display: flex;
+
+            max-width: 600px;
+
+            margin: auto;
+
+        }
+
+        .search-container input {
+
+            width: 100%;
+
+            padding: 12px 15px;
+
+            border: 1px solid #ddd;
+
+            border-right: none;
+
+            border-radius: 8px 0 0 8px;
+
+            outline: none;
+
+            font-size: 14px;
+
+        }
+
+        .search-container input:focus {
+
+            border-color: #f57c00;
+
+        }
+
+        .search-container button {
+
+            border: none;
+
+            background: #f57c00;
+
+            color: white;
+
+            padding: 0 18px;
+
+            border-radius: 0 8px 8px 0;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+        }
+
+        .search-container button:hover {
+
+            background: #e56f00;
+
+        }
+
+        .nav-right {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+        }
+
+        .guest-menu,
+
+        .user-menu {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+        }
+
+        .guest-menu a,
+
+        .user-menu a {
+
+            text-decoration: none;
+
+            color: #222;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+        }
+
+        .guest-menu a:hover,
+
+        .user-menu a:hover {
+
+            color: #f57c00;
+
+        }
+
+        .signup-link {
+
+            background: #f57c00;
+
+            color: white !important;
+
+            padding: 10px 14px;
+
+            border-radius: 7px;
+
+        }
+
+        .signup-link:hover {
+
+            background: #e56f00 !important;
+
+        }
+
+        .seller-space {
+
+            color: #198754 !important;
+
+        }
+
+        .seller-space:hover {
+
+            color: #146c43 !important;
+
+        }
+
+        #logoutButton,
+
+        #mobileLogoutButton {
+
+            border: none;
+
+            background: #222;
+
+            color: white;
+
+            padding: 9px 13px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+        }
+
+        #logoutButton:hover,
+
+        #mobileLogoutButton:hover {
+
+            background: #444;
+
+        }
+
+        .cart-link {
+
+            text-decoration: none;
+
+            color: #222;
+
+            font-size: 23px;
+
+            position: relative;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+        .cart-count {
+
+            position: absolute;
+
+            top: -8px;
+
+            right: -10px;
+
+            background: #f57c00;
+
+            color: white;
+
+            font-size: 11px;
+
+            min-width: 19px;
+
+            height: 19px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-weight: bold;
+
+        }
+
+        .mobile-menu-button {
+
+            display: none;
+
+            border: none;
+
+            background: transparent;
+
+            font-size: 25px;
+
+            cursor: pointer;
+
+        }
+
+        .mobile-menu {
+
+            display: none;
+
+            background: white;
+
+            border-top: 1px solid #eee;
+
+            padding: 15px 5%;
+
+        }
+
+        .mobile-menu.open {
+
+            display: block;
+
+        }
+
+        .mobile-menu a,
+
+        .mobile-menu button {
+
+            display: block;
+
+            width: 100%;
+
+            padding: 12px 0;
+
+            text-align: left;
+
+            text-decoration: none;
+
+            color: #222;
+
+            border: none;
+
+            background: transparent;
+
+            font-size: 15px;
+
+            cursor: pointer;
+
+        }
+
+        .mobile-orange {
+
+            color: #f57c00 !important;
+
+            font-weight: bold;
+
+        }
+
+        .mobile-green {
+
+            color: #198754 !important;
+
+            font-weight: bold;
+
+        }
+
+        /* =========================
+
+           CONTENU
+
+        ========================= */
+
+        .container {
+
+            width: 95%;
+
+            max-width: 1200px;
+
+            margin: 30px auto;
+
+        }
+
+        .hero {
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 12px;
+
+            box-shadow: 0 3px 15px rgba(0,0,0,0.07);
+
+            margin-bottom: 25px;
+
+        }
+
+        .hero h1 {
+
+            margin-bottom: 10px;
+
+        }
+
+        .hero p {
+
+            color: #777;
+
+            line-height: 1.5;
+
+        }
+
+        /* =========================
+
+           CATÉGORIES
+
+        ========================= */
+
+        .categories {
+
+            display: flex;
+
+            gap: 10px;
+
+            overflow-x: auto;
+
+            padding-bottom: 10px;
+
+            margin-bottom: 25px;
+
+        }
+
+        .category {
+
+            flex: 0 0 auto;
+
+            border: 1px solid #ddd;
+
+            background: white;
+
+            padding: 10px 15px;
+
+            border-radius: 20px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            font-size: 13px;
+
+        }
+
+        .category:hover {
+
+            border-color: #f57c00;
+
+            color: #f57c00;
+
+        }
+
+        .category.active {
+
+            background: #f57c00;
+
+            color: white;
+
+            border-color: #f57c00;
+
+        }
+
+        /* =========================
+
+           PRODUITS
+
+        ========================= */
+
+        .products-container {
+
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 18px;
+
+        }
+
+        .product {
+
+            background: white;
+
+            border-radius: 12px;
+
+            overflow: hidden;
+
+            box-shadow: 0 3px 15px rgba(0,0,0,0.07);
+
+        }
+
+        .product-image {
+
+            height: 220px;
+
+            background: #f1f2f4;
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+        .product-image img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+            display: block;
+
+        }
+
+        .product-placeholder {
+
+            width: 100%;
+
+            height: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 45px;
+
+            color: #aaa;
+
+        }
+
+        .product-category {
+
+            position: absolute;
+
+            top: 10px;
+
+            left: 10px;
+
+            background: rgba(255,255,255,0.95);
+
+            padding: 5px 8px;
+
+            border-radius: 5px;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+        }
+
+        .product-info {
+
+            padding: 15px;
+
+        }
+
+        .product-info h3 {
+
+            font-size: 16px;
+
+            margin-bottom: 8px;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+        }
+
+        .price {
+
+            color: #f57c00;
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+
+        }
+
+        .seller {
+
+            color: #777;
+
+            font-size: 12px;
+
+            margin-bottom: 13px;
+
+        }
+
+        .product-actions {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 8px;
+
+        }
+
+        .add-cart,
+
+        .view-product {
+
+            width: 100%;
+
+            padding: 10px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+        }
+
+        .add-cart {
+
+            border: none;
+
+            background: #f57c00;
+
+            color: white;
+
+        }
+
+        .add-cart:hover {
+
+            background: #e56f00;
+
+        }
+
+        .view-product {
+
+            border: 1px solid #ddd;
+
+            background: white;
+
+            color: #222;
+
+        }
+
+        .view-product:hover {
+
+            background: #f5f6f8;
+
+        }
+
+        /* =========================
+
+           LOADING / EMPTY
+
+        ========================= */
+
+        .loading,
+
+        .empty {
+
+            grid-column: 1 / -1;
+
+            background: white;
+
+            padding: 50px 20px;
+
+            border-radius: 12px;
+
+            text-align: center;
+
+            color: #777;
+
+        }
+
+        .loading-icon,
+
+        .empty-icon {
+
+            font-size: 40px;
+
+            margin-bottom: 15px;
+
+        }
+
+        .empty strong {
+
+            display: block;
+
+            color: #222;
+
+            margin-bottom: 8px;
+
+        }
+
+        .empty p {
+
+            line-height: 1.5;
+
+        }
+
+        /* =========================
+
+           TOAST
+
+        ========================= */
+
+        .toast {
+
+            position: fixed;
+
+            right: 20px;
+
+            bottom: 20px;
+
+            background: #222;
+
+            color: white;
+
+            padding: 13px 17px;
+
+            border-radius: 8px;
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            transform: translateY(15px);
+
+            transition: 0.25s;
+
+            z-index: 2000;
+
+            max-width: 320px;
+
+            font-size: 14px;
+
+        }
+
+        .toast.show {
+
+            opacity: 1;
+
+            visibility: visible;
+
+            transform: translateY(0);
+
+        }
+
+        /* =========================
+
+           RESPONSIVE
+
+        ========================= */
+
+        @media (max-width: 950px) {
+
+            .products-container {
+
+                grid-template-columns: repeat(3, 1fr);
+
+            }
+
+        }
+
+        @media (max-width: 750px) {
+
+            .navbar {
+
+                width: 94%;
+
+                min-height: 62px;
+
+            }
+
+            .logo {
+
+                font-size: 21px;
+
+            }
+
+            .search-container {
+
+                display: none;
+
+            }
+
+            .nav-right {
+
+                margin-left: auto;
+
+            }
+
+            .guest-menu,
+
+            .user-menu {
+
+                display: none !important;
+
+            }
+
+            .cart-link {
+
+                margin-right: 5px;
+
+            }
+
+            .mobile-menu-button {
+
+                display: block;
+
+            }
+
+            .container {
+
+                width: 94%;
+
+                margin: 25px auto;
+
+            }
+
+            .hero {
+
+                padding: 22px;
+
+            }
+
+            .products-container {
+
+                grid-template-columns: repeat(2, 1fr);
+
+                gap: 12px;
+
+            }
+
+            .product-image {
+
+                height: 180px;
+
+            }
+
+        }
+
+        @media (max-width: 430px) {
+
+            .products-container {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .product-image {
+
+                height: 220px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="navbar">
+
+        <a
+
+            href="index.html"
+
+            class="logo"
+
+        >
+
+            Market <span>Bouaké</span>
+
+        </a>
+
+        <!-- =========================
+
+             RECHERCHE
+
+        ========================= -->
+
+        <div class="search-container">
+
+            <input
+
+                type="text"
+
+                id="searchInput"
+
+                placeholder="Rechercher un produit..."
+
+            >
+
+            <button
+
+                type="button"
+
+                id="searchButton"
+
+            >
+
+                🔎
+
+            </button>
+
+        </div>
+
+        <!-- =========================
+
+             NAVIGATION
+
+        ========================= -->
+
+        <div class="nav-right">
+
+            <!-- VISITEUR -->
+
+            <div
+
+                class="guest-menu"
+
+                id="guestMenu"
+
+            >
+
+                <a href="connexion.html">
+
+                    🔐 Connexion
+
+                </a>
+
+                <a
+
+                    href="inscription.html"
+
+                    class="signup-link"
+
+                >
+
+                    ✨ Inscription
+
+                </a>
+
+            </div>
+
+            <!-- UTILISATEUR CONNECTÉ -->
+
+            <div
+
+                class="user-menu"
+
+                id="userMenu"
+
+                style="display:none;"
+
+            >
+
+                <a href="compte.html">
+
+                    👤 Mon compte
+
+                </a>
+
+                <!--
+
+                    IMPORTANT :
+
+                    Ce lien est caché par défaut.
+
+                    Il sera affiché UNIQUEMENT si
+
+                    seller_status === "approved".
+
+                -->
+
+                <a
+
+                    href="vendeur.html"
+
+                    id="sellerSpace"
+
+                    class="seller-space"
+
+                    style="display:none;"
+
+                >
+
+                    🏪 Espace vendeur
+
+                </a>
+
+                <button
+
+                    id="logoutButton"
+
+                >
+
+                    Déconnexion
+
+                </button>
+
+            </div>
+
+            <!-- PANIER -->
+
+            <a
+
+                href="panier.html"
+
+                class="cart-link"
+
+                title="Mon panier"
+
+            >
+
+                🛒
+
+                <span
+
+                    class="cart-count"
+
+                    id="cartCount"
+
+                >
+
+                    0
+
+                </span>
+
+            </a>
+
+        </div>
+
+        <!-- MENU MOBILE -->
+
+        <button
+
+            class="mobile-menu-button"
+
+            id="mobileMenuButton"
+
+            aria-label="Menu"
+
+        >
+
+            ☰
+
+        </button>
+
+    </div>
+
+    <!-- =====================================================
+
+         MOBILE MENU
+
+    ====================================================== -->
+
+    <div
+
+        class="mobile-menu"
+
+        id="mobileMenu"
+
+    >
+
+        <!-- VISITEUR -->
+
+        <div id="mobileGuestMenu">
+
+            <a href="connexion.html">
+
+                🔐 Connexion
+
+            </a>
+
+            <a
+
+                href="inscription.html"
+
+                class="mobile-orange"
+
+            >
+
+                ✨ Inscription
+
+            </a>
+
+        </div>
+
+        <!-- UTILISATEUR -->
+
+        <div
+
+            id="mobileUserMenu"
+
+            style="display:none;"
+
+        >
+
+            <a href="compte.html">
+
+                👤 Mon compte
+
+            </a>
+
+            <!--
+
+                Caché par défaut.
+
+                Visible uniquement pour un vendeur APPROUVÉ.
+
+            -->
+
+            <a
+
+                href="vendeur.html"
+
+                id="mobileSellerSpace"
+
+                class="mobile-green"
+
+                style="display:none;"
+
+            >
+
+                🏪 Espace vendeur
+
+            </a>
+
+            <button id="mobileLogoutButton">
+
+                🚪 Déconnexion
+
+            </button>
+
+        </div>
+
+        <a href="panier.html">
+
+            🛒 Mon panier
+
+            (<span id="mobileCartCount">0</span>)
+
+        </a>
+
+    </div>
+
+</header>
+
+<!-- =========================================================
+
+     CONTENU
+
+========================================================= -->
+
+<main class="container">
+
+    <section class="hero">
+
+        <h1>
+
+            Bienvenue sur Market Bouaké 🛍️
+
+        </h1>
+
+        <p>
+
+            Découvrez les produits disponibles à Bouaké
+
+            et passez vos commandes facilement.
+
+        </p>
+
+    </section>
+
+    <!-- =====================================================
+
+         CATÉGORIES
+
+    ====================================================== -->
+
+    <div class="categories">
+
+        <button
+
+            type="button"
+
+            class="category active"
+
+            data-category="all"
+
+        >
+
+            Tous
+
+        </button>
+
+        <button
+
+            type="button"
+
+            class="category"
+
+            data-category="Mode"
+
+        >
+
+            👕 Mode
+
+        </button>
+
+        <button
+
+            type="button"
+
+            class="category"
+
+            data-category="Électronique"
+
+        >
+
+            📱 Électronique
+
+        </button>
+
+        <button
+
+            type="button"
+
+            class="category"
+
+            data-category="Maison"
+
+        >
+
+            🏠 Maison
+
+        </button>
+
+        <button
+
+            type="button"
+
+            class="category"
+
+            data-category="Beauté"
+
+        >
+
+            💄 Beauté
+
+        </button>
+
+        <button
+
+            type="button"
+
+            class="category"
+
+            data-category="Alimentation"
+
+        >
+
+            🍎 Alimentation
+
+        </button>
+
+        <button
+
+            type="button"
+
+            class="category"
+
+            data-category="Autres"
+
+        >
+
+            📦 Autres
+
+        </button>
+
+    </div>
+
+    <!-- =====================================================
+
+         PRODUITS
+
+    ====================================================== -->
+
+    <section
+
+        class="products-container"
+
+        id="productsContainer"
+
+    >
+
+        <div class="loading">
+
+            <div class="loading-icon">
+
+                ⏳
+
+            </div>
+
+            Chargement des produits...
+
+        </div>
+
+    </section>
+
+</main>
+
+<!-- =========================================================
+
+     TOAST
+
+========================================================= -->
+
+<div
+
+    id="toast"
+
+    class="toast"
+
+></div>
+
+<!-- =========================================================
+
+     SUPABASE
+
+========================================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-config.js"></script>
+
+<script>
+
+    /* =====================================================
+
+       VARIABLES
+
+    ===================================================== */
+
+    const guestMenu =
+
+        document.getElementById("guestMenu");
+
+    const userMenu =
+
+        document.getElementById("userMenu");
+
+    const sellerSpace =
+
+        document.getElementById("sellerSpace");
+
+    const logoutButton =
+
+        document.getElementById("logoutButton");
+
+    const mobileGuestMenu =
+
+        document.getElementById("mobileGuestMenu");
+
+    const mobileUserMenu =
+
+        document.getElementById("mobileUserMenu");
+
+    const mobileSellerSpace =
+
+        document.getElementById("mobileSellerSpace");
+
+    const mobileLogoutButton =
+
+        document.getElementById("mobileLogoutButton");
+
+    const mobileMenuButton =
+
+        document.getElementById("mobileMenuButton");
+
+    const mobileMenu =
+
+        document.getElementById("mobileMenu");
+
+    const searchInput =
+
+        document.getElementById("searchInput");
+
+    const searchButton =
+
+        document.getElementById("searchButton");
+
+    const productsContainer =
+
+        document.getElementById("productsContainer");
+
+    const toast =
+
+        document.getElementById("toast");
+
+    let allProducts = [];
+
+    let selectedCategory = "all";
+
+    /* =====================================================
+
+       TOAST
+
+    ===================================================== */
+
+    function showToast(message) {
+
+        toast.textContent = message;
+
+        toast.className = "toast show";
+
+        setTimeout(function() {
+
+            toast.className = "toast";
+
+        }, 3000);
+
+    }
+
+    /* =====================================================
+
+       ÉCHAPPEMENT HTML
+
+    ===================================================== */
+
+    function escapeHtml(value) {
+
+        if (
+
+            value === null ||
+
+            value === undefined
+
+        ) {
+
+            return "";
+
+        }
+
+        return String(value)
+
+            .replace(/&/g, "&amp;")
+
+            .replace(/</g, "&lt;")
+
+            .replace(/>/g, "&gt;")
+
+            .replace(/"/g, "&quot;")
+
+            .replace(/'/g, "&#039;");
+
+    }
+
+    /* =====================================================
+
+       PRIX
+
+    ===================================================== */
+
+    function formatPrice(value) {
+
+        const number =
+
+            Number(value || 0);
+
+        return number.toLocaleString("fr-FR") +
+
+            " FCFA";
+
+    }
+
+    /* =====================================================
+
+       PANIER
+
+    ===================================================== */
+
+    function getCart() {
+
+        try {
+
+            return JSON.parse(
+
+                localStorage.getItem(
+
+                    "market_bouake_cart"
+
+                )
+
+            ) || [];
+
+        } catch {
+
+            return [];
+
+        }
+
+    }
+
+    function saveCart(cart) {
+
+        localStorage.setItem(
+
+            "market_bouake_cart",
+
+            JSON.stringify(cart)
+
+        );
+
+        updateCartCount();
+
+    }
+
+    function updateCartCount() {
+
+        const cart = getCart();
+
+        let total = 0;
+
+        cart.forEach(function(item) {
+
+            total +=
+
+                Number(item.quantity || 1);
+
+        });
+
+        document.getElementById(
+
+            "cartCount"
+
+        ).textContent = total;
+
+        document.getElementById(
+
+            "mobileCartCount"
+
+        ).textContent = total;
+
+    }
+
+    /* =====================================================
+
+       AJOUTER AU PANIER
+
+    ===================================================== */
+
+    function addToCart(productId) {
+
+        const product =
+
+            allProducts.find(function(item) {
+
+                return String(item.id) ===
+
+                    String(productId);
+
+            });
+
+        if (!product) {
+
+            showToast(
+
+                "❌ Produit introuvable."
+
+            );
+
+            return;
+
+        }
+
+        const cart = getCart();
+
+        const existing =
+
+            cart.find(function(item) {
+
+                return String(item.id) ===
+
+                    String(product.id);
+
+            });
+
+        if (existing) {
+
+            existing.quantity =
+
+                Number(existing.quantity || 1) + 1;
+
+        } else {
+
+            cart.push({
+
+                id: product.id,
+
+                name: product.name,
+
+                price: product.price,
+
+                image_1: product.image_1 || "",
+
+                image_url: product.image_url || "",
+
+                category: product.category || "",
+
+                seller_id: product.seller_id || null,
+
+                whatsapp_number:
+
+                    product.whatsapp_number || "",
+
+                seller_name:
+
+                    product.seller_name || "Vendeur",
+
+                size: product.size || "",
+
+                color: product.color || "",
+
+                quantity: 1
+
+            });
+
+        }
+
+        saveCart(cart);
+
+        showToast(
+
+            "✅ Produit ajouté au panier."
+
+        );
+
+    }
+
+    /* =====================================================
+
+       AFFICHER LES PRODUITS
+
+    ===================================================== */
+
+    function renderProducts(products) {
+
+        if (!products.length) {
+
+            productsContainer.innerHTML = `
+
+                <div class="empty">
+
+                    <div class="empty-icon">
+
+                        🔎
+
+                    </div>
+
+                    <strong>
+
+                        Aucun produit trouvé
+
+                    </strong>
+
+                    <p>
+
+                        Essaie une autre recherche ou une autre catégorie.
+
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+        productsContainer.innerHTML =
+
+            products.map(function(product) {
+
+                const image =
+
+                    product.image_1 || "";
+
+                const category =
+
+                    product.category || "Produit";
+
+                const name =
+
+                    product.name || "Produit";
+
+                const price =
+
+                    formatPrice(product.price);
+
+                let imageHtml = `
+
+                    <div class="product-placeholder">
+
+                        📦
+
+                    </div>
+
+                `;
+
+                if (image) {
+
+                    imageHtml = `
+
+                        <img
+
+                            src="${escapeHtml(image)}"
+
+                            alt="${escapeHtml(name)}"
+
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+
+                        >
+
+                        <div
+
+                            class="product-placeholder"
+
+                            style="display:none;"
+
+                        >
+
+                            📦
+
+                        </div>
+
+                    `;
+
+                }
+
+                return `
+
+                    <article
+
+                        class="product"
+
+                        data-product-id="${escapeHtml(product.id)}"
+
+                    >
+
+                        <div class="product-image">
+
+                            ${imageHtml}
+
+                            <span class="product-category">
+
+                                ${escapeHtml(category)}
+
+                            </span>
+
+                        </div>
+
+                        <div class="product-info">
+
+                            <h3 title="${escapeHtml(name)}">
+
+                                ${escapeHtml(name)}
+
+                            </h3>
+
+                            <div class="price">
+
+                                ${price}
+
+                            </div>
+
+                            <div class="seller">
+
+                                🏪 Market Bouaké
+
+                            </div>
+
+                            <div class="product-actions">
+
+                                <button
+
+                                    class="add-cart"
+
+                                    onclick="addToCart('${escapeHtml(product.id)}')"
+
+                                >
+
+                                    🛒 Ajouter au panier
+
+                                </button>
+
+                                <button
+
+                                    class="view-product"
+
+                                    onclick="viewProduct('${escapeHtml(product.id)}')"
+
+                                >
+
+                                    👁️ Voir le produit
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                `;
+
+            }).join("");
+
+    }
+
+    /* =====================================================
+
+       VOIR UN PRODUIT
+
+    ===================================================== */
+
+    function viewProduct(productId) {
+
+        const product =
+
+            allProducts.find(function(item) {
+
+                return String(item.id) ===
+
+                    String(productId);
+
+            });
+
+        if (!product) {
+
+            return;
+
+        }
+
+        localStorage.setItem(
+
+            "market_bouake_selected_product",
+
+            JSON.stringify(product)
+
+        );
+
+        window.location.href =
+
+            "produit.html";
+
+    }
+
+    /* =====================================================
+
+       CHARGER LES PRODUITS DE SUPABASE
+
+    ===================================================== */
+
+    async function loadProducts() {
+
+        productsContainer.innerHTML = `
+
+            <div class="loading">
+
+                <div class="loading-icon">
+
+                    ⏳
+
+                </div>
+
+                Chargement des produits...
+
+            </div>
+
+        `;
+
+        try {
+
+            if (
+
+                typeof supabaseClient ===
+
+                "undefined"
+
+            ) {
+
+                throw new Error(
+
+                    "Supabase n'est pas configuré."
+
+                );
+
+            }
+
+            const {
+
+                data,
+
+                error
+
+            } = await supabaseClient
+
+                .from("products")
+
+                .select("*")
+
+                .eq("is_active", true)
+
+                .order(
+
+                    "created_at",
+
+                    {
+
+                        ascending: false
+
+                    }
+
+                );
+
+            if (error) {
+
+                console.error(error);
+
+                throw error;
+
+            }
+
+            allProducts =
+
+                data || [];
+
+            renderProducts(
+
+                allProducts
+
+            );
+
+        } catch (error) {
+
+            console.error(
+
+                "Erreur chargement produits :",
+
+                error
+
+            );
+
+            productsContainer.innerHTML = `
+
+                <div class="empty">
+
+                    <div class="empty-icon">
+
+                        ⚠️
+
+                    </div>
+
+                    <strong>
+
+                        Impossible de charger les produits
+
+                    </strong>
+
+                    <p>
+
+                        ${escapeHtml(
+
+                            error.message ||
+
+                            "Erreur inconnue"
+
+                        )}
+
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+    /* =====================================================
+
+       RECHERCHE
+
+    ===================================================== */
+
+    function filterProducts() {
+
+        const query =
+
+            searchInput.value
+
+                .toLowerCase()
+
+                .trim();
+
+        let filtered =
+
+            allProducts.filter(function(product) {
+
+                const name =
+
+                    String(
+
+                        product.name || ""
+
+                    ).toLowerCase();
+
+                const category =
+
+                    String(
+
+                        product.category || ""
+
+                    ).toLowerCase();
+
+                const description =
+
+                    String(
+
+                        product.description || ""
+
+                    ).toLowerCase();
+
+                const matchesSearch =
+
+                    !query ||
+
+                    name.includes(query) ||
+
+                    category.includes(query) ||
+
+                    description.includes(query);
+
+                const matchesCategory =
+
+                    selectedCategory === "all" ||
+
+                    category ===
+
+                    selectedCategory.toLowerCase();
+
+                return (
+
+                    matchesSearch &&
+
+                    matchesCategory
+
+                );
+
+            });
+
+        renderProducts(filtered);
+
+    }
+
+    searchInput.addEventListener(
+
+        "input",
+
+        filterProducts
+
+    );
+
+    searchButton.addEventListener(
+
+        "click",
+
+        filterProducts
+
+    );
+
+    /* =====================================================
+
+       CATÉGORIES
+
+    ===================================================== */
+
+    document
+
+        .querySelectorAll(".category")
+
+        .forEach(function(category) {
+
+            category.addEventListener(
+
+                "click",
+
+                function() {
+
+                    document
+
+                        .querySelectorAll(".category")
+
+                        .forEach(function(item) {
+
+                            item.classList.remove(
+
+                                "active"
+
+                            );
+
+                        });
+
+                    category.classList.add(
+
+                        "active"
+
+                    );
+
+                    selectedCategory =
+
+                        category.dataset.category;
+
+                    filterProducts();
+
+                }
+
+            );
+
+        });
+
+    /* =====================================================
+
+       UTILISATEUR CONNECTÉ
+
+    ===================================================== */
+
+    async function checkUser() {
+
+        try {
+
+            if (
+
+                typeof supabaseClient ===
+
+                "undefined"
+
+            ) {
+
+                console.error(
+
+                    "Supabase n'est pas configuré."
+
+                );
+
+                return;
+
+            }
+
+            const {
+
+                data: {
+
+                    user
+
+                }
+
+            } =
+
+                await supabaseClient
+
+                    .auth
+
+                    .getUser();
+
+            /* =============================================
+
+               VISITEUR
+
+            ============================================= */
+
+            if (!user) {
+
+                guestMenu.style.display =
+
+                    "flex";
+
+                userMenu.style.display =
+
+                    "none";
+
+                mobileGuestMenu.style.display =
+
+                    "block";
+
+                mobileUserMenu.style.display =
+
+                    "none";
+
+                /*
+
+                 * IMPORTANT :
+
+                 * Toujours cacher l'espace vendeur
+
+                 * pour un visiteur.
+
+                 */
+
+                sellerSpace.style.display =
+
+                    "none";
+
+                mobileSellerSpace.style.display =
+
+                    "none";
+
+                return;
+
+            }
+
+            /* =============================================
+
+               UTILISATEUR CONNECTÉ
+
+            ============================================= */
+
+            guestMenu.style.display =
+
+                "none";
+
+            userMenu.style.display =
+
+                "flex";
+
+            mobileGuestMenu.style.display =
+
+                "none";
+
+            mobileUserMenu.style.display =
+
+                "block";
+
+            /* =============================================
+
+               RÉCUPÉRER LE PROFIL
+
+            ============================================= */
+
+            const {
+
+                data: profile,
+
+                error
+
+            } =
+
+                await supabaseClient
+
+                    .from("profiles")
+
+                    /*
+
+                     * seller_status est maintenant
+
+                     * récupéré avec role.
+
+                     */
+
+                    .select(
+
+                        "role, seller_status"
+
+                    )
+
+                    .eq(
+
+                        "id",
+
+                        user.id
+
+                    )
+
+                    .maybeSingle();
+
+            if (error) {
+
+                console.error(
+
+                    "Erreur récupération profil :",
+
+                    error
+
+                );
+
+                /*
+
+                 * Par sécurité :
+
+                 * ne jamais afficher l'espace vendeur
+
+                 * si le profil n'a pas pu être vérifié.
+
+                 */
+
+                sellerSpace.style.display =
+
+                    "none";
+
+                mobileSellerSpace.style.display =
+
+                    "none";
+
+                return;
+
+            }
+
+            /* =============================================
+
+               SÉCURITÉ :
+
+               CACHER L'ESPACE VENDEUR PAR DÉFAUT
+
+            ============================================= */
+
+            sellerSpace.style.display =
+
+                "none";
+
+            mobileSellerSpace.style.display =
+
+                "none";
+
+            /* =============================================
+
+               ADMIN
+
+            ============================================= */
+
+            if (
+
+                profile &&
+
+                profile.role === "admin"
+
+            ) {
+
+                window.location.href =
+
+                    "admin.html";
+
+                return;
+
+            }
+
+            /* =============================================
+
+               VENDEUR APPROUVÉ UNIQUEMENT
+
+            ============================================= */
+
+            if (
+
+                profile &&
+
+                profile.role === "seller" &&
+
+                profile.seller_status === "approved"
+
+            ) {
+
+                /*
+
+                 * SEUL un vendeur approuvé
+
+                 * peut voir l'espace vendeur.
+
+                 */
+
+                sellerSpace.style.display =
+
+                    "inline-block";
+
+                mobileSellerSpace.style.display =
+
+                    "block";
+
+            }
+
+            /*
+
+             * Si seller_status est :
+
+             *
+
+             * pending  → rien n'est affiché
+
+             * rejected → rien n'est affiché
+
+             * none     → rien n'est affiché
+
+             *
+
+             * L'utilisateur reste simplement
+
+             * un utilisateur pouvant acheter.
+
+             */
+
+        } catch (error) {
+
+            console.error(
+
+                "Erreur vérification utilisateur :",
+
+                error
+
+            );
+
+            /*
+
+             * En cas d'erreur :
+
+             * cacher l'espace vendeur par sécurité.
+
+             */
+
+            sellerSpace.style.display =
+
+                "none";
+
+            mobileSellerSpace.style.display =
+
+                "none";
+
+        }
+
+    }
+
+    /* =====================================================
+
+       DÉCONNEXION
+
+    ===================================================== */
+
+    async function logout() {
+
+        try {
+
+            await supabaseClient
+
+                .auth
+
+                .signOut();
+
+            window.location.href =
+
+                "index.html";
+
+        } catch (error) {
+
+            console.error(error);
+
+            showToast(
+
+                "❌ Impossible de se déconnecter."
+
+            );
+
+        }
+
+    }
+
+    logoutButton.addEventListener(
+
+        "click",
+
+        logout
+
+    );
+
+    mobileLogoutButton.addEventListener(
+
+        "click",
+
+        logout
+
+    );
+
+    /* =====================================================
+
+       MENU MOBILE
+
+    ===================================================== */
+
+    mobileMenuButton.addEventListener(
+
+        "click",
+
+        function() {
+
+            mobileMenu.classList.toggle(
+
+                "open"
+
+            );
+
+        }
+
+    );
+
+    /* =====================================================
+
+       DÉMARRAGE
+
+    ===================================================== */
+
+    async function start() {
+
+        updateCartCount();
+
+        await checkUser();
+
+        await loadProducts();
+
+    }
+
+    start();
+
+</script>
+
+</body>
+
+</html>
