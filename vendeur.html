@@ -1,0 +1,2691 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Espace vendeur | Market Bouaké</title>
+
+    <style>
+
+        * {
+
+            margin: 0;
+
+            padding: 0;
+
+            box-sizing: border-box;
+
+        }
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            background: #f5f6f8;
+
+            color: #222;
+
+            min-height: 100vh;
+
+            padding-bottom: 40px;
+
+        }
+
+        header {
+
+            background: white;
+
+            padding: 18px 5%;
+
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+        }
+
+        .logo {
+
+            font-size: 25px;
+
+            font-weight: bold;
+
+            text-decoration: none;
+
+            color: #222;
+
+        }
+
+        .logo span {
+
+            color: #f57c00;
+
+        }
+
+        .logout {
+
+            border: none;
+
+            background: #222;
+
+            color: white;
+
+            padding: 10px 16px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+        }
+
+        .logout:hover {
+
+            background: #444;
+
+        }
+
+        .container {
+
+            width: 95%;
+
+            max-width: 1100px;
+
+            margin: 35px auto;
+
+        }
+
+        .welcome {
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 12px;
+
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+
+            margin-bottom: 25px;
+
+        }
+
+        .welcome h1 {
+
+            margin-bottom: 10px;
+
+        }
+
+        .welcome p {
+
+            color: #777;
+
+            line-height: 1.5;
+
+        }
+
+        .cards {
+
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+
+        }
+
+        .card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+
+        }
+
+        .card-icon {
+
+            font-size: 35px;
+
+            margin-bottom: 15px;
+
+        }
+
+        .card h2 {
+
+            font-size: 19px;
+
+            margin-bottom: 10px;
+
+        }
+
+        .card p {
+
+            color: #777;
+
+            line-height: 1.5;
+
+            margin-bottom: 18px;
+
+            font-size: 14px;
+
+        }
+
+        .button {
+
+            display: inline-block;
+
+            text-decoration: none;
+
+            border: none;
+
+            background: #f57c00;
+
+            color: white;
+
+            padding: 11px 16px;
+
+            border-radius: 7px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+        .button:hover {
+
+            background: #e56f00;
+
+        }
+
+        .message {
+
+            display: none;
+
+            margin-bottom: 20px;
+
+            padding: 13px;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+        }
+
+        .message.error {
+
+            display: block;
+
+            background: #fff1f1;
+
+            color: #b00020;
+
+            border: 1px solid #f0b5b5;
+
+        }
+
+        .message.success {
+
+            display: block;
+
+            background: #effaf1;
+
+            color: #187333;
+
+            border: 1px solid #b8dfbf;
+
+        }
+
+        /* =========================
+
+           TARIFS LIVRAISON
+
+        ========================= */
+
+        .delivery-section {
+
+            margin-bottom: 25px;
+
+        }
+
+        .delivery-card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+
+        }
+
+        .delivery-icon {
+
+            font-size: 35px;
+
+            margin-bottom: 15px;
+
+        }
+
+        .delivery-card h2 {
+
+            font-size: 20px;
+
+            margin-bottom: 10px;
+
+        }
+
+        .delivery-card p {
+
+            color: #777;
+
+            line-height: 1.5;
+
+            margin-bottom: 18px;
+
+            font-size: 14px;
+
+        }
+
+        /* =========================
+
+           COMMANDES
+
+        ========================= */
+
+        .orders-section {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+
+            margin-bottom: 25px;
+
+        }
+
+        .orders-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+
+        }
+
+        .orders-header h2 {
+
+            font-size: 21px;
+
+        }
+
+        .refresh-button {
+
+            border: 1px solid #ddd;
+
+            background: white;
+
+            color: #222;
+
+            padding: 9px 13px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+        }
+
+        .refresh-button:hover {
+
+            background: #f5f6f8;
+
+        }
+
+        .orders-loading,
+
+        .no-orders {
+
+            text-align: center;
+
+            padding: 30px 15px;
+
+            color: #777;
+
+        }
+
+        .order-card {
+
+            border: 1px solid #e1e1e1;
+
+            border-radius: 10px;
+
+            padding: 18px;
+
+            margin-bottom: 15px;
+
+            background: #fff;
+
+        }
+
+        .order-card:last-child {
+
+            margin-bottom: 0;
+
+        }
+
+        .order-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-start;
+
+            gap: 15px;
+
+            margin-bottom: 15px;
+
+        }
+
+        .order-number {
+
+            font-weight: bold;
+
+            font-size: 17px;
+
+        }
+
+        .order-date {
+
+            color: #777;
+
+            font-size: 12px;
+
+            margin-top: 5px;
+
+        }
+
+        .status {
+
+            display: inline-block;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+        }
+
+        .status-pending {
+
+            background: #fff4d6;
+
+            color: #956c00;
+
+        }
+
+        .status-confirmed {
+
+            background: #eaf4fc;
+
+            color: #1769aa;
+
+        }
+
+        .status-preparing {
+
+            background: #eee8ff;
+
+            color: #6241a8;
+
+        }
+
+        .status-delivering {
+
+            background: #eaf7ef;
+
+            color: #198754;
+
+        }
+
+        .status-delivered {
+
+            background: #dff5e5;
+
+            color: #126b31;
+
+        }
+
+        .status-cancelled {
+
+            background: #fdecec;
+
+            color: #dc3545;
+
+        }
+
+        .customer-box {
+
+            background: #f8f9fa;
+
+            padding: 13px;
+
+            border-radius: 8px;
+
+            margin-bottom: 15px;
+
+        }
+
+        .customer-box strong {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+        }
+
+        .customer-box div {
+
+            color: #555;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
+        }
+
+        .items-title {
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+
+        }
+
+        .order-item {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 9px 0;
+
+            border-bottom: 1px solid #eee;
+
+            font-size: 14px;
+
+        }
+
+        .order-item:last-child {
+
+            border-bottom: none;
+
+        }
+
+        .item-name {
+
+            font-weight: bold;
+
+        }
+
+        .item-details {
+
+            color: #777;
+
+            font-size: 12px;
+
+            margin-top: 3px;
+
+        }
+
+        .item-price {
+
+            font-weight: bold;
+
+            white-space: nowrap;
+
+        }
+
+        .order-total {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-top: 13px;
+
+            padding-top: 13px;
+
+            border-top: 1px solid #ddd;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+        }
+
+        .order-actions {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+            margin-top: 15px;
+
+        }
+
+        .status-button {
+
+            border: none;
+
+            padding: 10px 12px;
+
+            border-radius: 7px;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            font-size: 12px;
+
+        }
+
+        .status-button.confirm {
+
+            background: #1769aa;
+
+        }
+
+        .status-button.prepare {
+
+            background: #6241a8;
+
+        }
+
+        .status-button.deliver {
+
+            background: #198754;
+
+        }
+
+        .status-button.complete {
+
+            background: #126b31;
+
+        }
+
+        .status-button.whatsapp {
+
+            background: #198754;
+
+        }
+
+        .status-button:disabled {
+
+            opacity: 0.5;
+
+            cursor: not-allowed;
+
+        }
+
+        .error-small {
+
+            color: #b00020;
+
+            font-size: 13px;
+
+            padding: 15px 0;
+
+        }
+
+        /* =========================
+
+           RESPONSIVE
+
+        ========================= */
+
+        @media (max-width: 750px) {
+
+            header {
+
+                padding: 15px 4%;
+
+            }
+
+            .logo {
+
+                font-size: 21px;
+
+            }
+
+            .container {
+
+                width: 94%;
+
+                margin: 25px auto;
+
+            }
+
+            .cards {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .welcome {
+
+                padding: 22px;
+
+            }
+
+            .orders-section {
+
+                padding: 18px;
+
+            }
+
+            .orders-header {
+
+                align-items: flex-start;
+
+            }
+
+            .order-top {
+
+                flex-direction: column;
+
+            }
+
+            .order-item {
+
+                flex-direction: column;
+
+                gap: 4px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <a href="index.html" class="logo">
+
+        Market <span>Bouaké</span>
+
+    </a>
+
+    <button
+
+        class="logout"
+
+        id="logoutButton"
+
+    >
+
+        Se déconnecter
+
+    </button>
+
+</header>
+
+<main class="container">
+
+    <div
+
+        id="message"
+
+        class="message"
+
+    ></div>
+
+    <section class="welcome">
+
+        <h1>
+
+            🏪 Espace vendeur
+
+        </h1>
+
+        <p id="welcomeText">
+
+            Bienvenue dans votre espace vendeur Market Bouaké.
+
+        </p>
+
+    </section>
+
+    <!-- =========================
+
+         COMMANDES
+
+    ========================= -->
+
+    <section class="orders-section">
+
+        <div class="orders-header">
+
+            <h2>
+
+                📦 Mes commandes
+
+            </h2>
+
+            <button
+
+                type="button"
+
+                class="refresh-button"
+
+                id="refreshOrdersButton"
+
+            >
+
+                🔄 Actualiser
+
+            </button>
+
+        </div>
+
+        <div id="ordersContainer">
+
+            <div class="orders-loading">
+
+                ⏳ Chargement des commandes...
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =========================
+
+         TARIFS LIVRAISON
+
+    ========================= -->
+
+    <section class="delivery-section">
+
+        <div class="delivery-card">
+
+            <div class="delivery-icon">
+
+                🚚
+
+            </div>
+
+            <h2>
+
+                Mes tarifs de livraison
+
+            </h2>
+
+            <p>
+
+                Définissez vos tarifs de livraison selon les quartiers
+
+                et pour les expéditions hors de Bouaké.
+
+            </p>
+
+            <button
+
+                type="button"
+
+                class="button"
+
+                id="deliveryRatesButton"
+
+            >
+
+                Gérer mes tarifs
+
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- =========================
+
+         CARTES
+
+    ========================= -->
+
+    <section class="cards">
+
+        <div class="card">
+
+            <div class="card-icon">
+
+                ➕
+
+            </div>
+
+            <h2>
+
+                Ajouter un produit
+
+            </h2>
+
+            <p>
+
+                Publiez un nouvel article dans votre boutique.
+
+            </p>
+
+            <a
+
+                href="ajouter-produit.html"
+
+                class="button"
+
+            >
+
+                Ajouter un produit
+
+            </a>
+
+        </div>
+
+        <div class="card">
+
+            <div class="card-icon">
+
+                📦
+
+            </div>
+
+            <h2>
+
+                Mes produits
+
+            </h2>
+
+            <p>
+
+                Consultez et gérez les produits de votre boutique.
+
+            </p>
+
+            <button
+
+                class="button"
+
+                type="button"
+
+                onclick="alert('La gestion de vos produits sera ajoutée à l’étape suivante.')"
+
+            >
+
+                Mes produits
+
+            </button>
+
+        </div>
+
+        <div class="card">
+
+            <div class="card-icon">
+
+                👤
+
+            </div>
+
+            <h2>
+
+                Ma boutique
+
+            </h2>
+
+            <p>
+
+                Gérez les informations de votre boutique vendeur.
+
+            </p>
+
+            <button
+
+                class="button"
+
+                type="button"
+
+                onclick="alert('La gestion de votre boutique sera ajoutée plus tard.')"
+
+            >
+
+                Ma boutique
+
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-config.js"></script>
+
+<script>
+
+    /* ==========================================
+
+       VARIABLES
+
+    ========================================== */
+
+    const message =
+
+        document.getElementById("message");
+
+    const welcomeText =
+
+        document.getElementById("welcomeText");
+
+    const logoutButton =
+
+        document.getElementById("logoutButton");
+
+    const ordersContainer =
+
+        document.getElementById("ordersContainer");
+
+    const refreshOrdersButton =
+
+        document.getElementById("refreshOrdersButton");
+
+    let currentUser = null;
+
+    /* ==========================================
+
+       MESSAGE
+
+    ========================================== */
+
+    function showMessage(text, type) {
+
+        message.textContent = text;
+
+        message.className =
+
+            "message " + type;
+
+    }
+
+    function clearMessage() {
+
+        message.textContent = "";
+
+        message.className = "message";
+
+    }
+
+    /* ==========================================
+
+       PRIX
+
+    ========================================== */
+
+    function formatPrice(value) {
+
+        return Number(value || 0)
+
+            .toLocaleString("fr-FR") +
+
+            " FCFA";
+
+    }
+
+    /* ==========================================
+
+       HTML SÉCURISÉ
+
+    ========================================== */
+
+    function escapeHtml(value) {
+
+        if (
+
+            value === null ||
+
+            value === undefined
+
+        ) {
+
+            return "";
+
+        }
+
+        return String(value)
+
+            .replace(/&/g, "&amp;")
+
+            .replace(/</g, "&lt;")
+
+            .replace(/>/g, "&gt;")
+
+            .replace(/"/g, "&quot;")
+
+            .replace(/'/g, "&#039;");
+
+    }
+
+    /* ==========================================
+
+       STATUT COMMANDE
+
+    ========================================== */
+
+    function statusLabel(status) {
+
+        const labels = {
+
+            pending:
+
+                "En attente",
+
+            confirmed:
+
+                "Confirmée",
+
+            preparing:
+
+                "En préparation",
+
+            delivering:
+
+                "En livraison",
+
+            delivered:
+
+                "Livrée",
+
+            cancelled:
+
+                "Annulée"
+
+        };
+
+        return labels[status] ||
+
+            status ||
+
+            "Inconnu";
+
+    }
+
+    function statusClass(status) {
+
+        return "status-" +
+
+            String(status || "pending");
+
+    }
+
+    /* ==========================================
+
+       UTILISATEUR CONNECTÉ
+
+    ========================================== */
+
+    async function getCurrentUser() {
+
+        const {
+
+            data,
+
+            error
+
+        } =
+
+            await supabaseClient.auth.getUser();
+
+        if (error) {
+
+            console.error(error);
+
+            return null;
+
+        }
+
+        return data.user;
+
+    }
+
+    /* ==========================================
+
+       VÉRIFICATION VENDEUR ACCEPTÉ
+
+       
+
+       IMPORTANT :
+
+       Un utilisateur doit avoir :
+
+       
+
+       role = seller
+
+       ET
+
+       seller_status = approved
+
+       
+
+       pour accéder à cet espace.
+
+    ========================================== */
+
+    async function checkSeller() {
+
+        try {
+
+            const user =
+
+                await getCurrentUser();
+
+            /* ----------------------------------
+
+               PAS CONNECTÉ
+
+            ---------------------------------- */
+
+            if (!user) {
+
+                window.location.href =
+
+                    "connexion.html";
+
+                return false;
+
+            }
+
+            currentUser = user;
+
+            /* ----------------------------------
+
+               RÉCUPÉRATION DU PROFIL
+
+            ---------------------------------- */
+
+            const {
+
+                data: profile,
+
+                error: profileError
+
+            } =
+
+                await supabaseClient
+
+                    .from("profiles")
+
+                    .select(
+
+                        "first_name, last_name, email, role, seller_status"
+
+                    )
+
+                    .eq(
+
+                        "id",
+
+                        user.id
+
+                    )
+
+                    .maybeSingle();
+
+            if (profileError) {
+
+                console.error(
+
+                    "Erreur profil :",
+
+                    profileError
+
+                );
+
+                showMessage(
+
+                    "Impossible de vérifier votre statut vendeur.",
+
+                    "error"
+
+                );
+
+                return false;
+
+            }
+
+            /* ----------------------------------
+
+               PROFIL INEXISTANT
+
+            ---------------------------------- */
+
+            if (!profile) {
+
+                window.location.href =
+
+                    "index.html";
+
+                return false;
+
+            }
+
+            /* ----------------------------------
+
+               VÉRIFICATION DU RÔLE
+
+            ---------------------------------- */
+
+            if (
+
+                profile.role !== "seller"
+
+            ) {
+
+                window.location.href =
+
+                    "index.html";
+
+                return false;
+
+            }
+
+            /* ----------------------------------
+
+               VÉRIFICATION DU STATUT VENDEUR
+
+            ---------------------------------- */
+
+            const sellerStatus =
+
+                String(
+
+                    profile.seller_status || ""
+
+                ).toLowerCase();
+
+            /* ----------------------------------
+
+               VENDEUR ACCEPTÉ
+
+            ---------------------------------- */
+
+            if (
+
+                sellerStatus !== "approved"
+
+            ) {
+
+                /*
+
+                 * Le compte reste utilisable
+
+                 * comme compte acheteur.
+
+                 *
+
+                 * On ne supprime pas le compte.
+
+                 * On ne déconnecte pas l'utilisateur.
+
+                 *
+
+                 * On bloque uniquement l'espace vendeur.
+
+                 */
+
+                window.location.href =
+
+                    "index.html";
+
+                return false;
+
+            }
+
+            /* ----------------------------------
+
+               ACCÈS AUTORISÉ
+
+            ---------------------------------- */
+
+            const firstName =
+
+                profile.first_name || "";
+
+            welcomeText.textContent =
+
+                "Bienvenue " +
+
+                firstName +
+
+                " dans votre espace vendeur Market Bouaké.";
+
+            return true;
+
+        } catch (error) {
+
+            console.error(error);
+
+            showMessage(
+
+                "Une erreur est survenue lors de la vérification de votre compte.",
+
+                "error"
+
+            );
+
+            return false;
+
+        }
+
+    }
+
+    /* ==========================================
+
+       CHARGER LES COMMANDES
+
+    ========================================== */
+
+    async function loadOrders() {
+
+        ordersContainer.innerHTML = `
+
+            <div class="orders-loading">
+
+                ⏳ Chargement des commandes...
+
+            </div>
+
+        `;
+
+        if (!currentUser) {
+
+            ordersContainer.innerHTML = `
+
+                <div class="error-small">
+
+                    ❌ Utilisateur non connecté.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+        try {
+
+            /*
+
+             * On récupère uniquement les articles
+
+             * appartenant à ce vendeur.
+
+             */
+
+            const {
+
+                data: items,
+
+                error: itemsError
+
+            } =
+
+                await supabaseClient
+
+                    .from("order_items")
+
+                    .select(
+
+                        "id, order_id, product_id, seller_id, quantity, unit_price, created_at"
+
+                    )
+
+                    .eq(
+
+                        "seller_id",
+
+                        currentUser.id
+
+                    )
+
+                    .order(
+
+                        "created_at",
+
+                        {
+
+                            ascending: false
+
+                        }
+
+                    );
+
+            if (itemsError) {
+
+                console.error(
+
+                    "Erreur articles commandes :",
+
+                    itemsError
+
+                );
+
+                throw itemsError;
+
+            }
+
+            if (
+
+                !items ||
+
+                !items.length
+
+            ) {
+
+                ordersContainer.innerHTML = `
+
+                    <div class="no-orders">
+
+                        📦
+
+                        <br><br>
+
+                        <strong>
+
+                            Aucune commande pour le moment.
+
+                        </strong>
+
+                        <br>
+
+                        Les nouvelles commandes apparaîtront ici.
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+            /*
+
+             * Regrouper les articles par commande.
+
+             */
+
+            const groupedOrders = {};
+
+            items.forEach(
+
+                function(item) {
+
+                    if (
+
+                        !groupedOrders[
+
+                            item.order_id
+
+                        ]
+
+                    ) {
+
+                        groupedOrders[
+
+                            item.order_id
+
+                        ] = [];
+
+                    }
+
+                    groupedOrders[
+
+                        item.order_id
+
+                    ].push(item);
+
+                }
+
+            );
+
+            const orderIds =
+
+                Object.keys(
+
+                    groupedOrders
+
+                );
+
+            /*
+
+             * Récupérer les commandes.
+
+             */
+
+            const {
+
+                data: orders,
+
+                error: ordersError
+
+            } =
+
+                await supabaseClient
+
+                    .from("orders")
+
+                    .select(
+
+                        "id, buyer_id, total_amount, status, delivery_name, delivery_phone, delivery_city, delivery_address, delivery_info, created_at"
+
+                    )
+
+                    .in(
+
+                        "id",
+
+                        orderIds
+
+                    )
+
+                    .order(
+
+                        "created_at",
+
+                        {
+
+                            ascending: false
+
+                        }
+
+                    );
+
+            if (ordersError) {
+
+                console.error(
+
+                    "Erreur commandes :",
+
+                    ordersError
+
+                );
+
+                throw ordersError;
+
+            }
+
+            /*
+
+             * Récupérer les informations produits.
+
+             */
+
+            const productIds =
+
+                [
+
+                    ...new Set(
+
+                        items.map(
+
+                            function(item) {
+
+                                return item.product_id;
+
+                            }
+
+                        )
+
+                    )
+
+                ];
+
+            let products = [];
+
+            if (
+
+                productIds.length
+
+            ) {
+
+                const {
+
+                    data: productData,
+
+                    error: productError
+
+                } =
+
+                    await supabaseClient
+
+                        .from("products")
+
+                        .select(
+
+                            "id, name, image_1"
+
+                        )
+
+                        .in(
+
+                            "id",
+
+                            productIds
+
+                        );
+
+                if (productError) {
+
+                    console.error(
+
+                        "Erreur produits :",
+
+                        productError
+
+                    );
+
+                } else {
+
+                    products =
+
+                        productData || [];
+
+                }
+
+            }
+
+            const productMap = {};
+
+            products.forEach(
+
+                function(product) {
+
+                    productMap[
+
+                        product.id
+
+                    ] = product;
+
+                }
+
+            );
+
+            /*
+
+             * Affichage.
+
+             */
+
+            ordersContainer.innerHTML =
+
+                orders.map(
+
+                    function(order) {
+
+                        const orderItems =
+
+                            groupedOrders[
+
+                                order.id
+
+                            ] || [];
+
+                        return renderOrder(
+
+                            order,
+
+                            orderItems,
+
+                            productMap
+
+                        );
+
+                    }
+
+                ).join("");
+
+            attachOrderEvents();
+
+        } catch (error) {
+
+            console.error(error);
+
+            ordersContainer.innerHTML = `
+
+                <div class="error-small">
+
+                    ❌ Impossible de charger les commandes.
+
+                    <br><br>
+
+                    ${escapeHtml(
+
+                        error.message ||
+
+                        "Erreur inconnue."
+
+                    )}
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+    /* ==========================================
+
+       AFFICHER UNE COMMANDE
+
+    ========================================== */
+
+    function renderOrder(
+
+        order,
+
+        orderItems,
+
+        productMap
+
+    ) {
+
+        const date =
+
+            new Date(
+
+                order.created_at
+
+            ).toLocaleString(
+
+                "fr-FR"
+
+            );
+
+        const itemsHtml =
+
+            orderItems.map(
+
+                function(item) {
+
+                    const product =
+
+                        productMap[
+
+                            item.product_id
+
+                        ];
+
+                    const productName =
+
+                        product
+
+                            ? product.name
+
+                            : "Produit";
+
+                    const subtotal =
+
+                        Number(
+
+                            item.unit_price || 0
+
+                        ) *
+
+                        Number(
+
+                            item.quantity || 1
+
+                        );
+
+                    return `
+
+                        <div class="order-item">
+
+                            <div>
+
+                                <div class="item-name">
+
+                                    ${escapeHtml(
+
+                                        productName
+
+                                    )}
+
+                                </div>
+
+                                <div class="item-details">
+
+                                    Quantité :
+
+                                    ${escapeHtml(
+
+                                        item.quantity
+
+                                    )}
+
+                                    ×
+
+                                    ${formatPrice(
+
+                                        item.unit_price
+
+                                    )}
+
+                                </div>
+
+                            </div>
+
+                            <div class="item-price">
+
+                                ${formatPrice(
+
+                                    subtotal
+
+                                )}
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+
+            ).join("");
+
+        const status =
+
+            order.status ||
+
+            "pending";
+
+        return `
+
+            <article
+
+                class="order-card"
+
+                data-order-id="${escapeHtml(order.id)}"
+
+            >
+
+                <div class="order-top">
+
+                    <div>
+
+                        <div class="order-number">
+
+                            Commande #${escapeHtml(order.id)}
+
+                        </div>
+
+                        <div class="order-date">
+
+                            ${escapeHtml(date)}
+
+                        </div>
+
+                    </div>
+
+                    <span
+
+                        class="status ${statusClass(status)}"
+
+                    >
+
+                        ${escapeHtml(
+
+                            statusLabel(status)
+
+                        )}
+
+                    </span>
+
+                </div>
+
+                <div class="customer-box">
+
+                    <strong>
+
+                        👤 Informations de livraison
+
+                    </strong>
+
+                    <div>
+
+                        <strong>
+
+                            ${escapeHtml(
+
+                                order.delivery_name ||
+
+                                "Nom non renseigné"
+
+                            )}
+
+                        </strong>
+
+                        📞
+
+                        ${escapeHtml(
+
+                            order.delivery_phone ||
+
+                            "Téléphone non renseigné"
+
+                        )}
+
+                        <br>
+
+                        📍
+
+                        ${escapeHtml(
+
+                            order.delivery_city ||
+
+                            "Ville non renseignée"
+
+                        )}
+
+                        <br>
+
+                        🏠
+
+                        ${escapeHtml(
+
+                            order.delivery_address ||
+
+                            "Adresse non renseignée"
+
+                        )}
+
+                        ${
+
+                            order.delivery_info
+
+                                ? `
+
+                                    <br>
+
+                                    ℹ️
+
+                                    ${escapeHtml(
+
+                                        order.delivery_info
+
+                                    )}
+
+                                `
+
+                                : ""
+
+                        }
+
+                    </div>
+
+                </div>
+
+                <div class="items-title">
+
+                    🛍️ Produits commandés
+
+                </div>
+
+                ${itemsHtml}
+
+                <div class="order-total">
+
+                    <span>
+
+                        Total de la commande
+
+                    </span>
+
+                    <span>
+
+                        ${formatPrice(
+
+                            order.total_amount
+
+                        )}
+
+                    </span>
+
+                </div>
+
+                <div class="order-actions">
+
+                    ${
+
+                        status === "pending"
+
+                            ? `
+
+                                <button
+
+                                    type="button"
+
+                                    class="status-button confirm"
+
+                                    data-status="confirmed"
+
+                                    data-order-id="${escapeHtml(order.id)}"
+
+                                >
+
+                                    ✅ Confirmer
+
+                                </button>
+
+                            `
+
+                            : ""
+
+                    }
+
+                    ${
+
+                        status === "confirmed"
+
+                            ? `
+
+                                <button
+
+                                    type="button"
+
+                                    class="status-button prepare"
+
+                                    data-status="preparing"
+
+                                    data-order-id="${escapeHtml(order.id)}"
+
+                                >
+
+                                    📦 Préparer
+
+                                </button>
+
+                            `
+
+                            : ""
+
+                    }
+
+                    ${
+
+                        status === "preparing"
+
+                            ? `
+
+                                <button
+
+                                    type="button"
+
+                                    class="status-button deliver"
+
+                                    data-status="delivering"
+
+                                    data-order-id="${escapeHtml(order.id)}"
+
+                                >
+
+                                    🚚 En livraison
+
+                                </button>
+
+                            `
+
+                            : ""
+
+                    }
+
+                    ${
+
+                        status === "delivering"
+
+                            ? `
+
+                                <button
+
+                                    type="button"
+
+                                    class="status-button complete"
+
+                                    data-status="delivered"
+
+                                    data-order-id="${escapeHtml(order.id)}"
+
+                                >
+
+                                    ✅ Confirmer la livraison
+
+                                </button>
+
+                            `
+
+                            : ""
+
+                    }
+
+                    ${
+
+                        order.delivery_phone
+
+                            ? `
+
+                                <button
+
+                                    type="button"
+
+                                    class="status-button whatsapp"
+
+                                    data-phone="${escapeHtml(
+
+                                        order.delivery_phone
+
+                                    )}"
+
+                                    data-order-id="${escapeHtml(
+
+                                        order.id
+
+                                    )}"
+
+                                >
+
+                                    💬 WhatsApp
+
+                                </button>
+
+                            `
+
+                            : ""
+
+                    }
+
+                </div>
+
+            </article>
+
+        `;
+
+    }
+
+    /* ==========================================
+
+       ÉVÉNEMENTS COMMANDES
+
+    ========================================== */
+
+    function attachOrderEvents() {
+
+        document
+
+            .querySelectorAll(
+
+                "[data-status][data-order-id]"
+
+            )
+
+            .forEach(
+
+                function(button) {
+
+                    button.addEventListener(
+
+                        "click",
+
+                        function() {
+
+                            updateOrderStatus(
+
+                                this.dataset.orderId,
+
+                                this.dataset.status,
+
+                                this
+
+                            );
+
+                        }
+
+                    );
+
+                }
+
+            );
+
+        document
+
+            .querySelectorAll(
+
+                ".status-button.whatsapp"
+
+            )
+
+            .forEach(
+
+                function(button) {
+
+                    button.addEventListener(
+
+                        "click",
+
+                        function() {
+
+                            contactBuyer(
+
+                                this.dataset.phone,
+
+                                this.dataset.orderId
+
+                            );
+
+                        }
+
+                    );
+
+                }
+
+            );
+
+    }
+
+    /* ==========================================
+
+       MODIFIER STATUT
+
+    ========================================== */
+
+    async function updateOrderStatus(
+
+        orderId,
+
+        newStatus,
+
+        button
+
+    ) {
+
+        const oldText =
+
+            button.textContent;
+
+        button.disabled = true;
+
+        button.textContent =
+
+            "⏳ Mise à jour...";
+
+        try {
+
+            const {
+
+                error
+
+            } =
+
+                await supabaseClient
+
+                    .from("orders")
+
+                    .update({
+
+                        status: newStatus,
+
+                        updated_at:
+
+                            new Date().toISOString()
+
+                    })
+
+                    .eq(
+
+                        "id",
+
+                        orderId
+
+                    );
+
+            if (error) {
+
+                console.error(
+
+                    "Erreur statut :",
+
+                    error
+
+                );
+
+                throw error;
+
+            }
+
+            showMessage(
+
+                "✅ Commande #" +
+
+                orderId +
+
+                " : " +
+
+                statusLabel(newStatus),
+
+                "success"
+
+            );
+
+            await loadOrders();
+
+        } catch (error) {
+
+            console.error(error);
+
+            button.disabled = false;
+
+            button.textContent =
+
+                oldText;
+
+            showMessage(
+
+                "❌ Impossible de modifier le statut : " +
+
+                error.message,
+
+                "error"
+
+            );
+
+        }
+
+    }
+
+    /* ==========================================
+
+       WHATSAPP ACHETEUR
+
+    ========================================== */
+
+    function contactBuyer(
+
+        phone,
+
+        orderId
+
+    ) {
+
+        if (!phone) {
+
+            showMessage(
+
+                "Numéro de téléphone de l'acheteur non renseigné.",
+
+                "error"
+
+            );
+
+            return;
+
+        }
+
+        let cleanPhone =
+
+            String(phone)
+
+                .replace(
+
+                    /\s+/g,
+
+                    ""
+
+                )
+
+                .replace(
+
+                    /[^0-9+]/g,
+
+                    ""
+
+                );
+
+        if (
+
+            cleanPhone.startsWith("0")
+
+        ) {
+
+            cleanPhone =
+
+                "225" +
+
+                cleanPhone.substring(1);
+
+        }
+
+        cleanPhone =
+
+            cleanPhone.replace(
+
+                "+",
+
+                ""
+
+            );
+
+        const text =
+
+            "Bonjour, je vous contacte concernant votre commande #" +
+
+            orderId +
+
+            " sur Market Bouaké.";
+
+        const url =
+
+            "https://wa.me/" +
+
+            cleanPhone +
+
+            "?text=" +
+
+            encodeURIComponent(text);
+
+        window.open(
+
+            url,
+
+            "_blank"
+
+        );
+
+    }
+
+    /* ==========================================
+
+       DÉCONNEXION
+
+    ========================================== */
+
+    logoutButton.addEventListener(
+
+        "click",
+
+        async function() {
+
+            await supabaseClient
+
+                .auth
+
+                .signOut();
+
+            window.location.href =
+
+                "connexion.html";
+
+        }
+
+    );
+
+    /* ==========================================
+
+       ACTUALISER
+
+    ========================================== */
+
+    refreshOrdersButton.addEventListener(
+
+        "click",
+
+        async function() {
+
+            clearMessage();
+
+            refreshOrdersButton.disabled =
+
+                true;
+
+            refreshOrdersButton.textContent =
+
+                "⏳ Chargement...";
+
+            await loadOrders();
+
+            refreshOrdersButton.disabled =
+
+                false;
+
+            refreshOrdersButton.textContent =
+
+                "🔄 Actualiser";
+
+        }
+
+    );
+
+    /* ==========================================
+
+       TARIFS LIVRAISON
+
+    ========================================== */
+
+    document
+
+        .getElementById(
+
+            "deliveryRatesButton"
+
+        )
+
+        .addEventListener(
+
+            "click",
+
+            function() {
+
+                window.location.href =
+
+                    "tarifs-livraison.html";
+
+            }
+
+        );
+
+    /* ==========================================
+
+       DÉMARRAGE
+
+    ========================================== */
+
+    async function start() {
+
+        /*
+
+         * IMPORTANT :
+
+         * La vérification est faite AVANT
+
+         * de charger les commandes.
+
+         *
+
+         * Ainsi un vendeur en attente
+
+         * ou refusé ne peut pas accéder
+
+         * aux données de l'espace vendeur.
+
+         */
+
+        const sellerOk =
+
+            await checkSeller();
+
+        if (!sellerOk) {
+
+            return;
+
+        }
+
+        await loadOrders();
+
+    }
+
+    start();
+
+</script>
+
+</body>
+
+</html>
