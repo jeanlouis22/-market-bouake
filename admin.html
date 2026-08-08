@@ -1,0 +1,6881 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Administration | Market Bouaké</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-config.js"></script>
+
+<style>
+
+*{
+
+    box-sizing:border-box;
+
+    margin:0;
+
+    padding:0;
+
+}
+
+body{
+
+    font-family:Arial,Helvetica,sans-serif;
+
+    background:#f5f7fb;
+
+    color:#172033;
+
+}
+
+button,
+
+input,
+
+select{
+
+    font:inherit;
+
+}
+
+button{
+
+    cursor:pointer;
+
+}
+
+.layout{
+
+    min-height:100vh;
+
+    display:flex;
+
+}
+
+/* SIDEBAR */
+
+.sidebar{
+
+    width:260px;
+
+    background:#111827;
+
+    color:white;
+
+    position:fixed;
+
+    left:0;
+
+    top:0;
+
+    bottom:0;
+
+    z-index:1000;
+
+    overflow-y:auto;
+
+    transition:.25s;
+
+}
+
+.sidebar-header{
+
+    padding:25px 20px;
+
+    border-bottom:1px solid rgba(255,255,255,.1);
+
+}
+
+.logo{
+
+    font-size:22px;
+
+    font-weight:800;
+
+}
+
+.logo span{
+
+    color:#f59e0b;
+
+}
+
+.admin-mini{
+
+    margin-top:10px;
+
+    font-size:13px;
+
+    color:#9ca3af;
+
+}
+
+.nav{
+
+    padding:15px 10px;
+
+}
+
+.nav-item{
+
+    width:100%;
+
+    border:0;
+
+    background:transparent;
+
+    color:#d1d5db;
+
+    padding:13px 15px;
+
+    margin-bottom:5px;
+
+    border-radius:9px;
+
+    text-align:left;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    transition:.2s;
+
+}
+
+.nav-item:hover{
+
+    background:#1f2937;
+
+    color:white;
+
+}
+
+.nav-item.active{
+
+    background:#f59e0b;
+
+    color:#111827;
+
+    font-weight:700;
+
+}
+
+.nav-badge{
+
+    margin-left:auto;
+
+    min-width:22px;
+
+    height:22px;
+
+    border-radius:20px;
+
+    background:#ef4444;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:11px;
+
+    font-weight:bold;
+
+}
+
+/* MAIN */
+
+.main{
+
+    margin-left:260px;
+
+    width:calc(100% - 260px);
+
+    min-height:100vh;
+
+}
+
+.topbar{
+
+    height:70px;
+
+    background:white;
+
+    border-bottom:1px solid #e5e7eb;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 25px;
+
+    position:sticky;
+
+    top:0;
+
+    z-index:500;
+
+}
+
+.topbar h1{
+
+    font-size:22px;
+
+}
+
+.menu-button{
+
+    display:none;
+
+    border:0;
+
+    background:#111827;
+
+    color:white;
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:8px;
+
+}
+
+.admin-name{
+
+    font-weight:700;
+
+}
+
+.content{
+
+    padding:25px;
+
+}
+
+.section{
+
+    display:none;
+
+}
+
+.section.active{
+
+    display:block;
+
+}
+
+/* CARDS */
+
+.stats{
+
+    display:grid;
+
+    grid-template-columns:repeat(5,1fr);
+
+    gap:15px;
+
+    margin-bottom:25px;
+
+}
+
+.stat-card{
+
+    background:white;
+
+    border-radius:14px;
+
+    padding:20px;
+
+    box-shadow:0 3px 15px rgba(0,0,0,.05);
+
+}
+
+.stat-icon{
+
+    font-size:25px;
+
+    margin-bottom:12px;
+
+}
+
+.stat-label{
+
+    color:#6b7280;
+
+    font-size:13px;
+
+}
+
+.stat-value{
+
+    margin-top:5px;
+
+    font-size:27px;
+
+    font-weight:800;
+
+}
+
+/* PANELS */
+
+.panel{
+
+    background:white;
+
+    border-radius:14px;
+
+    padding:20px;
+
+    margin-bottom:25px;
+
+    box-shadow:0 3px 15px rgba(0,0,0,.05);
+
+}
+
+.panel-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-bottom:18px;
+
+}
+
+.panel-header h2{
+
+    font-size:19px;
+
+}
+
+.panel-actions{
+
+    display:flex;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+}
+
+.refresh{
+
+    border:1px solid #d1d5db;
+
+    background:white;
+
+    padding:9px 13px;
+
+    border-radius:8px;
+
+}
+
+.refresh:hover{
+
+    background:#f3f4f6;
+
+}
+
+/* SEARCH */
+
+.search{
+
+    width:100%;
+
+    max-width:380px;
+
+    padding:11px 13px;
+
+    border:1px solid #d1d5db;
+
+    border-radius:8px;
+
+    outline:none;
+
+}
+
+.search:focus{
+
+    border-color:#f59e0b;
+
+}
+
+/* REQUESTS */
+
+.request-list{
+
+    display:grid;
+
+    gap:15px;
+
+}
+
+.request-card{
+
+    border:1px solid #e5e7eb;
+
+    border-radius:12px;
+
+    padding:18px;
+
+    background:#fff;
+
+}
+
+.request-header{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    justify-content:space-between;
+
+    gap:15px;
+
+}
+
+.request-person{
+
+    display:flex;
+
+    gap:13px;
+
+    align-items:center;
+
+}
+
+.request-avatar{
+
+    width:55px;
+
+    height:55px;
+
+    border-radius:50%;
+
+    background:#fff7ed;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:25px;
+
+    overflow:hidden;
+
+    flex-shrink:0;
+
+}
+
+.request-avatar img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+.request-person h3{
+
+    font-size:17px;
+
+    margin-bottom:5px;
+
+}
+
+.request-person p{
+
+    color:#6b7280;
+
+    font-size:13px;
+
+}
+
+.request-info{
+
+    margin-top:18px;
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:12px;
+
+}
+
+.info-item{
+
+    background:#f9fafb;
+
+    padding:12px;
+
+    border-radius:8px;
+
+}
+
+.info-item span{
+
+    display:block;
+
+    color:#6b7280;
+
+    font-size:12px;
+
+    margin-bottom:5px;
+
+}
+
+.info-item strong{
+
+    font-size:14px;
+
+    word-break:break-word;
+
+}
+
+.description{
+
+    margin-top:15px;
+
+    padding:13px;
+
+    background:#f9fafb;
+
+    border-radius:8px;
+
+    line-height:1.5;
+
+    font-size:14px;
+
+}
+
+.request-actions{
+
+    display:flex;
+
+    gap:8px;
+
+    flex-wrap:wrap;
+
+    margin-top:15px;
+
+}
+
+/* BUTTONS */
+
+.action-button{
+
+    border:0;
+
+    padding:9px 13px;
+
+    border-radius:8px;
+
+    font-weight:600;
+
+}
+
+.approve-button{
+
+    background:#16a34a;
+
+    color:white;
+
+}
+
+.reject-button{
+
+    background:#dc2626;
+
+    color:white;
+
+}
+
+.blue-button{
+
+    background:#2563eb;
+
+    color:white;
+
+}
+
+.orange-button{
+
+    background:#f97316;
+
+    color:white;
+
+}
+
+.dark-button{
+
+    background:#374151;
+
+    color:white;
+
+}
+
+.action-button:hover{
+
+    opacity:.88;
+
+}
+
+/* STATUS */
+
+.status{
+
+    display:inline-flex;
+
+    padding:5px 9px;
+
+    border-radius:20px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    white-space:nowrap;
+
+}
+
+.status.approved{
+
+    background:#dcfce7;
+
+    color:#166534;
+
+}
+
+.status.rejected{
+
+    background:#fee2e2;
+
+    color:#991b1b;
+
+}
+
+.status.pending{
+
+    background:#fef3c7;
+
+    color:#92400e;
+
+}
+
+.status.blue{
+
+    background:#dbeafe;
+
+    color:#1e40af;
+
+}
+
+/* TABLE */
+
+.table-wrap{
+
+    width:100%;
+
+    overflow-x:auto;
+
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    min-width:750px;
+
+}
+
+th,
+
+td{
+
+    padding:13px 10px;
+
+    border-bottom:1px solid #e5e7eb;
+
+    text-align:left;
+
+    vertical-align:top;
+
+    font-size:13px;
+
+}
+
+th{
+
+    background:#f9fafb;
+
+    font-size:12px;
+
+    text-transform:uppercase;
+
+    color:#6b7280;
+
+}
+
+.order-item{
+
+    padding:10px;
+
+    margin-bottom:8px;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:8px;
+
+}
+
+.order-product{
+
+    font-weight:700;
+
+}
+
+.order-meta{
+
+    margin-top:5px;
+
+    color:#6b7280;
+
+}
+
+.seller-box{
+
+    margin-top:8px;
+
+    padding:8px;
+
+    background:#f9fafb;
+
+    border-radius:7px;
+
+}
+
+.received{
+
+    color:#15803d;
+
+    font-weight:700;
+
+}
+
+.problem-indicator{
+
+    margin-top:7px;
+
+    display:inline-block;
+
+    padding:4px 7px;
+
+    background:#fee2e2;
+
+    color:#991b1b;
+
+    border-radius:6px;
+
+    font-size:11px;
+
+    font-weight:700;
+
+}
+
+.issue-details{
+
+    margin-top:10px;
+
+    padding:10px;
+
+    background:#fff7ed;
+
+    border-radius:8px;
+
+}
+
+.issue-detail-row{
+
+    display:flex;
+
+    gap:8px;
+
+    margin-bottom:7px;
+
+}
+
+.issue-detail-row:last-child{
+
+    margin-bottom:0;
+
+}
+
+.issue-detail-row strong{
+
+    min-width:130px;
+
+}
+
+/* FILTER */
+
+.filter{
+
+    padding:9px 12px;
+
+    border:1px solid #d1d5db;
+
+    border-radius:8px;
+
+    background:white;
+
+}
+
+/* MODAL */
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.55);
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    z-index:3000;
+
+    padding:20px;
+
+}
+
+.modal.open{
+
+    display:flex;
+
+}
+
+.modal-box{
+
+    background:white;
+
+    width:100%;
+
+    max-width:650px;
+
+    max-height:90vh;
+
+    overflow-y:auto;
+
+    border-radius:14px;
+
+    padding:22px;
+
+}
+
+.modal-header{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:18px;
+
+}
+
+.modal-header button{
+
+    border:0;
+
+    background:#f3f4f6;
+
+    width:35px;
+
+    height:35px;
+
+    border-radius:50%;
+
+}
+
+.modal-section{
+
+    padding:15px;
+
+    background:#f9fafb;
+
+    border-radius:9px;
+
+    margin-bottom:12px;
+
+}
+
+.modal-section h4{
+
+    margin-bottom:8px;
+
+}
+
+/* EMPTY / LOADING */
+
+.empty{
+
+    text-align:center;
+
+    padding:45px 20px;
+
+    color:#6b7280;
+
+}
+
+.empty-icon{
+
+    font-size:35px;
+
+    margin-bottom:10px;
+
+}
+
+.loading{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    padding:30px;
+
+    color:#6b7280;
+
+}
+
+.spinner{
+
+    width:20px;
+
+    height:20px;
+
+    border:3px solid #e5e7eb;
+
+    border-top-color:#f59e0b;
+
+    border-radius:50%;
+
+    animation:spin .7s linear infinite;
+
+}
+
+@keyframes spin{
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+/* TOAST */
+
+.toast{
+
+    position:fixed;
+
+    right:20px;
+
+    bottom:20px;
+
+    background:#111827;
+
+    color:white;
+
+    padding:14px 18px;
+
+    border-radius:9px;
+
+    opacity:0;
+
+    transform:translateY(20px);
+
+    pointer-events:none;
+
+    transition:.25s;
+
+    z-index:5000;
+
+    max-width:400px;
+
+}
+
+.toast.show{
+
+    opacity:1;
+
+    transform:translateY(0);
+
+}
+
+.toast.error{
+
+    background:#dc2626;
+
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1100px){
+
+    .stats{
+
+        grid-template-columns:repeat(3,1fr);
+
+    }
+
+    .request-info{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+@media(max-width:800px){
+
+    .sidebar{
+
+        transform:translateX(-100%);
+
+    }
+
+    .sidebar.open{
+
+        transform:translateX(0);
+
+    }
+
+    .main{
+
+        margin-left:0;
+
+        width:100%;
+
+    }
+
+    .menu-button{
+
+        display:block;
+
+    }
+
+    .topbar{
+
+        padding:0 15px;
+
+    }
+
+    .content{
+
+        padding:15px;
+
+    }
+
+    .stats{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+    .request-header{
+
+        flex-direction:column;
+
+    }
+
+}
+
+@media(max-width:520px){
+
+    .stats{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .request-info{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .topbar h1{
+
+        font-size:17px;
+
+    }
+
+    .admin-name{
+
+        display:none;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-header">
+
+            <div class="logo">
+
+                Market <span>Bouaké</span>
+
+            </div>
+
+            <div class="admin-mini">
+
+                👑 Administration
+
+            </div>
+
+        </div>
+
+        <nav class="nav">
+
+            <button class="nav-item active" data-section="dashboard">
+
+                📊 Tableau de bord
+
+            </button>
+
+            <button class="nav-item" data-section="requests">
+
+                🔔 Demandes vendeur
+
+                <span class="nav-badge" id="requestBadge">0</span>
+
+            </button>
+
+            <button class="nav-item" data-section="accounts">
+
+                👥 Comptes
+
+            </button>
+
+            <button class="nav-item" data-section="sellers">
+
+                🏪 Vendeurs
+
+            </button>
+
+            <button class="nav-item" data-section="products">
+
+                📦 Produits
+
+            </button>
+
+            <button class="nav-item" data-section="orders">
+
+                🛒 Commandes
+
+                <span class="nav-badge" id="problemBadge">0</span>
+
+            </button>
+
+            <button class="nav-item" data-section="reviews">
+
+                ⭐ Avis & notes
+
+            </button>
+
+            <button class="nav-item" data-section="badges">
+
+                🏅 Badges
+
+            </button>
+
+            <button class="nav-item" data-section="blocked">
+
+                🚫 Comptes bloqués
+
+            </button>
+
+            <button class="nav-item" data-section="categories">
+
+                🗂️ Catégories
+
+            </button>
+
+            <button class="nav-item" data-section="settings">
+
+                ⚙️ Paramètres
+
+            </button>
+
+        </nav>
+
+    </aside>
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div style="display:flex;align-items:center;gap:12px;">
+
+                <button class="menu-button" id="menuButton">
+
+                    ☰
+
+                </button>
+
+                <h1 id="pageTitle">
+
+                    Tableau de bord
+
+                </h1>
+
+            </div>
+
+            <div class="admin-name" id="adminName">
+
+                Administrateur
+
+            </div>
+
+        </header>
+
+        <div class="content">
+
+            <!-- =====================================================
+
+                 DASHBOARD
+
+            ====================================================== -->
+
+            <section class="section active" id="section-dashboard">
+
+                <div class="stats">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">👥</div>
+
+                        <div class="stat-label">Comptes</div>
+
+                        <div class="stat-value" id="totalAccounts">0</div>
+
+                    </div>
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">🛍️</div>
+
+                        <div class="stat-label">Acheteurs</div>
+
+                        <div class="stat-value" id="totalBuyers">0</div>
+
+                    </div>
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">🏪</div>
+
+                        <div class="stat-label">Vendeurs</div>
+
+                        <div class="stat-value" id="totalSellers">0</div>
+
+                    </div>
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">📦</div>
+
+                        <div class="stat-label">Produits</div>
+
+                        <div class="stat-value" id="totalProducts">0</div>
+
+                    </div>
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">🔔</div>
+
+                        <div class="stat-label">Demandes en attente</div>
+
+                        <div class="stat-value" id="pendingRequests">0</div>
+
+                    </div>
+
+                </div>
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h2>
+
+                            🔔 Demandes vendeur en attente
+
+                        </h2>
+
+                        <button class="refresh" id="refreshDashboard">
+
+                            🔄 Actualiser
+
+                        </button>
+
+                    </div>
+
+                    <div id="dashboardRequests">
+
+                        <div class="loading">
+
+                            <div class="spinner"></div>
+
+                            Chargement...
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h2>📈 Résumé des demandes</h2>
+
+                    </div>
+
+                    <div class="request-info">
+
+                        <div class="info-item">
+
+                            <span>En attente</span>
+
+                            <strong id="pendingRequests">0</strong>
+
+                        </div>
+
+                        <div class="info-item">
+
+                            <span>Acceptées</span>
+
+                            <strong id="approvedRequests">0</strong>
+
+                        </div>
+
+                        <div class="info-item">
+
+                            <span>Refusées</span>
+
+                            <strong id="rejectedRequests">0</strong>
+
+                        </div>
+
+                        <div class="info-item">
+
+                            <span>Problèmes commandes</span>
+
+                            <strong id="totalProblems">0</strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- =====================================================
+
+                 DEMANDES VENDEUR
+
+            ====================================================== -->
+
+            <section class="section" id="section-requests">
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <h2>🔔 Demandes d'inscription vendeur</h2>
+
+                            <p style="color:#6b7280;margin-top:5px;font-size:13px;">
+
+                                Vérifiez chaque demande avant d'autoriser le compte vendeur.
+
+                            </p>
+
+                        </div>
+
+                        <button class="refresh" id="refreshRequests">
+
+                            🔄 Actualiser
+
+                        </button>
+
+                    </div>
+
+                    <div id="requestsContainer">
+
+                        <div class="loading">
+
+                            <div class="spinner"></div>
+
+                            Chargement des demandes...
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- =====================================================
+
+                 COMPTES
+
+            ====================================================== -->
+
+            <section class="section" id="section-accounts">
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h2>👥 Gestion des comptes</h2>
+
+                        <div class="panel-actions">
+
+                            <input
+
+                                type="search"
+
+                                id="accountSearch"
+
+                                class="search"
+
+                                placeholder="Rechercher un compte..."
+
+                            >
+
+                            <button class="refresh" id="refreshAccounts">
+
+                                🔄
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="table-wrap">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>Nom</th>
+
+                                    <th>Email</th>
+
+                                    <th>Téléphone</th>
+
+                                    <th>Rôle</th>
+
+                                    <th>Statut</th>
+
+                                    <th>Date</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="accountsTable"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- =====================================================
+
+                 VENDEURS
+
+            ====================================================== -->
+
+            <section class="section" id="section-sellers">
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h2>🏪 Vendeurs</h2>
+
+                        <div class="panel-actions">
+
+                            <input
+
+                                type="search"
+
+                                id="sellerSearch"
+
+                                class="search"
+
+                                placeholder="Rechercher un vendeur..."
+
+                            >
+
+                            <button class="refresh" id="refreshSellers">
+
+                                🔄
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="table-wrap">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>Nom</th>
+
+                                    <th>Email</th>
+
+                                    <th>Téléphone</th>
+
+                                    <th>Statut</th>
+
+                                    <th>Date</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="sellersTable"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- =====================================================
+
+                 PRODUITS
+
+            ====================================================== -->
+
+            <section class="section" id="section-products">
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h2>📦 Produits</h2>
+
+                        <div class="panel-actions">
+
+                            <input
+
+                                type="search"
+
+                                id="productSearch"
+
+                                class="search"
+
+                                placeholder="Rechercher un produit..."
+
+                            >
+
+                            <button class="refresh" id="refreshProducts">
+
+                                🔄
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="table-wrap">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>Produit</th>
+
+                                    <th>Vendeur</th>
+
+                                    <th>Catégorie</th>
+
+                                    <th>Prix</th>
+
+                                    <th>Stock</th>
+
+                                    <th>Statut</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="productsTable"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- =====================================================
+
+                 COMMANDES
+
+            ====================================================== -->
+
+            <section class="section" id="section-orders">
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h2>🛒 Commandes</h2>
+
+                        <div class="panel-actions">
+
+                            <select id="orderFilter" class="filter">
+
+                                <option value="all">
+
+                                    Toutes
+
+                                </option>
+
+                                <option value="pending">
+
+                                    En attente
+
+                                </option>
+
+                                <option value="confirmed">
+
+                                    Confirmées
+
+                                </option>
+
+                                <option value="shipped">
+
+                                    Expédiées
+
+                                </option>
+
+                                <option value="delivered">
+
+                                    Livrées
+
+                                </option>
+
+                                <option value="cancelled">
+
+                                    Annulées
+
+                                </option>
+
+                                <option value="problem">
+
+                                    🚨 Problèmes
+
+                                </option>
+
+                                <option value="under_review">
+
+                                    🔄 En examen
+
+                                </option>
+
+                                <option value="resolved">
+
+                                    ✅ Résolus
+
+                                </option>
+
+                            </select>
+
+                            <button class="refresh" id="refreshOrders">
+
+                                🔄
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="table-wrap">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>Commande</th>
+
+                                    <th>Acheteur / Livraison</th>
+
+                                    <th>Articles</th>
+
+                                    <th>Total</th>
+
+                                    <th>Statut</th>
+
+                                    <th>Réception / Problème</th>
+
+                                    <th>Actions</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="ordersTable"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- =====================================================
+
+                 AVIS
+
+            ====================================================== -->
+
+            <section class="section" id="section-reviews">
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h2>
+
+                            ⭐ Avis & notes
+
+                            <span style="font-size:13px;color:#6b7280;">
+
+                                (<span id="totalReviews">0</span>)
+
+                            </span>
+
+                        </h2>
+
+                        <div class="panel-actions">
+
+                            <select id="reviewFilter" class="filter">
+
+                                <option value="all">
+
+                                    Toutes les notes
+
+                                </option>
+
+                                <option value="5">5 étoiles</option>
+
+                                <option value="4">4 étoiles</option>
+
+                                <option value="3">3 étoiles</option>
+
+                                <option value="2">2 étoiles</option>
+
+                                <option value="1">1 étoile</option>
+
+                            </select>
+
+                            <button class="refresh" id="refreshReviews">
+
+                                🔄
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="table-wrap">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>Note</th>
+
+                                    <th>Commentaire</th>
+
+                                    <th>Acheteur</th>
+
+                                    <th>Produit</th>
+
+                                    <th>Commande</th>
+
+                                    <th>Date</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="reviewsTable"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- =====================================================
+
+                 BADGES
+
+            ====================================================== -->
+
+            <section class="section" id="section-badges">
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h2>🏅 Badges</h2>
+
+                        <button class="refresh" id="refreshBadges">
+
+                            🔄
+
+                        </button>
+
+                    </div>
+
+                    <div class="table-wrap">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>Nom</th>
+
+                                    <th>Description</th>
+
+                                    <th>Icône</th>
+
+                                    <th>Date</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="badgesTable"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- =====================================================
+
+                 BLOQUÉS
+
+            ====================================================== -->
+
+            <section class="section" id="section-blocked">
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h2>🚫 Comptes bloqués / suspendus</h2>
+
+                        <button class="refresh" id="refreshBlocked">
+
+                            🔄
+
+                        </button>
+
+                    </div>
+
+                    <div class="table-wrap">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>Nom</th>
+
+                                    <th>Email</th>
+
+                                    <th>Téléphone</th>
+
+                                    <th>Rôle</th>
+
+                                    <th>Motif</th>
+
+                                    <th>Date</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="blockedTable"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- =====================================================
+
+                 CATEGORIES
+
+            ====================================================== -->
+
+            <section class="section" id="section-categories">
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h2>🗂️ Catégories</h2>
+
+                        <button class="refresh" id="refreshCategories">
+
+                            🔄
+
+                        </button>
+
+                    </div>
+
+                    <div class="table-wrap">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>Nom</th>
+
+                                    <th>Description</th>
+
+                                    <th>Statut</th>
+
+                                    <th>Date</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="categoriesTable"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- =====================================================
+
+                 PARAMETRES
+
+            ====================================================== -->
+
+            <section class="section" id="section-settings">
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h2>⚙️ Paramètres administrateur</h2>
+
+                    </div>
+
+                    <div class="description" id="adminSettingsText">
+
+                        Chargement...
+
+                    </div>
+
+                    <div style="margin-top:20px;">
+
+                        <button
+
+                            id="logoutButton"
+
+                            class="action-button reject-button"
+
+                        >
+
+                            🚪 Se déconnecter
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<!-- ============================================================
+
+     MODAL PROBLEME COMMANDE
+
+============================================================= -->
+
+<div class="modal" id="issueModal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2>🚨 Problème de commande</h2>
+
+            <button id="closeIssueModal">
+
+                ✕
+
+            </button>
+
+        </div>
+
+        <div id="issueModalContent"></div>
+
+        <div class="request-actions">
+
+            <button
+
+                id="modalReviewButton"
+
+                class="action-button blue-button"
+
+            >
+
+                🔄 Prendre en charge
+
+            </button>
+
+            <button
+
+                id="modalResolveButton"
+
+                class="action-button approve-button"
+
+            >
+
+                ✅ Résoudre
+
+            </button>
+
+            <button
+
+                id="modalCloseButton"
+
+                class="action-button dark-button"
+
+            >
+
+                🔒 Fermer
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+"use strict";
+
+/* ============================================================
+
+   DONNEES
+
+============================================================ */
+
+let dashboardData = {
+
+    accounts: [],
+
+    sellers: [],
+
+    products_list: [],
+
+    seller_requests: [],
+
+    orders: [],
+
+    reviews: [],
+
+    badges: [],
+
+    categories: []
+
+};
+
+let currentIssueOrder = null;
+
+const sidebar =
+
+    document.getElementById("sidebar");
+
+const menuButton =
+
+    document.getElementById("menuButton");
+
+const toast =
+
+    document.getElementById("toast");
+
+/* ============================================================
+
+   OUTILS
+
+============================================================ */
+
+function escapeHtml(value){
+
+    if(value === null || value === undefined){
+
+        return "";
+
+    }
+
+    return String(value)
+
+        .replace(/&/g,"&amp;")
+
+        .replace(/</g,"&lt;")
+
+        .replace(/>/g,"&gt;")
+
+        .replace(/"/g,"&quot;")
+
+        .replace(/'/g,"&#039;");
+
+}
+
+function formatDate(value){
+
+    if(!value){
+
+        return "-";
+
+    }
+
+    const date = new Date(value);
+
+    if(Number.isNaN(date.getTime())){
+
+        return "-";
+
+    }
+
+    return date.toLocaleDateString("fr-FR",{
+
+        day:"2-digit",
+
+        month:"2-digit",
+
+        year:"numeric"
+
+    });
+
+}
+
+function formatDateTime(value){
+
+    if(!value){
+
+        return "-";
+
+    }
+
+    const date = new Date(value);
+
+    if(Number.isNaN(date.getTime())){
+
+        return "-";
+
+    }
+
+    return date.toLocaleString("fr-FR",{
+
+        day:"2-digit",
+
+        month:"2-digit",
+
+        year:"numeric",
+
+        hour:"2-digit",
+
+        minute:"2-digit"
+
+    });
+
+}
+
+function formatPrice(value){
+
+    const number = Number(value);
+
+    if(!Number.isFinite(number)){
+
+        return "0 FCFA";
+
+    }
+
+    return number.toLocaleString("fr-FR")+" FCFA";
+
+}
+
+function showToast(message,type="success"){
+
+    toast.textContent = message;
+
+    toast.className = "toast show "+type;
+
+    setTimeout(function(){
+
+        toast.className = "toast";
+
+    },4000);
+
+}
+
+function statusText(status){
+
+    const value =
+
+        String(status || "").toLowerCase();
+
+    const labels = {
+
+        pending:"En attente",
+
+        approved:"Acceptée",
+
+        rejected:"Refusée",
+
+        confirmed:"Confirmée",
+
+        shipped:"Expédiée",
+
+        delivered:"Livrée",
+
+        cancelled:"Annulée",
+
+        active:"Actif",
+
+        inactive:"Inactif",
+
+        published:"Publié",
+
+        draft:"Brouillon",
+
+        under_review:"En examen",
+
+        resolved:"Résolu",
+
+        open:"Ouvert",
+
+        closed:"Fermé",
+
+        blocked:"Bloqué",
+
+        suspended:"Suspendu"
+
+    };
+
+    return labels[value] || status || "-";
+
+}
+
+function statusClass(status){
+
+    const value =
+
+        String(status || "").toLowerCase();
+
+    if(
+
+        value === "approved" ||
+
+        value === "delivered" ||
+
+        value === "confirmed" ||
+
+        value === "active" ||
+
+        value === "published" ||
+
+        value === "resolved"
+
+    ){
+
+        return "approved";
+
+    }
+
+    if(
+
+        value === "rejected" ||
+
+        value === "cancelled" ||
+
+        value === "inactive" ||
+
+        value === "closed" ||
+
+        value === "blocked" ||
+
+        value === "suspended"
+
+    ){
+
+        return "rejected";
+
+    }
+
+    if(
+
+        value === "under_review" ||
+
+        value === "open"
+
+    ){
+
+        return "blue";
+
+    }
+
+    return "pending";
+
+}
+
+/* ============================================================
+
+   VERIFICATION ADMIN
+
+============================================================ */
+
+async function verifyAdmin(){
+
+    try{
+
+        const sessionResult =
+
+            await supabaseClient.auth.getSession();
+
+        if(
+
+            sessionResult.error ||
+
+            !sessionResult.data ||
+
+            !sessionResult.data.session
+
+        ){
+
+            window.location.href="connexion.html";
+
+            return false;
+
+        }
+
+        const user =
+
+            sessionResult.data.session.user;
+
+        const profileResult =
+
+            await supabaseClient
+
+                .from("profiles")
+
+                .select(
+
+                    "first_name,last_name,email,role,account_status"
+
+                )
+
+                .eq("id",user.id)
+
+                .maybeSingle();
+
+        if(profileResult.error){
+
+            throw profileResult.error;
+
+        }
+
+        const profile =
+
+            profileResult.data;
+
+        if(
+
+            !profile ||
+
+            profile.role !== "admin" ||
+
+            profile.account_status !== "active"
+
+        ){
+
+            alert(
+
+                "Accès refusé. Cette page est réservée à l'administrateur."
+
+            );
+
+            await supabaseClient.auth.signOut();
+
+            window.location.href="connexion.html";
+
+            return false;
+
+        }
+
+        const fullName = (
+
+            (profile.first_name || "")+
+
+            " "+
+
+            (profile.last_name || "")
+
+        ).trim();
+
+        document.getElementById("adminName").textContent =
+
+            fullName || "Administrateur";
+
+        document.getElementById("adminSettingsText").textContent =
+
+            "Compte administrateur : "+
+
+            (profile.email || user.email || "Administrateur")+
+
+            " — statut actif.";
+
+        return true;
+
+    }catch(error){
+
+        console.error(
+
+            "Erreur vérification admin :",
+
+            error
+
+        );
+
+        alert(
+
+            "Impossible de vérifier les droits administrateur."
+
+        );
+
+        window.location.href="connexion.html";
+
+        return false;
+
+    }
+
+}
+
+/* ============================================================
+
+   DASHBOARD
+
+============================================================ */
+
+async function loadDashboard(){
+
+    const container =
+
+        document.getElementById("dashboardRequests");
+
+    container.innerHTML = `
+
+        <div class="loading">
+
+            <div class="spinner"></div>
+
+            Chargement des données...
+
+        </div>
+
+    `;
+
+    try{
+
+        const result =
+
+            await supabaseClient.rpc(
+
+                "admin_get_dashboard"
+
+            );
+
+        if(result.error){
+
+            throw result.error;
+
+        }
+
+        const data =
+
+            result.data || {};
+
+        dashboardData.accounts =
+
+            Array.isArray(data.accounts)
+
+            ? data.accounts
+
+            : [];
+
+        dashboardData.sellers =
+
+            Array.isArray(data.sellers_list)
+
+            ? data.sellers_list
+
+            : [];
+
+        dashboardData.products_list =
+
+            Array.isArray(data.products_list)
+
+            ? data.products_list
+
+            : [];
+
+        dashboardData.seller_requests =
+
+            Array.isArray(data.seller_requests)
+
+            ? data.seller_requests
+
+            : [];
+
+        document.getElementById("totalAccounts").textContent =
+
+            Number(data.total_accounts) || 0;
+
+        document.getElementById("totalBuyers").textContent =
+
+            Number(data.buyers) || 0;
+
+        document.getElementById("totalSellers").textContent =
+
+            Number(data.sellers) || 0;
+
+        document.getElementById("totalProducts").textContent =
+
+            Number(data.products) || 0;
+
+        document.getElementById("pendingRequests").textContent =
+
+            Number(data.pending_requests) || 0;
+
+        document.getElementById("approvedRequests").textContent =
+
+            Number(data.approved_requests) || 0;
+
+        document.getElementById("rejectedRequests").textContent =
+
+            Number(data.rejected_requests) || 0;
+
+        document.getElementById("requestBadge").textContent =
+
+            Number(data.pending_requests) || 0;
+
+        renderDashboardRequests(
+
+            dashboardData.seller_requests
+
+        );
+
+        renderRequests(
+
+            dashboardData.seller_requests
+
+        );
+
+        renderAccounts(
+
+            dashboardData.accounts
+
+        );
+
+        renderSellers(
+
+            dashboardData.sellers
+
+        );
+
+        renderProducts(
+
+            dashboardData.products_list
+
+        );
+
+        await Promise.all([
+
+            loadOrders(),
+
+            loadReviews(),
+
+            loadBadges(),
+
+            loadCategories(),
+
+            loadBlocked()
+
+        ]);
+
+    }catch(error){
+
+        console.error(
+
+            "Erreur dashboard :",
+
+            error
+
+        );
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">⚠️</div>
+
+                <strong>Impossible de charger les données</strong>
+
+                <p>${escapeHtml(error.message || "Erreur inconnue")}</p>
+
+            </div>
+
+        `;
+
+        showToast(
+
+            "Erreur lors du chargement du tableau de bord.",
+
+            "error"
+
+        );
+
+    }
+
+}
+
+/* ============================================================
+
+   DEMANDES VENDEURS — ETAPE 2.4
+
+============================================================ */
+
+function getSellerPhoto(request){
+
+    return (
+
+        request.profile_photo ||
+
+        request.profile_photo_url ||
+
+        request.avatar_url ||
+
+        request.photo_url ||
+
+        request.photo ||
+
+        request.avatar ||
+
+        request.image_url ||
+
+        ""
+
+    );
+
+}
+
+function requestCard(request){
+
+    const status =
+
+        String(request.status || "pending")
+
+        .toLowerCase();
+
+    const canAct =
+
+        status === "pending";
+
+    const photo =
+
+        getSellerPhoto(request);
+
+    const fullName = (
+
+        (request.first_name || "")+
+
+        " "+
+
+        (request.last_name || "")
+
+    ).trim();
+
+    return `
+
+        <div class="request-card">
+
+            <div class="request-header">
+
+                <div class="request-person">
+
+                    <div class="request-avatar">
+
+                        ${
+
+                            photo
+
+                            ?
+
+                            `
+
+                            <img
+
+                                src="${escapeHtml(photo)}"
+
+                                alt="Photo du vendeur"
+
+                            >
+
+                            `
+
+                            :
+
+                            "🏪"
+
+                        }
+
+                    </div>
+
+                    <div>
+
+                        <h3>
+
+                            ${escapeHtml(
+
+                                request.shop_name ||
+
+                                "Boutique"
+
+                            )}
+
+                        </h3>
+
+                        <p>
+
+                            ${escapeHtml(
+
+                                fullName ||
+
+                                "Nom non renseigné"
+
+                            )}
+
+                            •
+
+                            ${escapeHtml(
+
+                                request.email || "-"
+
+                            )}
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <span class="status ${statusClass(status)}">
+
+                    ${escapeHtml(
+
+                        statusText(status)
+
+                    )}
+
+                </span>
+
+            </div>
+
+            <div class="request-info">
+
+                <div class="info-item">
+
+                    <span>👤 Vendeur</span>
+
+                    <strong>
+
+                        ${escapeHtml(
+
+                            fullName || "-"
+
+                        )}
+
+                    </strong>
+
+                </div>
+
+                <div class="info-item">
+
+                    <span>📧 Email</span>
+
+                    <strong>
+
+                        ${escapeHtml(
+
+                            request.email || "-"
+
+                        )}
+
+                    </strong>
+
+                </div>
+
+                <div class="info-item">
+
+                    <span>📱 Téléphone</span>
+
+                    <strong>
+
+                        ${escapeHtml(
+
+                            request.phone || "-"
+
+                        )}
+
+                    </strong>
+
+                </div>
+
+                <div class="info-item">
+
+                    <span>📅 Demande</span>
+
+                    <strong>
+
+                        ${formatDate(
+
+                            request.created_at
+
+                        )}
+
+                    </strong>
+
+                </div>
+
+                <div class="info-item">
+
+                    <span>🏪 Boutique</span>
+
+                    <strong>
+
+                        ${escapeHtml(
+
+                            request.shop_name || "-"
+
+                        )}
+
+                    </strong>
+
+                </div>
+
+                <div class="info-item">
+
+                    <span>📍 Ville</span>
+
+                    <strong>
+
+                        ${escapeHtml(
+
+                            request.city || "-"
+
+                        )}
+
+                    </strong>
+
+                </div>
+
+                <div class="info-item">
+
+                    <span>📍 Quartier</span>
+
+                    <strong>
+
+                        ${escapeHtml(
+
+                            request.district || "-"
+
+                        )}
+
+                    </strong>
+
+                </div>
+
+                <div class="info-item">
+
+                    <span>📷 Photo</span>
+
+                    <strong>
+
+                        ${photo ? "Disponible" : "Non fournie"}
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+            ${
+
+                request.shop_description
+
+                ?
+
+                `
+
+                <div class="description">
+
+                    <strong>
+
+                        📝 Description de la boutique
+
+                    </strong>
+
+                    <br><br>
+
+                    ${escapeHtml(
+
+                        request.shop_description
+
+                    )}
+
+                </div>
+
+                `
+
+                :
+
+                ""
+
+            }
+
+            ${
+
+                status === "rejected" &&
+
+                request.rejection_reason
+
+                ?
+
+                `
+
+                <div class="description">
+
+                    <strong>
+
+                        ❌ Motif du refus
+
+                    </strong>
+
+                    <br><br>
+
+                    ${escapeHtml(
+
+                        request.rejection_reason
+
+                    )}
+
+                </div>
+
+                `
+
+                :
+
+                ""
+
+            }
+
+            ${
+
+                canAct
+
+                ?
+
+                `
+
+                <div class="request-actions">
+
+                    <button
+
+                        class="action-button approve-button"
+
+                        onclick="approveRequest('${escapeHtml(request.id)}')"
+
+                    >
+
+                        ✅ Accepter
+
+                    </button>
+
+                    <button
+
+                        class="action-button reject-button"
+
+                        onclick="rejectRequest('${escapeHtml(request.id)}')"
+
+                    >
+
+                        ❌ Refuser
+
+                    </button>
+
+                </div>
+
+                `
+
+                :
+
+                ""
+
+            }
+
+        </div>
+
+    `;
+
+}
+
+function renderDashboardRequests(requests){
+
+    const container =
+
+        document.getElementById("dashboardRequests");
+
+    const pendingRequests =
+
+        requests.filter(
+
+            request =>
+
+                String(request.status || "")
+
+                .toLowerCase() === "pending"
+
+        );
+
+    if(!pendingRequests.length){
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">🎉</div>
+
+                <strong>
+
+                    Aucune demande en attente
+
+                </strong>
+
+                <p>
+
+                    Il n'y a actuellement aucune demande vendeur à traiter.
+
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+    container.innerHTML =
+
+        '<div class="request-list">'+
+
+        pendingRequests
+
+            .slice(0,3)
+
+            .map(requestCard)
+
+            .join("")+
+
+        '</div>';
+
+}
+
+function renderRequests(requests){
+
+    const container =
+
+        document.getElementById("requestsContainer");
+
+    if(!requests.length){
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">🔔</div>
+
+                <strong>
+
+                    Aucune demande
+
+                </strong>
+
+                <p>
+
+                    Les demandes vendeur apparaîtront ici.
+
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+    container.innerHTML =
+
+        '<div class="request-list">'+
+
+        requests.map(requestCard).join("")+
+
+        '</div>';
+
+}
+
+async function approveRequest(requestId){
+
+    if(!confirm(
+
+        "Voulez-vous vraiment accepter cette demande vendeur ?"
+
+    )){
+
+        return;
+
+    }
+
+    try{
+
+        const result =
+
+            await supabaseClient.rpc(
+
+                "admin_approve_seller_request",
+
+                {
+
+                    request_id:requestId
+
+                }
+
+            );
+
+        if(result.error){
+
+            throw result.error;
+
+        }
+
+        showToast(
+
+            "✅ Le vendeur a été accepté avec succès."
+
+        );
+
+        await loadDashboard();
+
+    }catch(error){
+
+        console.error(error);
+
+        showToast(
+
+            "❌ "+
+
+            (
+
+                error.message ||
+
+                "Impossible d'accepter la demande."
+
+            ),
+
+            "error"
+
+        );
+
+    }
+
+}
+
+async function rejectRequest(requestId){
+
+    const reason =
+
+        prompt(
+
+            "Pourquoi refusez-vous cette demande ?"
+
+        );
+
+    if(reason === null){
+
+        return;
+
+    }
+
+    try{
+
+        const result =
+
+            await supabaseClient.rpc(
+
+                "admin_reject_seller_request",
+
+                {
+
+                    request_id:requestId,
+
+                    reason:reason.trim() || null
+
+                }
+
+            );
+
+        if(result.error){
+
+            throw result.error;
+
+        }
+
+        showToast(
+
+            "❌ La demande a été refusée."
+
+        );
+
+        await loadDashboard();
+
+    }catch(error){
+
+        console.error(error);
+
+        showToast(
+
+            "❌ "+
+
+            (
+
+                error.message ||
+
+                "Impossible de refuser la demande."
+
+            ),
+
+            "error"
+
+        );
+
+    }
+
+}
+
+/* ============================================================
+
+   COMPTES
+
+============================================================ */
+
+function renderAccounts(accounts){
+
+    const tbody =
+
+        document.getElementById("accountsTable");
+
+    if(!accounts.length){
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td colspan="6">
+
+                    Aucun compte.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+    tbody.innerHTML =
+
+        accounts.map(account => {
+
+            let role =
+
+                account.role || "-";
+
+            if(role === "buyer"){
+
+                role = "🛍️ Acheteur";
+
+            }
+
+            if(role === "seller"){
+
+                role = "🏪 Vendeur";
+
+            }
+
+            if(role === "admin"){
+
+                role = "👑 Admin";
+
+            }
+
+            return `
+
+                <tr>
+
+                    <td>
+
+                        <strong>
+
+                            ${escapeHtml(
+
+                                (
+
+                                    account.first_name || ""
+
+                                )+
+
+                                " "+
+
+                                (
+
+                                    account.last_name || ""
+
+                                )
+
+                            )}
+
+                        </strong>
+
+                    </td>
+
+                    <td>
+
+                        ${escapeHtml(
+
+                            account.email || "-"
+
+                        )}
+
+                    </td>
+
+                    <td>
+
+                        ${escapeHtml(
+
+                            account.phone || "-"
+
+                        )}
+
+                    </td>
+
+                    <td>
+
+                        ${role}
+
+                    </td>
+
+                    <td>
+
+                        <span class="status ${
+
+                            statusClass(
+
+                                account.account_status
+
+                            )
+
+                        }">
+
+                            ${escapeHtml(
+
+                                statusText(
+
+                                    account.account_status
+
+                                )
+
+                            )}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        ${formatDate(
+
+                            account.created_at
+
+                        )}
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }).join("");
+
+}
+
+/* ============================================================
+
+   VENDEURS
+
+============================================================ */
+
+function renderSellers(sellers){
+
+    const tbody =
+
+        document.getElementById("sellersTable");
+
+    if(!sellers.length){
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td colspan="5">
+
+                    Aucun vendeur.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+    tbody.innerHTML =
+
+        sellers.map(seller => {
+
+            const name =
+
+                (
+
+                    seller.first_name || ""
+
+                )+
+
+                " "+
+
+                (
+
+                    seller.last_name || ""
+
+                );
+
+            return `
+
+                <tr>
+
+                    <td>
+
+                        <strong>
+
+                            ${escapeHtml(
+
+                                name.trim() || "-"
+
+                            )}
+
+                        </strong>
+
+                    </td>
+
+                    <td>
+
+                        ${escapeHtml(
+
+                            seller.email || "-"
+
+                        )}
+
+                    </td>
+
+                    <td>
+
+                        ${escapeHtml(
+
+                            seller.phone || "-"
+
+                        )}
+
+                    </td>
+
+                    <td>
+
+                        <span class="status ${
+
+                            statusClass(
+
+                                seller.account_status
+
+                            )
+
+                        }">
+
+                            ${escapeHtml(
+
+                                statusText(
+
+                                    seller.account_status
+
+                                )
+
+                            )}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        ${formatDate(
+
+                            seller.created_at
+
+                        )}
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }).join("");
+
+}
+
+/* ============================================================
+
+   PRODUITS
+
+============================================================ */
+
+function renderProducts(products){
+
+    const tbody =
+
+        document.getElementById("productsTable");
+
+    if(!products.length){
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td colspan="6">
+
+                    Aucun produit.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+    tbody.innerHTML =
+
+        products.map(product => {
+
+            const status =
+
+                product.status ||
+
+                (
+
+                    product.is_active
+
+                    ? "active"
+
+                    : "inactive"
+
+                );
+
+            return `
+
+                <tr>
+
+                    <td>
+
+                        <strong>
+
+                            ${escapeHtml(
+
+                                product.name || "-"
+
+                            )}
+
+                        </strong>
+
+                    </td>
+
+                    <td>
+
+                        ${escapeHtml(
+
+                            product.seller_name || "-"
+
+                        )}
+
+                    </td>
+
+                    <td>
+
+                        ${escapeHtml(
+
+                            product.category || "-"
+
+                        )}
+
+                    </td>
+
+                    <td>
+
+                        ${formatPrice(
+
+                            product.price
+
+                        )}
+
+                    </td>
+
+                    <td>
+
+                        ${escapeHtml(
+
+                            String(
+
+                                product.stock ?? 0
+
+                            )
+
+                        )}
+
+                    </td>
+
+                    <td>
+
+                        <span class="status ${
+
+                            statusClass(status)
+
+                        }">
+
+                            ${escapeHtml(
+
+                                statusText(status)
+
+                            )}
+
+                        </span>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }).join("");
+
+}
+
+/* ============================================================
+
+   COMMANDES
+
+============================================================ */
+
+async function loadOrders(){
+
+    const tbody =
+
+        document.getElementById("ordersTable");
+
+    tbody.innerHTML = `
+
+        <tr>
+
+            <td colspan="7">
+
+                <div class="loading">
+
+                    <div class="spinner"></div>
+
+                    Chargement des commandes...
+
+                </div>
+
+            </td>
+
+        </tr>
+
+    `;
+
+    try{
+
+        const result =
+
+            await supabaseClient.rpc(
+
+                "admin_get_orders"
+
+            );
+
+        if(result.error){
+
+            throw result.error;
+
+        }
+
+        let orders =
+
+            result.data;
+
+        if(typeof orders === "string"){
+
+            try{
+
+                orders = JSON.parse(orders);
+
+            }catch(error){
+
+                orders = [];
+
+            }
+
+        }
+
+        dashboardData.orders =
+
+            Array.isArray(orders)
+
+            ? orders
+
+            : [];
+
+        renderOrders(
+
+            dashboardData.orders
+
+        );
+
+    }catch(error){
+
+        console.error(
+
+            "Erreur commandes :",
+
+            error
+
+        );
+
+        dashboardData.orders = [];
+
+        document.getElementById(
+
+            "totalProblems"
+
+        ).textContent = "0";
+
+        document.getElementById(
+
+            "problemBadge"
+
+        ).textContent = "0";
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td colspan="7">
+
+                    <div class="empty">
+
+                        <div class="empty-icon">⚠️</div>
+
+                        <strong>
+
+                            Impossible de charger les commandes
+
+                        </strong>
+
+                        <p>
+
+                            ${escapeHtml(
+
+                                error.message ||
+
+                                "Erreur inconnue"
+
+                            )}
+
+                        </p>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+}
+
+/* ============================================================
+
+   WHATSAPP
+
+============================================================ */
+
+function getSellerWhatsapp(phone){
+
+    if(!phone){
+
+        return null;
+
+    }
+
+    let value =
+
+        String(phone)
+
+        .replace(/[^\d+]/g,"");
+
+    if(
+
+        value.startsWith("0") &&
+
+        value.length >= 10
+
+    ){
+
+        value =
+
+            "225"+
+
+            value.substring(1);
+
+    }
+
+    if(value.startsWith("+")){
+
+        value = value.substring(1);
+
+    }
+
+    return value;
+
+}
+
+function whatsappLink(phone){
+
+    const number =
+
+        getSellerWhatsapp(phone);
+
+    if(!number){
+
+        return "";
+
+    }
+
+    return "https://wa.me/"+number;
+
+}
+
+/* ============================================================
+
+   DETECTION PROBLEME
+
+============================================================ */
+
+function hasOrderProblem(order){
+
+    return (
+
+        order.issue_reported === true ||
+
+        order.issue_reported === "true" ||
+
+        order.has_issue === true ||
+
+        order.problem_reported === true
+
+    );
+
+}
+
+function getIssueStatus(order){
+
+    if(!hasOrderProblem(order)){
+
+        return null;
+
+    }
+
+    return String(
+
+        order.issue_status ||
+
+        "open"
+
+    ).toLowerCase();
+
+}
+
+/* ============================================================
+
+   RENDU COMMANDES
+
+============================================================ */
+
+function renderOrders(orders){
+
+    const tbody =
+
+        document.getElementById("ordersTable");
+
+    const filter =
+
+        document.getElementById("orderFilter").value;
+
+    const problemOrders =
+
+        orders.filter(hasOrderProblem);
+
+    const activeProblems =
+
+        problemOrders.filter(order => {
+
+            const issueStatus =
+
+                getIssueStatus(order);
+
+            return (
+
+                issueStatus === "open" ||
+
+                issueStatus === "under_review"
+
+            );
+
+        }).length;
+
+    document.getElementById(
+
+        "totalProblems"
+
+    ).textContent = activeProblems;
+
+    document.getElementById(
+
+        "problemBadge"
+
+    ).textContent = activeProblems;
+
+    let filtered = orders;
+
+    if(filter === "problem"){
+
+        filtered =
+
+            orders.filter(
+
+                order =>
+
+                    hasOrderProblem(order) &&
+
+                    (
+
+                        getIssueStatus(order) === "open" ||
+
+                        getIssueStatus(order) === "under_review"
+
+                    )
+
+            );
+
+    }else if(filter === "under_review"){
+
+        filtered =
+
+            orders.filter(
+
+                order =>
+
+                    hasOrderProblem(order) &&
+
+                    getIssueStatus(order) === "under_review"
+
+            );
+
+    }else if(filter === "resolved"){
+
+        filtered =
+
+            orders.filter(
+
+                order =>
+
+                    hasOrderProblem(order) &&
+
+                    (
+
+                        getIssueStatus(order) === "resolved" ||
+
+                        getIssueStatus(order) === "closed"
+
+                    )
+
+            );
+
+    }else if(filter !== "all"){
+
+        filtered =
+
+            orders.filter(
+
+                order =>
+
+                    String(
+
+                        order.status || ""
+
+                    ).toLowerCase() === filter
+
+            );
+
+    }
+
+    if(!filtered.length){
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td colspan="7">
+
+                    <div class="empty">
+
+                        <div class="empty-icon">🛒</div>
+
+                        <strong>
+
+                            Aucune commande
+
+                        </strong>
+
+                        <p>
+
+                            Aucune commande ne correspond à ce filtre.
+
+                        </p>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+    tbody.innerHTML =
+
+        filtered.map(order => {
+
+            const status =
+
+                String(
+
+                    order.status || "pending"
+
+                ).toLowerCase();
+
+            const hasProblem =
+
+                hasOrderProblem(order);
+
+            const issueStatus =
+
+                getIssueStatus(order);
+
+            let reception = "-";
+
+            if(order.buyer_received === true){
+
+                reception = `
+
+                    <span class="received">
+
+                        ✅ Reçue
+
+                    </span>
+
+                `;
+
+            }else if(status === "delivered"){
+
+                reception = `
+
+                    <span class="received">
+
+                        📦 Livrée — attente confirmation
+
+                    </span>
+
+                `;
+
+            }
+
+            let issueHtml = "";
+
+            if(hasProblem){
+
+                const issueLabel =
+
+                    issueStatus === "under_review"
+
+                    ? "🔄 En cours d'examen"
+
+                    : issueStatus === "resolved"
+
+                    ? "✅ Résolu"
+
+                    : issueStatus === "closed"
+
+                    ? "🔒 Fermé"
+
+                    : "🚨 À traiter";
+
+                issueHtml = `
+
+                    <div class="problem-indicator">
+
+                        ${issueLabel}
+
+                    </div>
+
+                    <div
+
+                        class="issue-details"
+
+                        id="issue-details-${escapeHtml(order.id)}"
+
+                    >
+
+                        <div class="issue-detail-row">
+
+                            <strong>Motif</strong>
+
+                            <span>
+
+                                ${escapeHtml(
+
+                                    order.issue_reason || "-"
+
+                                )}
+
+                            </span>
+
+                        </div>
+
+                        <div class="issue-detail-row">
+
+                            <strong>Description</strong>
+
+                            <span>
+
+                                ${escapeHtml(
+
+                                    order.issue_description || "-"
+
+                                )}
+
+                            </span>
+
+                        </div>
+
+                        <div class="issue-detail-row">
+
+                            <strong>Statut</strong>
+
+                            <span>
+
+                                ${escapeHtml(
+
+                                    statusText(issueStatus)
+
+                                )}
+
+                            </span>
+
+                        </div>
+
+                        ${
+
+                            order.issue_admin_note
+
+                            ?
+
+                            `
+
+                            <div class="issue-detail-row">
+
+                                <strong>Note admin</strong>
+
+                                <span>
+
+                                    ${escapeHtml(
+
+                                        order.issue_admin_note
+
+                                    )}
+
+                                </span>
+
+                            </div>
+
+                            `
+
+                            :
+
+                            ""
+
+                        }
+
+                    </div>
+
+                `;
+
+            }
+
+            let itemsHtml = "";
+
+            const items =
+
+                Array.isArray(order.items)
+
+                ? order.items
+
+                : [];
+
+            if(!items.length){
+
+                itemsHtml = `
+
+                    <span>
+
+                        Aucun article détaillé.
+
+                    </span>
+
+                `;
+
+            }else{
+
+                itemsHtml =
+
+                    items.map(item => {
+
+                        const sellerPhone =
+
+                            item.seller_whatsapp ||
+
+                            item.seller_phone ||
+
+                            "";
+
+                        const sellerWhatsApp =
+
+                            whatsappLink(
+
+                                sellerPhone
+
+                            );
+
+                        return `
+
+                            <div class="order-item">
+
+                                <div class="order-product">
+
+                                    📦
+
+                                    ${escapeHtml(
+
+                                        item.product_name ||
+
+                                        "Produit"
+
+                                    )}
+
+                                </div>
+
+                                <div class="order-meta">
+
+                                    Quantité :
+
+                                    <strong>
+
+                                        ${escapeHtml(
+
+                                            String(
+
+                                                item.quantity ?? 0
+
+                                            )
+
+                                        )}
+
+                                    </strong>
+
+                                    <br>
+
+                                    Prix :
+
+                                    <strong>
+
+                                        ${formatPrice(
+
+                                            item.unit_price
+
+                                        )}
+
+                                    </strong>
+
+                                </div>
+
+                                <div class="seller-box">
+
+                                    🏪
+
+                                    <strong>
+
+                                        ${escapeHtml(
+
+                                            item.seller_name ||
+
+                                            "Vendeur"
+
+                                        )}
+
+                                    </strong>
+
+                                    <br>
+
+                                    📞
+
+                                    ${escapeHtml(
+
+                                        item.seller_phone ||
+
+                                        "-"
+
+                                    )}
+
+                                    ${
+
+                                        sellerWhatsApp
+
+                                        ?
+
+                                        `
+
+                                        <br><br>
+
+                                        <a
+
+                                            href="${escapeHtml(
+
+                                                sellerWhatsApp
+
+                                            )}"
+
+                                            target="_blank"
+
+                                            rel="noopener"
+
+                                            class="action-button approve-button"
+
+                                            style="display:inline-block;text-decoration:none;"
+
+                                        >
+
+                                            💬 WhatsApp
+
+                                        </a>
+
+                                        `
+
+                                        :
+
+                                        ""
+
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        `;
+
+                    }).join("");
+
+            }
+
+            let actions = "";
+
+            if(hasProblem){
+
+                actions += `
+
+                    <button
+
+                        class="action-button orange-button"
+
+                        onclick="viewProblem('${escapeHtml(order.id)}')"
+
+                    >
+
+                        👁️ Voir
+
+                    </button>
+
+                `;
+
+                if(
+
+                    issueStatus === "open" ||
+
+                    !issueStatus
+
+                ){
+
+                    actions += `
+
+                        <button
+
+                            class="action-button blue-button"
+
+                            onclick="takeIssue('${escapeHtml(order.id)}')"
+
+                        >
+
+                            🔄 Prendre en charge
+
+                        </button>
+
+                    `;
+
+                }
+
+                if(
+
+                    issueStatus === "open" ||
+
+                    issueStatus === "under_review"
+
+                ){
+
+                    actions += `
+
+                        <button
+
+                            class="action-button approve-button"
+
+                            onclick="resolveIssue('${escapeHtml(order.id)}')"
+
+                        >
+
+                            ✅ Résoudre
+
+                        </button>
+
+                    `;
+
+                }
+
+                if(
+
+                    issueStatus === "resolved"
+
+                ){
+
+                    actions += `
+
+                        <button
+
+                            class="action-button dark-button"
+
+                            onclick="closeIssue('${escapeHtml(order.id)}')"
+
+                        >
+
+                            🔒 Fermer
+
+                        </button>
+
+                    `;
+
+                }
+
+            }
+
+            return `
+
+                <tr>
+
+                    <td>
+
+                        <strong>
+
+                            #${escapeHtml(order.id)}
+
+                        </strong>
+
+                        <br>
+
+                        <small>
+
+                            ${formatDateTime(
+
+                                order.created_at
+
+                            )}
+
+                        </small>
+
+                        ${
+
+                            hasProblem
+
+                            ?
+
+                            `
+
+                            <div class="problem-indicator">
+
+                                🚨 Problème
+
+                            </div>
+
+                            `
+
+                            :
+
+                            ""
+
+                        }
+
+                    </td>
+
+                    <td>
+
+                        <strong>
+
+                            ${escapeHtml(
+
+                                order.buyer_name ||
+
+                                "Acheteur"
+
+                            )}
+
+                        </strong>
+
+                        <br>
+
+                        📞
+
+                        ${escapeHtml(
+
+                            order.buyer_phone ||
+
+                            order.delivery_phone ||
+
+                            "-"
+
+                        )}
+
+                        <br>
+
+                        📍
+
+                        ${escapeHtml(
+
+                            order.delivery_city ||
+
+                            "-"
+
+                        )}
+
+                        <br>
+
+                        ${escapeHtml(
+
+                            order.delivery_address ||
+
+                            ""
+
+                        )}
+
+                    </td>
+
+                    <td>
+
+                        ${itemsHtml}
+
+                    </td>
+
+                    <td>
+
+                        <strong>
+
+                            ${formatPrice(
+
+                                order.total_amount
+
+                            )}
+
+                        </strong>
+
+                    </td>
+
+                    <td>
+
+                        <span class="status ${
+
+                            statusClass(status)
+
+                        }">
+
+                            ${escapeHtml(
+
+                                statusText(status)
+
+                            )}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        ${reception}
+
+                        ${issueHtml}
+
+                    </td>
+
+                    <td>
+
+                        <div class="request-actions">
+
+                            ${
+
+                                actions ||
+
+                                "<span>-</span>"
+
+                            }
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }).join("");
+
+}
+
+/* ============================================================
+
+   PROBLEME
+
+============================================================ */
+
+function viewProblem(orderId){
+
+    const order =
+
+        dashboardData.orders.find(
+
+            item =>
+
+                String(item.id) ===
+
+                String(orderId)
+
+        );
+
+    if(!order){
+
+        showToast(
+
+            "Commande introuvable.",
+
+            "error"
+
+        );
+
+        return;
+
+    }
+
+    currentIssueOrder = order;
+
+    const issueStatus =
+
+        getIssueStatus(order);
+
+    document.getElementById(
+
+        "issueModalContent"
+
+    ).innerHTML = `
+
+        <div class="modal-section">
+
+            <h4>
+
+                🛒 Commande
+
+            </h4>
+
+            <p>
+
+                <strong>
+
+                    #${escapeHtml(order.id)}
+
+                </strong>
+
+                <br>
+
+                Date :
+
+                ${formatDateTime(
+
+                    order.created_at
+
+                )}
+
+            </p>
+
+        </div>
+
+        <div class="modal-section">
+
+            <h4>
+
+                👤 Acheteur
+
+            </h4>
+
+            <p>
+
+                ${escapeHtml(
+
+                    order.buyer_name ||
+
+                    "Acheteur"
+
+                )}
+
+                <br>
+
+                📞
+
+                ${escapeHtml(
+
+                    order.buyer_phone ||
+
+                    order.delivery_phone ||
+
+                    "-"
+
+                )}
+
+            </p>
+
+        </div>
+
+        <div class="modal-section">
+
+            <h4>
+
+                🚨 Problème signalé
+
+            </h4>
+
+            <p>
+
+                <strong>Motif :</strong>
+
+                <br>
+
+                ${escapeHtml(
+
+                    order.issue_reason || "-"
+
+                )}
+
+                <br><br>
+
+                <strong>Description :</strong>
+
+                <br>
+
+                ${escapeHtml(
+
+                    order.issue_description || "-"
+
+                )}
+
+                <br><br>
+
+                <strong>Statut :</strong>
+
+                ${escapeHtml(
+
+                    statusText(issueStatus)
+
+                )}
+
+            </p>
+
+        </div>
+
+        ${
+
+            order.issue_admin_note
+
+            ?
+
+            `
+
+            <div class="modal-section">
+
+                <h4>
+
+                    📝 Note administrateur
+
+                </h4>
+
+                <p>
+
+                    ${escapeHtml(
+
+                        order.issue_admin_note
+
+                    )}
+
+                </p>
+
+            </div>
+
+            `
+
+            :
+
+            ""
+
+        }
+
+    `;
+
+    const reviewButton =
+
+        document.getElementById(
+
+            "modalReviewButton"
+
+        );
+
+    const resolveButton =
+
+        document.getElementById(
+
+            "modalResolveButton"
+
+        );
+
+    const closeButton =
+
+        document.getElementById(
+
+            "modalCloseButton"
+
+        );
+
+    reviewButton.style.display =
+
+        issueStatus === "open" ||
+
+        !issueStatus
+
+        ? "inline-block"
+
+        : "none";
+
+    resolveButton.style.display =
+
+        issueStatus === "open" ||
+
+        issueStatus === "under_review"
+
+        ? "inline-block"
+
+        : "none";
+
+    closeButton.style.display =
+
+        issueStatus === "resolved"
+
+        ? "inline-block"
+
+        : "none";
+
+    document.getElementById(
+
+        "issueModal"
+
+    ).classList.add("open");
+
+}
+
+async function takeIssue(orderId){
+
+    if(!confirm(
+
+        "Voulez-vous prendre ce problème en charge ?"
+
+    )){
+
+        return;
+
+    }
+
+    try{
+
+        const result =
+
+            await supabaseClient.rpc(
+
+                "resolve_order_issue",
+
+                {
+
+                    p_order_id:orderId,
+
+                    p_status:"under_review",
+
+                    p_admin_note:
+
+                        "Problème pris en charge par l'administration."
+
+                }
+
+            );
+
+        if(result.error){
+
+            throw result.error;
+
+        }
+
+        showToast(
+
+            "🔄 Le problème est maintenant en cours d'examen."
+
+        );
+
+        closeIssueModal();
+
+        await loadOrders();
+
+    }catch(error){
+
+        console.error(error);
+
+        showToast(
+
+            "❌ "+
+
+            (
+
+                error.message ||
+
+                "Impossible de prendre le problème en charge."
+
+            ),
+
+            "error"
+
+        );
+
+    }
+
+}
+
+async function resolveIssue(orderId){
+
+    const note =
+
+        prompt(
+
+            "Ajoute une note de résolution pour l'acheteur :"
+
+        );
+
+    if(note === null){
+
+        return;
+
+    }
+
+    if(!confirm(
+
+        "Confirmer que le problème a été résolu ?"
+
+    )){
+
+        return;
+
+    }
+
+    try{
+
+        const result =
+
+            await supabaseClient.rpc(
+
+                "admin_resolve_order_issue",
+
+                {
+
+                    p_order_id:orderId,
+
+                    p_note:note.trim() || null
+
+                }
+
+            );
+
+        if(result.error){
+
+            throw result.error;
+
+        }
+
+        showToast(
+
+            "✅ Le problème a été marqué comme résolu."
+
+        );
+
+        closeIssueModal();
+
+        await loadOrders();
+
+    }catch(error){
+
+        console.error(error);
+
+        showToast(
+
+            "❌ "+
+
+            (
+
+                error.message ||
+
+                "Impossible de résoudre le problème."
+
+            ),
+
+            "error"
+
+        );
+
+    }
+
+}
+
+async function closeIssue(orderId){
+
+    if(!confirm(
+
+        "Voulez-vous fermer définitivement ce problème ?"
+
+    )){
+
+        return;
+
+    }
+
+    try{
+
+        const result =
+
+            await supabaseClient.rpc(
+
+                "resolve_order_issue",
+
+                {
+
+                    p_order_id:orderId,
+
+                    p_status:"closed",
+
+                    p_admin_note:
+
+                        "Problème fermé par l'administration."
+
+                }
+
+            );
+
+        if(result.error){
+
+            throw result.error;
+
+        }
+
+        showToast(
+
+            "🔒 Le problème a été fermé."
+
+        );
+
+        closeIssueModal();
+
+        await loadOrders();
+
+    }catch(error){
+
+        console.error(error);
+
+        showToast(
+
+            "❌ "+
+
+            (
+
+                error.message ||
+
+                "Impossible de fermer le problème."
+
+            ),
+
+            "error"
+
+        );
+
+    }
+
+}
+
+function closeIssueModal(){
+
+    document.getElementById(
+
+        "issueModal"
+
+    ).classList.remove("open");
+
+    currentIssueOrder = null;
+
+}
+
+document.getElementById(
+
+    "closeIssueModal"
+
+).addEventListener(
+
+    "click",
+
+    closeIssueModal
+
+);
+
+document.getElementById(
+
+    "modalCloseButton"
+
+).addEventListener(
+
+    "click",
+
+    function(){
+
+        if(currentIssueOrder){
+
+            closeIssue(
+
+                currentIssueOrder.id
+
+            );
+
+        }
+
+    }
+
+);
+
+document.getElementById(
+
+    "modalReviewButton"
+
+).addEventListener(
+
+    "click",
+
+    function(){
+
+        if(currentIssueOrder){
+
+            takeIssue(
+
+                currentIssueOrder.id
+
+            );
+
+        }
+
+    }
+
+);
+
+document.getElementById(
+
+    "modalResolveButton"
+
+).addEventListener(
+
+    "click",
+
+    function(){
+
+        if(currentIssueOrder){
+
+            resolveIssue(
+
+                currentIssueOrder.id
+
+            );
+
+        }
+
+    }
+
+);
+
+document.getElementById(
+
+    "issueModal"
+
+).addEventListener(
+
+    "click",
+
+    function(event){
+
+        if(event.target === this){
+
+            closeIssueModal();
+
+        }
+
+    }
+
+);
+
+/* ============================================================
+
+   AVIS
+
+============================================================ */
+
+async function loadReviews(){
+
+    try{
+
+        const result =
+
+            await supabaseClient
+
+                .from("product_reviews")
+
+                .select("*")
+
+                .order(
+
+                    "created_at",
+
+                    {
+
+                        ascending:false
+
+                    }
+
+                );
+
+        if(result.error){
+
+            throw result.error;
+
+        }
+
+        dashboardData.reviews =
+
+            Array.isArray(result.data)
+
+            ? result.data
+
+            : [];
+
+        document.getElementById(
+
+            "totalReviews"
+
+        ).textContent =
+
+            dashboardData.reviews.length;
+
+        renderReviews(
+
+            dashboardData.reviews
+
+        );
+
+    }catch(error){
+
+        console.warn(
+
+            "Erreur avis :",
+
+            error.message
+
+        );
+
+        dashboardData.reviews = [];
+
+        document.getElementById(
+
+            "totalReviews"
+
+        ).textContent = "0";
+
+        document.getElementById(
+
+            "reviewsTable"
+
+        ).innerHTML = `
+
+            <tr>
+
+                <td colspan="6">
+
+                    Aucun avis disponible pour le moment.
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+}
+
+function renderReviews(reviews){
+
+    const tbody =
+
+        document.getElementById(
+
+            "reviewsTable"
+
+        );
+
+    const filter =
+
+        document.getElementById(
+
+            "reviewFilter"
+
+        ).value;
+
+    const filtered =
+
+        filter === "all"
+
+        ? reviews
+
+        : reviews.filter(
+
+            review =>
+
+                Number(review.rating) ===
+
+                Number(filter)
+
+        );
+
+    if(!filtered.length){
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td colspan="6">
+
+                    Aucun avis pour ce filtre.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+    tbody.innerHTML =
+
+        filtered.map(review => {
+
+            const rating =
+
+                Math.max(
+
+                    0,
+
+                    Math.min(
+
+                        5,
+
+                        Number(review.rating) || 0
+
+                    )
+
+                );
+
+            const stars =
+
+                "★".repeat(rating)+
+
+                "☆".repeat(5-rating);
+
+            return `
+
+                <tr>
+
+                    <td>
+
+                        ${stars}
+
+                    </td>
+
+                    <td>
+
+                        ${escapeHtml(
+
+                            review.comment || "-"
+
+                        )}
+
+                    </td>
+
+                    <td>
+
+                        ${escapeHtml(
+
+                            review.buyer_id || "-"
+
+                        )}
+
+                    </td>
+
+                    <td>
+
+                        ${escapeHtml(
+
+                            review.product_id || "-"
+
+                        )}
+
+                    </td>
+
+                    <td>
+
+                        ${escapeHtml(
+
+                            review.order_id || "-"
+
+                        )}
+
+                    </td>
+
+                    <td>
+
+                        ${formatDate(
+
+                            review.created_at
+
+                        )}
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }).join("");
+
+}
+
+/* ============================================================
+
+   BADGES
+
+============================================================ */
+
+async function loadBadges(){
+
+    try{
+
+        const result =
+
+            await supabaseClient
+
+                .from("badges")
+
+                .select(
+
+                    "id,name,description,icon,created_at"
+
+                )
+
+                .order(
+
+                    "created_at",
+
+                    {
+
+                        ascending:false
+
+                    }
+
+                );
+
+        if(result.error){
+
+            throw result.error;
+
+        }
+
+        dashboardData.badges =
+
+            Array.isArray(result.data)
+
+            ? result.data
+
+            : [];
+
+        renderBadges(
+
+            dashboardData.badges
+
+        );
+
+    }catch(error){
+
+        console.warn(
+
+            "Erreur badges :",
+
+            error.message
+
+        );
+
+        document.getElementById(
+
+            "badgesTable"
+
+        ).innerHTML = `
+
+            <tr>
+
+                <td colspan="4">
+
+                    Aucun badge disponible.
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+}
+
+function renderBadges(badges){
+
+    const tbody =
+
+        document.getElementById(
+
+            "badgesTable"
+
+        );
+
+    if(!badges.length){
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td colspan="4">
+
+                    Aucun badge.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+    tbody.innerHTML =
+
+        badges.map(badge => `
+
+            <tr>
+
+                <td>
+
+                    <strong>
+
+                        ${escapeHtml(
+
+                            badge.name || "-"
+
+                        )}
+
+                    </strong>
+
+                </td>
+
+                <td>
+
+                    ${escapeHtml(
+
+                        badge.description || "-"
+
+                    )}
+
+                </td>
+
+                <td>
+
+                    ${escapeHtml(
+
+                        badge.icon || "🏅"
+
+                    )}
+
+                </td>
+
+                <td>
+
+                    ${formatDate(
+
+                        badge.created_at
+
+                    )}
+
+                </td>
+
+            </tr>
+
+        `).join("");
+
+}
+
+/* ============================================================
+
+   CATEGORIES
+
+============================================================ */
+
+async function loadCategories(){
+
+    try{
+
+        const result =
+
+            await supabaseClient
+
+                .from("categories")
+
+                .select(
+
+                    "id,name,description,is_active,created_at"
+
+                )
+
+                .order(
+
+                    "created_at",
+
+                    {
+
+                        ascending:false
+
+                    }
+
+                );
+
+        if(result.error){
+
+            throw result.error;
+
+        }
+
+        dashboardData.categories =
+
+            Array.isArray(result.data)
+
+            ? result.data
+
+            : [];
+
+        renderCategories(
+
+            dashboardData.categories
+
+        );
+
+    }catch(error){
+
+        console.warn(
+
+            "Erreur catégories :",
+
+            error.message
+
+        );
+
+        document.getElementById(
+
+            "categoriesTable"
+
+        ).innerHTML = `
+
+            <tr>
+
+                <td colspan="4">
+
+                    Aucune catégorie disponible.
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+}
+
+function renderCategories(categories){
+
+    const tbody =
+
+        document.getElementById(
+
+            "categoriesTable"
+
+        );
+
+    if(!categories.length){
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td colspan="4">
+
+                    Aucune catégorie.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+    tbody.innerHTML =
+
+        categories.map(category => `
+
+            <tr>
+
+                <td>
+
+                    <strong>
+
+                        ${escapeHtml(
+
+                            category.name || "-"
+
+                        )}
+
+                    </strong>
+
+                </td>
+
+                <td>
+
+                    ${escapeHtml(
+
+                        category.description || "-"
+
+                    )}
+
+                </td>
+
+                <td>
+
+                    <span class="status ${
+
+                        category.is_active
+
+                        ? "approved"
+
+                        : "rejected"
+
+                    }">
+
+                        ${
+
+                            category.is_active
+
+                            ? "Active"
+
+                            : "Inactive"
+
+                        }
+
+                    </span>
+
+                </td>
+
+                <td>
+
+                    ${formatDate(
+
+                        category.created_at
+
+                    )}
+
+                </td>
+
+            </tr>
+
+        `).join("");
+
+}
+
+/* ============================================================
+
+   BLOQUES
+
+============================================================ */
+
+async function loadBlocked(){
+
+    try{
+
+        const result =
+
+            await supabaseClient
+
+                .from("profiles")
+
+                .select(
+
+                    "id,first_name,last_name,email,phone,role,account_status,blocked_at,blocked_reason"
+
+                )
+
+                .in(
+
+                    "account_status",
+
+                    [
+
+                        "blocked",
+
+                        "suspended"
+
+                    ]
+
+                )
+
+                .order(
+
+                    "blocked_at",
+
+                    {
+
+                        ascending:false
+
+                    }
+
+                );
+
+        if(result.error){
+
+            throw result.error;
+
+        }
+
+        renderBlocked(
+
+            Array.isArray(result.data)
+
+            ? result.data
+
+            : []
+
+        );
+
+    }catch(error){
+
+        console.warn(
+
+            "Erreur comptes bloqués :",
+
+            error.message
+
+        );
+
+        document.getElementById(
+
+            "blockedTable"
+
+        ).innerHTML = `
+
+            <tr>
+
+                <td colspan="6">
+
+                    Aucun compte bloqué ou suspendu.
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+}
+
+function renderBlocked(accounts){
+
+    const tbody =
+
+        document.getElementById(
+
+            "blockedTable"
+
+        );
+
+    if(!accounts.length){
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td colspan="6">
+
+                    Aucun compte bloqué ou suspendu.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+    tbody.innerHTML =
+
+        accounts.map(account => `
+
+            <tr>
+
+                <td>
+
+                    <strong>
+
+                        ${escapeHtml(
+
+                            (
+
+                                account.first_name || ""
+
+                            )+
+
+                            " "+
+
+                            (
+
+                                account.last_name || ""
+
+                            )
+
+                        )}
+
+                    </strong>
+
+                </td>
+
+                <td>
+
+                    ${escapeHtml(
+
+                        account.email || "-"
+
+                    )}
+
+                </td>
+
+                <td>
+
+                    ${escapeHtml(
+
+                        account.phone || "-"
+
+                    )}
+
+                </td>
+
+                <td>
+
+                    ${escapeHtml(
+
+                        account.role || "-"
+
+                    )}
+
+                </td>
+
+                <td>
+
+                    ${escapeHtml(
+
+                        account.blocked_reason || "-"
+
+                    )}
+
+                </td>
+
+                <td>
+
+                    ${formatDate(
+
+                        account.blocked_at
+
+                    )}
+
+                </td>
+
+            </tr>
+
+        `).join("");
+
+}
+
+/* ============================================================
+
+   NAVIGATION
+
+============================================================ */
+
+const navItems =
+
+    document.querySelectorAll(".nav-item");
+
+const titles = {
+
+    dashboard:"Tableau de bord",
+
+    requests:"Demandes vendeur",
+
+    accounts:"Comptes",
+
+    sellers:"Vendeurs",
+
+    products:"Produits",
+
+    orders:"Commandes",
+
+    reviews:"Avis & notes",
+
+    badges:"Badges",
+
+    blocked:"Comptes bloqués",
+
+    categories:"Catégories",
+
+    settings:"Paramètres"
+
+};
+
+navItems.forEach(function(item){
+
+    item.addEventListener(
+
+        "click",
+
+        function(){
+
+            const section =
+
+                item.dataset.section;
+
+            navItems.forEach(
+
+                function(nav){
+
+                    nav.classList.remove(
+
+                        "active"
+
+                    );
+
+                }
+
+            );
+
+            item.classList.add("active");
+
+            document
+
+                .querySelectorAll(".section")
+
+                .forEach(
+
+                    function(sec){
+
+                        sec.classList.remove(
+
+                            "active"
+
+                        );
+
+                    }
+
+                );
+
+            const target =
+
+                document.getElementById(
+
+                    "section-"+section
+
+                );
+
+            if(target){
+
+                target.classList.add("active");
+
+            }
+
+            document.getElementById(
+
+                "pageTitle"
+
+            ).textContent =
+
+                titles[section] ||
+
+                "Administration";
+
+            sidebar.classList.remove("open");
+
+        }
+
+    );
+
+});
+
+/* ============================================================
+
+   MENU MOBILE
+
+============================================================ */
+
+menuButton.addEventListener(
+
+    "click",
+
+    function(){
+
+        sidebar.classList.toggle("open");
+
+    }
+
+);
+
+/* ============================================================
+
+   ACTUALISATION
+
+============================================================ */
+
+document.getElementById(
+
+    "refreshDashboard"
+
+).addEventListener(
+
+    "click",
+
+    loadDashboard
+
+);
+
+document.getElementById(
+
+    "refreshRequests"
+
+).addEventListener(
+
+    "click",
+
+    loadDashboard
+
+);
+
+document.getElementById(
+
+    "refreshAccounts"
+
+).addEventListener(
+
+    "click",
+
+    loadDashboard
+
+);
+
+document.getElementById(
+
+    "refreshSellers"
+
+).addEventListener(
+
+    "click",
+
+    loadDashboard
+
+);
+
+document.getElementById(
+
+    "refreshProducts"
+
+).addEventListener(
+
+    "click",
+
+    loadDashboard
+
+);
+
+document.getElementById(
+
+    "refreshOrders"
+
+).addEventListener(
+
+    "click",
+
+    loadOrders
+
+);
+
+document.getElementById(
+
+    "refreshReviews"
+
+).addEventListener(
+
+    "click",
+
+    loadReviews
+
+);
+
+document.getElementById(
+
+    "refreshBadges"
+
+).addEventListener(
+
+    "click",
+
+    loadBadges
+
+);
+
+document.getElementById(
+
+    "refreshCategories"
+
+).addEventListener(
+
+    "click",
+
+    loadCategories
+
+);
+
+document.getElementById(
+
+    "refreshBlocked"
+
+).addEventListener(
+
+    "click",
+
+    loadBlocked
+
+);
+
+/* ============================================================
+
+   RECHERCHE COMPTES
+
+============================================================ */
+
+document.getElementById(
+
+    "accountSearch"
+
+).addEventListener(
+
+    "input",
+
+    function(event){
+
+        const query =
+
+            event.target.value
+
+            .toLowerCase()
+
+            .trim();
+
+        const filtered =
+
+            dashboardData.accounts.filter(
+
+                account => {
+
+                    const text =
+
+                        (
+
+                            (account.first_name || "")+
+
+                            " "+
+
+                            (account.last_name || "")+
+
+                            " "+
+
+                            (account.email || "")+
+
+                            " "+
+
+                            (account.phone || "")+
+
+                            " "+
+
+                            (account.role || "")+
+
+                            " "+
+
+                            (account.account_status || "")
+
+                        )
+
+                        .toLowerCase();
+
+                    return text.includes(query);
+
+                }
+
+            );
+
+        renderAccounts(filtered);
+
+    }
+
+);
+
+/* ============================================================
+
+   RECHERCHE VENDEURS
+
+============================================================ */
+
+document.getElementById(
+
+    "sellerSearch"
+
+).addEventListener(
+
+    "input",
+
+    function(event){
+
+        const query =
+
+            event.target.value
+
+            .toLowerCase()
+
+            .trim();
+
+        const filtered =
+
+            dashboardData.sellers.filter(
+
+                seller => {
+
+                    const text =
+
+                        (
+
+                            (seller.first_name || "")+
+
+                            " "+
+
+                            (seller.last_name || "")+
+
+                            " "+
+
+                            (seller.email || "")+
+
+                            " "+
+
+                            (seller.phone || "")
+
+                        )
+
+                        .toLowerCase();
+
+                    return text.includes(query);
+
+                }
+
+            );
+
+        renderSellers(filtered);
+
+    }
+
+);
+
+/* ============================================================
+
+   RECHERCHE PRODUITS
+
+============================================================ */
+
+document.getElementById(
+
+    "productSearch"
+
+).addEventListener(
+
+    "input",
+
+    function(event){
+
+        const query =
+
+            event.target.value
+
+            .toLowerCase()
+
+            .trim();
+
+        const filtered =
+
+            dashboardData.products_list.filter(
+
+                product => {
+
+                    const text =
+
+                        (
+
+                            (product.name || "")+
+
+                            " "+
+
+                            (product.category || "")+
+
+                            " "+
+
+                            (product.description || "")+
+
+                            " "+
+
+                            (product.seller_name || "")
+
+                        )
+
+                        .toLowerCase();
+
+                    return text.includes(query);
+
+                }
+
+            );
+
+        renderProducts(filtered);
+
+    }
+
+);
+
+/* ============================================================
+
+   FILTRES
+
+============================================================ */
+
+document.getElementById(
+
+    "orderFilter"
+
+).addEventListener(
+
+    "change",
+
+    function(){
+
+        renderOrders(
+
+            dashboardData.orders
+
+        );
+
+    }
+
+);
+
+document.getElementById(
+
+    "reviewFilter"
+
+).addEventListener(
+
+    "change",
+
+    function(){
+
+        renderReviews(
+
+            dashboardData.reviews
+
+        );
+
+    }
+
+);
+
+/* ============================================================
+
+   DECONNEXION
+
+============================================================ */
+
+document.getElementById(
+
+    "logoutButton"
+
+).addEventListener(
+
+    "click",
+
+    async function(){
+
+        if(!confirm(
+
+            "Voulez-vous vous déconnecter ?"
+
+        )){
+
+            return;
+
+        }
+
+        try{
+
+            await supabaseClient.auth.signOut();
+
+        }catch(error){
+
+            console.error(
+
+                "Erreur déconnexion :",
+
+                error
+
+            );
+
+        }
+
+        window.location.href =
+
+            "connexion.html";
+
+    }
+
+);
+
+/* ============================================================
+
+   DEMARRAGE
+
+============================================================ */
+
+async function startAdmin(){
+
+    if(
+
+        typeof supabaseClient ===
+
+        "undefined"
+
+    ){
+
+        alert(
+
+            "Supabase n'est pas configuré. Vérifie supabase-config.js."
+
+        );
+
+        return;
+
+    }
+
+    const isAdmin =
+
+        await verifyAdmin();
+
+    if(!isAdmin){
+
+        return;
+
+    }
+
+    await loadDashboard();
+
+}
+
+startAdmin();
+
+</script>
+
+</body>
+
+</html>
